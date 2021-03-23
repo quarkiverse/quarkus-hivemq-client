@@ -1,4 +1,4 @@
-package io.quarkiverse.hivemqclient.hivemq.client.test;
+package io.quarkiverse.hivemqclient;
 
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
@@ -8,7 +8,7 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 
 import io.quarkus.test.QuarkusUnitTest;
 
-public class HivemqClientTest {
+public class HiveMQClientTest {
 
     // Start unit test with your extension loaded
     @RegisterExtension

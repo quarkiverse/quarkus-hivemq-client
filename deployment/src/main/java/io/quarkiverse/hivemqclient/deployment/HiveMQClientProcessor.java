@@ -1,9 +1,9 @@
-package io.quarkiverse.hivemqclient.hivemq.client.deployment;
+package io.quarkiverse.hivemqclient.deployment;
 
 import io.quarkus.deployment.annotations.BuildStep;
 import io.quarkus.deployment.builditem.FeatureBuildItem;
 
-class HivemqClientProcessor {
+class HiveMQClientProcessor {
 
     private static final String FEATURE = "hivemq-client";
 

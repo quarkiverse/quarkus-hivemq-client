@@ -1,4 +1,4 @@
-package io.quarkiverse.hivemqclient.hivemq.client.it;
+package io.quarkiverse.hivemqclient.it;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.is;
@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 import io.quarkus.test.junit.QuarkusTest;
 
 @QuarkusTest
-public class HivemqClientResourceTest {
+public class HiveMQClientResourceTest {
 
     @Test
     public void testHelloEndpoint() {

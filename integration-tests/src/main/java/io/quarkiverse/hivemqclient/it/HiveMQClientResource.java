@@ -14,7 +14,7 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
-package io.quarkiverse.hivemqclient.hivemq.client.it;
+package io.quarkiverse.hivemqclient.it;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.ws.rs.GET;
@@ -22,7 +22,7 @@ import javax.ws.rs.Path;
 
 @Path("/hivemq-client")
 @ApplicationScoped
-public class HivemqClientResource {
+public class HiveMQClientResource {
     // add some rest methods here
 
     @GET
