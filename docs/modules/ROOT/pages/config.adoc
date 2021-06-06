@@ -1,112 +1,90 @@
 //
 // This content is generated using mvn compile and copied manually to here
 //
+
 [.configuration-legend]
-icon:lock[title=Fixed at build time] Configuration property fixed at build time - All other configuration properties are overridable at runtime
-[.configuration-reference.searchable, cols="80,.^10,.^10"]
+[.configuration-reference.searchable, cols="80,.^10,.^10,.^10"]
 |===
 
-h|[[quarkus-freemarker_configuration]]link:#quarkus-freemarker_configuration[Configuration property]
+h|Configuration property
 
 h|Type
 h|Default
+h|Direction
 
-a|icon:lock[title=Fixed at build time] [[quarkus-freemarker_quarkus.freemarker.resource-paths]]`link:#quarkus-freemarker_quarkus.freemarker.resource-paths[quarkus.freemarker.resource-paths]`
+//@ConnectorAttribute(name = "reconnect-attempts", type = "int", direction = INCOMING_AND_OUTGOING, description = "Set the max reconnect attempts", defaultValue = "5")
+a|`reconnect-attempts`
+[.description]
+--
+Set the max reconnect attempts.
+--
+|int
+|`5`
+| INCOMING_AND_OUTGOING
+//@ConnectorAttribute(name = "reconnect-interval-seconds", type = "int", direction = INCOMING_AND_OUTGOING, description = "Set the reconnect interval in seconds", defaultValue = "1")
+a|`reconnect-interval-seconds`
 
 [.description]
 --
-Comma-separated list of absolute resource paths to scan recursively for templates. All tree folder from 'resource-paths' will be added as a resource. Unprefixed locations or locations starting with classpath will be processed in the same way.
---|list of string
-|`freemarker/templates`
+Set the reconnect interval in seconds.
+--
+|int
+|`1`
+| INCOMING_AND_OUTGOING
 
+//@ConnectorAttribute(name = "ca-cart-file", direction = INCOMING_AND_OUTGOING, description = "File containing the self-signed CA for SSL connection", type = "string")
 
-a| [[quarkus-freemarker_quarkus.freemarker.file-paths]]`link:#quarkus-freemarker_quarkus.freemarker.file-paths[quarkus.freemarker.file-paths]`
+a|`ca-cart-file`
 
 [.description]
 --
-Comma-separated of file system paths where freemarker templates are located
---|list of string
+File containing the self-signed CA for SSL connection.
+--
+|string
 |
+| INCOMING_AND_OUTGOING
 
+//@ConnectorAttribute(name = "check-topic-enabled", direction = INCOMING_AND_OUTGOING, description = "Enable check for liveness/readiness", type = "boolean", defaultValue = "false")
 
-a| [[quarkus-freemarker_quarkus.freemarker.default-encoding]]`link:#quarkus-freemarker_quarkus.freemarker.default-encoding[quarkus.freemarker.default-encoding]`
+a|`check-topic-enabled`
 
 [.description]
 --
-Set the preferred charset template files are stored in.
+Enable check for liveness/readiness.
+--
+|boolean
+|`false`
+| INCOMING_AND_OUTGOING
+
+//@ConnectorAttribute(name = "check-topic-name", direction = INCOMING_AND_OUTGOING, description = "Topic Used to check liveness/readiness", type = "string", defaultValue = "$SYS/broker/uptime")
+
+a|`check-topic-name`
+
+[.description]
+--
+Topic Used to check liveness/readiness.
 --|string
-|
+|`$SYS/broker/uptime`
+| INCOMING_AND_OUTGOING
 
+//@ConnectorAttribute(name = "readiness-timeout", direction = INCOMING_AND_OUTGOING, description = "Timeout to declare the MQTT Client not ready", type = "int", defaultValue = "20000")
 
-a| [[quarkus-freemarker_quarkus.freemarker.template-exception-handler]]`link:#quarkus-freemarker_quarkus.freemarker.template-exception-handler[quarkus.freemarker.template-exception-handler]`
-
-[.description]
---
-Sets how errors will appear. rethrow, debug, html-debug, ignore.
---|string
-|
-
-
-a| [[quarkus-freemarker_quarkus.freemarker.log-template-exceptions]]`link:#quarkus-freemarker_quarkus.freemarker.log-template-exceptions[quarkus.freemarker.log-template-exceptions]`
+a|`readiness-timeout`
 
 [.description]
 --
-If false, don't log exceptions inside FreeMarker that it will be thrown at you anyway.
---|boolean
-|
+Timeout to declare the MQTT Client not ready (in ms).
+--|int
+|`20000`
+| INCOMING_AND_OUTGOING
 
+//@ConnectorAttribute(name = "liveness-timeout", direction = INCOMING_AND_OUTGOING, description = "Timeout to declare the MQTT Client not alive", type = "int", defaultValue = "120000")
 
-a| [[quarkus-freemarker_quarkus.freemarker.wrap-unchecked-exceptions]]`link:#quarkus-freemarker_quarkus.freemarker.wrap-unchecked-exceptions[quarkus.freemarker.wrap-unchecked-exceptions]`
-
-[.description]
---
-Wrap unchecked exceptions thrown during template processing into TemplateException-s.
---|boolean
-|
-
-
-a| [[quarkus-freemarker_quarkus.freemarker.fallback-on-null-loop-variable]]`link:#quarkus-freemarker_quarkus.freemarker.fallback-on-null-loop-variable[quarkus.freemarker.fallback-on-null-loop-variable]`
+a|`liveness-timeout`
 
 [.description]
 --
-If false, do not fall back to higher scopes when reading a null loop variable.
---|boolean
-|
-
-
-a| [[quarkus-freemarker_quarkus.freemarker.boolean-format]]`link:#quarkus-freemarker_quarkus.freemarker.boolean-format[quarkus.freemarker.boolean-format]`
-
-[.description]
---
-The string value for the boolean `true` and `false` values, usually intended for human consumption (not for a computer language), separated with comma.
---|string
-|
-
-
-a| [[quarkus-freemarker_quarkus.freemarker.number-format]]`link:#quarkus-freemarker_quarkus.freemarker.number-format[quarkus.freemarker.number-format]`
-
-[.description]
---
-Sets the default number format used to convert numbers to strings.
---|string
-|
-
-
-a| [[quarkus-freemarker_quarkus.freemarker.object-wrapper-expose-fields]]`link:#quarkus-freemarker_quarkus.freemarker.object-wrapper-expose-fields[quarkus.freemarker.object-wrapper-expose-fields]`
-
-[.description]
---
-If true, the object wrapper will be configured to expose fields.
---|boolean
-|
-
-
-a|icon:lock[title=Fixed at build time] [[quarkus-freemarker_quarkus.freemarker.directive-directive]]`link:#quarkus-freemarker_quarkus.freemarker.directive-directive[quarkus.freemarker.directive]`
-
-[.description]
---
-List of directives to register with format name=classname
---|`Map<String,String>`
-|
-
-|===
+Timeout to declare the MQTT Client not alive.
+--|int
+|`120000`
+| INCOMING_AND_OUTGOING
