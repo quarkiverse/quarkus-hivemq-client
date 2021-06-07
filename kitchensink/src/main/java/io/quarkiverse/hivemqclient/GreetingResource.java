@@ -1,17 +1,19 @@
 package io.quarkiverse.hivemqclient;
 
-import io.smallrye.reactive.messaging.mqtt.MqttMessage;
-import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
+import java.io.IOException;
+
+import javax.inject.Inject;
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+
 import org.eclipse.microprofile.reactive.messaging.Channel;
 import org.eclipse.microprofile.reactive.messaging.Emitter;
 import org.eclipse.microprofile.reactive.messaging.Incoming;
 import org.eclipse.microprofile.reactive.messaging.OnOverflow;
 
-import javax.inject.Inject;
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
-import java.io.IOException;
+import io.smallrye.reactive.messaging.mqtt.MqttMessage;
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 
 @Path("/hello")
 @Slf4j
@@ -19,7 +21,7 @@ public class GreetingResource {
 
     @Incoming("device-status")
     public void creaOAggiornaTerminale(byte[] incoming) throws IOException {
-        log.info("new payload: {}",new String(incoming));
+        log.info("new payload: {}", new String(incoming));
     }
 
     @Channel("comandi")
