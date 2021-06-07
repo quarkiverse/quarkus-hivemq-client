@@ -3,27 +3,24 @@
 [![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
-## Welcome to Quarkiverse!
+## Introduction
 
-Congratulations and thank you for creating a new Quarkus extension project in Quarkiverse!
+This extension allow usage of the _HiveMQ MQTT Client_ inside a Quarkus App, in JVM and Native mode.
 
-Feel free to replace this content with the proper description of your new project and necessary instructions how to use and contribute to it.
+Added with the [SmallRye Reactive Messaging MQTT][https://smallrye.io/smallrye-reactive-messaging/smallrye-reactive-messaging/3.4/mqtt/mqtt.html]  allows usage of a new connector type **smallrye-mqtt-hivemq** that will use _HiveMQ MQTT Client_ instead of Vertx MQTT client.
 
-You can find the basic info, Quarkiverse policies and conventions in [the Quarkiverse wiki](https://github.com/quarkiverse/quarkiverse/wiki).
+This add some benefits to the original SmallRye MQTT:
 
-In case you are creating a Quarkus extension project for the first time, please follow [Building My First Extension](https://quarkus.io/guides/building-my-first-extension) guide.
+* Battle tested MQTT Client outside of Vertx landscape.
+* Management of external CA file for secure connections with self-signed certificates
+* Backpressure support integrated with MQTT QOS.
+* Automatic and configurable reconnect handling and message redelivery.
+* Real Health Check againsts a configurable topic (defaults to the standard MQTT $SYS/broker/uptime) integrated in Quarkus HealthReport.
+* Many others you can read in official documentation [here][https://hivemq.github.io/hivemq-mqtt-client/].
 
-Other useful articles related to Quarkus extension development can be found under the [Writing Extensions](https://quarkus.io/guides/#writing-extensions) guide category on the [Quarkus.io](http://quarkus.io) website.
+For more information about installation and configuration please read the documentation
+[here][https://quarkiverse.github.io/quarkiverse-docs/quarkus-hivemq-client/dev/index.html].
 
-Thanks again, good luck and have fun!
-
-## Documentation
-
-The documentation for this extension should be maintained as part of this repository and it is stored in the `docs/` directory. 
-
-The layout should follow the [Antora's Standard File and Directory Set](https://docs.antora.org/antora/2.3/standard-directories/).
-
-Once the docs are ready to be published, please open a PR including this repository in the [Quarkiverse Docs Antora playbook](https://github.com/quarkiverse/quarkiverse-docs/blob/main/antora-playbook.yml#L7). See an example [here](https://github.com/quarkiverse/quarkiverse-docs/pull/1).
 ## Contributors ✨
 
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):

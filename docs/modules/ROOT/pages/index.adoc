@@ -1,16 +1,16 @@
 = Quarkus - Hivemq Client
 :extension-status: preview
 
-This extension allow usage of the _HiveMQ MQTT Client_ inside a Quarkus App, in JVM and Native mode.
+This extension allows usage of the _HiveMQ MQTT Client_ inside a Quarkus App, in JVM and Native mode.
 
-Added with the https://smallrye.io/smallrye-reactive-messaging/smallrye-reactive-messaging/3.4/mqtt/mqtt.html["SmallRye Reactive Messaging MQTT"] allows usage of a new connector type *smallrye-mqtt-hivemq* that will use _HiveMQ MQTT Client_ instead of Vertx MQTT client.
+Together with the https://smallrye.io/smallrye-reactive-messaging/smallrye-reactive-messaging/3.4/mqtt/mqtt.html["SmallRye Reactive Messaging MQTT"] extension allows usage of a new connector type *smallrye-mqtt-hivemq* that will use _HiveMQ MQTT Client_ instead of Vertx MQTT client.
 
-This add some benefits to the original SmallRye MQTT:
+This adds some benefits to the original SmallRye MQTT:
 
 * Battle tested MQTT Client outside of Vertx landscape
 * Management of external CA file for secure connections with self-signed certificates
 * Backpressure support integrated with MQTT QOS
-* Automatic and configurable reconnect handling and message redelivery
+* Automatic and configurable reconnection handling and message redelivery
 * Real Health Check againsts a configurable topic (defaults to the standard MQTT $SYS/broker/uptime) integrated in Quarkus HealthReport
 * Many others you can read in official documentation https://hivemq.github.io/hivemq-mqtt-client/[here].
 
@@ -40,5 +40,20 @@ If you also want to use SmallRye Reactive Messaging integration in your `pom.xml
 
 [[extension-configuration-reference]]
 == Extension Configuration Reference
+
+These are the configurations added to the original *SmallRye's MQTT Connector* once this is specified in `application.properties`:
+
+[source,xml]
+----
+    <dependency>
+        <groupId>io.quarkiverse.hivemqclient</groupId>
+        <artifactId>quarkus-hivemq-client</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-smallrye-reactive-messaging-mqtt</artifactId>
+    </dependency>
+----
+
 
 include::config.adoc[leveloffset=+1, opts=optional]

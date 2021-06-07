@@ -1,8 +1,16 @@
 package io.quarkiverse.hivemqclient.smallrye.reactive;
 
-import static io.smallrye.reactive.messaging.mqtt.i18n.MqttLogging.log;
-import static java.lang.String.format;
+import com.hivemq.client.mqtt.MqttClientSslConfigBuilder;
+import com.hivemq.client.mqtt.mqtt3.Mqtt3BlockingClient;
+import com.hivemq.client.mqtt.mqtt3.Mqtt3Client;
+import com.hivemq.client.mqtt.mqtt3.Mqtt3ClientBuilder;
+import com.hivemq.client.mqtt.mqtt3.Mqtt3RxClient;
+import com.hivemq.client.mqtt.mqtt3.message.connect.connack.Mqtt3ConnAck;
+import io.smallrye.mutiny.Uni;
+import io.smallrye.mutiny.converters.uni.UniRxConverters;
+import io.smallrye.reactive.messaging.health.HealthReport;
 
+import javax.net.ssl.TrustManagerFactory;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,19 +24,8 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-import javax.net.ssl.TrustManagerFactory;
-
-import com.hivemq.client.mqtt.MqttClientSslConfigBuilder;
-import com.hivemq.client.mqtt.mqtt3.Mqtt3BlockingClient;
-import com.hivemq.client.mqtt.mqtt3.Mqtt3Client;
-import com.hivemq.client.mqtt.mqtt3.Mqtt3ClientBuilder;
-import com.hivemq.client.mqtt.mqtt3.Mqtt3RxClient;
-import com.hivemq.client.mqtt.mqtt3.message.connect.connack.Mqtt3ConnAck;
-
-import io.smallrye.mutiny.Uni;
-import io.smallrye.mutiny.converters.uni.BuiltinConverters.*;
-import io.smallrye.mutiny.converters.uni.UniRxConverters;
-import io.smallrye.reactive.messaging.health.HealthReport;
+import static io.smallrye.reactive.messaging.mqtt.i18n.MqttLogging.log;
+import static java.lang.String.format;
 
 public class HiveMQClients {
 
