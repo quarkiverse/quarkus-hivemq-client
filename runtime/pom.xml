@@ -11,13 +11,13 @@
   <name>Quarkus - HiveMQ Client - Runtime</name>
   <properties>
     <microprofile-reactive-streams.version>2.0</microprofile-reactive-streams.version>
-    <mutiny.version>0.14.0</mutiny.version>
+    <mutiny.version>0.17.0</mutiny.version>
   </properties>
   <dependencies>
     <dependency>
       <groupId>com.hivemq</groupId>
       <artifactId>hivemq-mqtt-client</artifactId>
-      <version>1.2.1</version>
+      <version>1.2.2</version>
     </dependency>
     <dependency>
       <groupId>io.smallrye.reactive</groupId>
@@ -42,7 +42,7 @@
     <dependency>
       <groupId>org.eclipse.microprofile.metrics</groupId>
       <artifactId>microprofile-metrics-api</artifactId>
-      <version>2.3.3</version>
+      <version>3.0</version>
     </dependency>
     <dependency>
       <groupId>io.quarkus</groupId>
@@ -121,7 +121,7 @@
           <dependency>
             <groupId>org.eclipse.microprofile.config</groupId>
             <artifactId>microprofile-config-api</artifactId>
-            <version>1.4</version>
+            <version>2.0</version>
           </dependency>
         </dependencies>
       </plugin>
