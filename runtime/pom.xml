@@ -10,7 +10,7 @@
   <artifactId>quarkus-hivemq-client</artifactId>
   <name>Quarkus - HiveMQ Client - Runtime</name>
   <properties>
-    <microprofile-reactive-streams.version>1.0.1</microprofile-reactive-streams.version>
+    <microprofile-reactive-streams.version>2.0</microprofile-reactive-streams.version>
     <mutiny.version>0.14.0</mutiny.version>
   </properties>
   <dependencies>
