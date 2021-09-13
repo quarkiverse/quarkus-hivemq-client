@@ -24,7 +24,7 @@
     <maven.compiler.target>11</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <quarkus.version>2.0.0.CR3</quarkus.version>
+    <quarkus.version>2.2.3.Final</quarkus.version>
     <smallrye-reactive-messaging-mqtt.version>3.5.0</smallrye-reactive-messaging-mqtt.version>
   </properties>
   <dependencyManagement>
