@@ -1,7 +1,5 @@
 package io.quarkiverse.hivemqclient;
 
-import java.io.IOException;
-
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
