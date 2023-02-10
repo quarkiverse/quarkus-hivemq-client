@@ -7,7 +7,7 @@
 
 This extension allow usage of the _HiveMQ MQTT Client_ inside a Quarkus App, in JVM and Native mode.
 
-Added with the [SmallRye Reactive Messaging MQTT][https://smallrye.io/smallrye-reactive-messaging/smallrye-reactive-messaging/3.4/mqtt/mqtt.html]  allows usage of a new connector type **smallrye-mqtt-hivemq** that will use _HiveMQ MQTT Client_ instead of Vertx MQTT client.
+Added with the [SmallRye Reactive Messaging MQTT][https://smallrye.io/smallrye-reactive-messaging/4.3.0/mqtt/mqtt/]  allows usage of a new connector type **smallrye-mqtt-hivemq** that will use _HiveMQ MQTT Client_ instead of Vertx MQTT client.
 
 This add some benefits to the original SmallRye MQTT:
 
@@ -18,7 +18,7 @@ This add some benefits to the original SmallRye MQTT:
 * Real Health Check againsts a configurable topic (defaults to the standard MQTT $SYS/broker/uptime) integrated in Quarkus HealthReport.
 * Many others you can read in official documentation [here][https://hivemq.github.io/hivemq-mqtt-client/].
 
-For more information about installation and configuration please read the documentation
+For more informations about installation and configuration please read the documentation
 [here][https://quarkiverse.github.io/quarkiverse-docs/quarkus-hivemq-client/dev/index.html].
 
 ## Contributors ✨
