@@ -4,7 +4,7 @@
   <parent>
     <groupId>io.quarkiverse.hivemqclient</groupId>
     <artifactId>quarkus-hivemq-client-parent</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1-SNAPSHOT</version>
   </parent>
   <artifactId>quarkus-hivemq-client-integration-tests</artifactId>
   <name>Quarkus - HiveMQ Client - Integration Tests</name>
