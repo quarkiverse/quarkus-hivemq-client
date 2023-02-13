@@ -4,7 +4,7 @@
   <parent>
     <groupId>io.quarkiverse.hivemqclient</groupId>
     <artifactId>quarkus-hivemq-client-parent</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1-SNAPSHOT</version>
   </parent>
   <artifactId>quarkus-hivemq-client-kitchensink</artifactId>
   <name>Quarkus - HiveMQ Client - Kitchen Sink</name>
@@ -46,7 +46,7 @@
     <dependency>
       <groupId>io.quarkiverse.hivemqclient</groupId>
       <artifactId>quarkus-hivemq-client</artifactId>
-      <version>1.0.0</version>
+      <version>1.0.1-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>io.quarkus</groupId>
