@@ -12,7 +12,7 @@
   <name>Quarkus - Hivemq Client - Integration Tests</name>
 
   <modules>
-    <module>hivemq-client-vanilla</module>
+    <module>hivemq-client-smallrye</module>
     <module>kitchensink</module>
   </modules>
 

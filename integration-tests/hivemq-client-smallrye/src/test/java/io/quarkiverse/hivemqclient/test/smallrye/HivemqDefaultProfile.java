@@ -1,4 +1,4 @@
-package io.quarkiverse.hivemqclient.test.vanilla;
+package io.quarkiverse.hivemqclient.test.smallrye;
 
 import java.util.Collections;
 import java.util.List;

@@ -1,4 +1,4 @@
-package io.quarkiverse.hivemqclient.test.vanilla;
+package io.quarkiverse.hivemqclient.test.smallrye;
 
 import static org.testcontainers.utility.DockerImageName.parse;
 
@@ -17,9 +17,10 @@ public class HivemqResources implements QuarkusTestResourceLifecycleManager {
     public Map<String, String> start() {
         hivemqContainer.start();
         Map<String, String> config = new HashMap<>();
-        config.put("hivemq.cluster.host", hivemqContainer.getHost());
-        config.put("hivemq.cluster.port", "" + hivemqContainer.getMqttPort());
-
+        config.put("mp.messaging.outgoing.topic-price.host", hivemqContainer.getHost());
+        config.put("mp.messaging.outgoing.topic-price.port", "" + hivemqContainer.getMqttPort());
+        config.put("mp.messaging.incoming.prices.host", hivemqContainer.getHost());
+        config.put("mp.messaging.incoming.prices.port", "" + hivemqContainer.getMqttPort());
         return config;
     }
 
