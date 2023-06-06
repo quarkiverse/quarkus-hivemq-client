@@ -17,7 +17,7 @@
     <module>kitchensink</module>
   </modules>
   <scm>
-    <connection>:git:git@github.com:quarkiverse/quarkus-hivemq-client.git</connection>
+    <connection>scm:git:git@github.com:quarkiverse/quarkus-hivemq-client.git</connection>
     <developerConnection>scm:git:git@github.com:quarkiverse/quarkus-hivemq-client.git</developerConnection>
     <url>https://github.com/quarkiverse/quarkus-hivemq-client</url>
   </scm>
