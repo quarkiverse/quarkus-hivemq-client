@@ -88,3 +88,4 @@ Timeout to declare the MQTT Client not alive.
 --|int
 |`120000`
 | INCOMING_AND_OUTGOING
+|===
