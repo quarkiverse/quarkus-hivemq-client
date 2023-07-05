@@ -16,6 +16,11 @@
     <module>runtime</module>
     <module>kitchensink</module>
   </modules>
+  <scm>
+    <connection>scm:git:git@github.com:quarkiverse/quarkus-hivemq-client.git</connection>
+    <developerConnection>scm:git:git@github.com:quarkiverse/quarkus-hivemq-client.git</developerConnection>
+    <url>https://github.com/quarkiverse/quarkus-hivemq-client</url>
+  </scm>
   <properties>
     <compiler-plugin.version>3.10.1</compiler-plugin.version>
     <maven.compiler.parameters>true</maven.compiler.parameters>
