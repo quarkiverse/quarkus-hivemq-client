@@ -11,7 +11,7 @@ This adds some benefits to the original SmallRye MQTT:
 * Management of external CA file for secure connections with self-signed certificates
 * Backpressure support integrated with MQTT QOS
 * Automatic and configurable reconnection handling and message redelivery
-* Real Health Check againsts a configurable topic (defaults to the standard MQTT $SYS/broker/uptime) integrated in Quarkus HealthReport
+* Real Health Check against a configurable topic (defaults to the standard MQTT $SYS/broker/uptime) integrated in Quarkus HealthReport
 * Many others you can read in official documentation https://hivemq.github.io/hivemq-mqtt-client/[here].
 
 == Installation
@@ -31,10 +31,10 @@ If you also want to use SmallRye Reactive Messaging integration in your `pom.xml
 
 [source,xml]
 ----
-    <dependency>
-      <groupId>io.quarkus</groupId>
-      <artifactId>quarkus-smallrye-reactive-messaging-mqtt</artifactId>
-    </dependency>
+<dependency>
+    <groupId>io.quarkus</groupId>
+    <artifactId>quarkus-smallrye-reactive-messaging-mqtt</artifactId>
+</dependency>
 ----
 
 
@@ -45,14 +45,14 @@ These are the configurations added to the original *SmallRye's MQTT Connector* o
 
 [source,xml]
 ----
-    <dependency>
-        <groupId>io.quarkiverse.hivemqclient</groupId>
-        <artifactId>quarkus-hivemq-client</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>io.quarkus</groupId>
-      <artifactId>quarkus-smallrye-reactive-messaging-mqtt</artifactId>
-    </dependency>
+<dependency>
+    <groupId>io.quarkiverse.hivemqclient</groupId>
+    <artifactId>quarkus-hivemq-client</artifactId>
+</dependency>
+<dependency>
+    <groupId>io.quarkus</groupId>
+    <artifactId>quarkus-smallrye-reactive-messaging-mqtt</artifactId>
+</dependency>
 ----
 
 
