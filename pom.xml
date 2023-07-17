@@ -30,7 +30,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <quarkus.version>2.16.2.Final</quarkus.version>
-    <smallrye-reactive-messaging-mqtt.version>4.7.0</smallrye-reactive-messaging-mqtt.version>
+    <smallrye-reactive-messaging-mqtt.version>4.8.0</smallrye-reactive-messaging-mqtt.version>
   </properties>
   <dependencyManagement>
     <dependencies>
