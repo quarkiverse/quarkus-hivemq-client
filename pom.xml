@@ -29,8 +29,8 @@
     <maven.compiler.target>11</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <smallrye-reactive-messaging-mqtt.version>4.9.0</smallrye-reactive-messaging-mqtt.version>
     <quarkus.version>2.16.10.Final</quarkus.version>
-    <smallrye-reactive-messaging-mqtt.version>4.7.0</smallrye-reactive-messaging-mqtt.version>
     <failsafe-plugin.version>2.22.2</failsafe-plugin.version>
   </properties>
   <dependencyManagement>
