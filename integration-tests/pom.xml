@@ -6,47 +6,19 @@
     <artifactId>quarkus-hivemq-client-parent</artifactId>
     <version>1.0.1-SNAPSHOT</version>
   </parent>
+
   <artifactId>quarkus-hivemq-client-integration-tests</artifactId>
-  <name>Quarkus - HiveMQ Client - Integration Tests</name>
-  <dependencies>
-    <dependency>
-      <groupId>io.quarkus</groupId>
-      <artifactId>quarkus-resteasy</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>io.quarkiverse.hivemqclient</groupId>
-      <artifactId>quarkus-hivemq-client</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>io.quarkus</groupId>
-      <artifactId>quarkus-junit5</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>io.rest-assured</groupId>
-      <artifactId>rest-assured</artifactId>
-      <scope>test</scope>
-    </dependency>
-  </dependencies>
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>io.quarkus</groupId>
-        <artifactId>quarkus-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <goals>
-              <goal>build</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-  </build>
+  <packaging>pom</packaging>
+  <name>Quarkus - Hivemq Client - Integration Tests</name>
+
+  <modules>
+    <module>hivemq-client-smallrye</module>
+    <module>kitchensink</module>
+  </modules>
+
   <profiles>
     <profile>
-      <id>native-image</id>
+      <id>native</id>
       <activation>
         <property>
           <name>native</name>
@@ -55,13 +27,9 @@
       <build>
         <plugins>
           <plugin>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <configuration>
-              <skipTests>${native.surefire.skip}</skipTests>
-            </configuration>
-          </plugin>
-          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-failsafe-plugin</artifactId>
+            <version>${failsafe-plugin.version}</version>
             <executions>
               <execution>
                 <goals>
@@ -72,8 +40,13 @@
                   <systemPropertyVariables>
                     <native.image.path>${project.build.directory}/${project.build.finalName}-runner</native.image.path>
                     <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
-                    <maven.home>${maven.home}</maven.home>
+                    <quarkus.package.type>${quarkus.package.type}</quarkus.package.type>
+                    <quarkus.native.container-build>${quarkus.native.container-build}</quarkus.native.container-build>
+                    <quarkus.native.native-image-xmx>${quarkus.native.native-image-xmx}</quarkus.native.native-image-xmx>
                   </systemPropertyVariables>
+                  <includes>
+                    <include>${include.tests}</include>
+                  </includes>
                 </configuration>
               </execution>
             </executions>
@@ -81,7 +54,11 @@
         </plugins>
       </build>
       <properties>
+        <profile.id>native</profile.id>
         <quarkus.package.type>native</quarkus.package.type>
+        <quarkus.native.container-build>true</quarkus.native.container-build>
+        <quarkus.native.native-image-xmx>4g</quarkus.native.native-image-xmx>
+        <include.tests>**/*Native*IT.java</include.tests>
       </properties>
     </profile>
   </profiles>
