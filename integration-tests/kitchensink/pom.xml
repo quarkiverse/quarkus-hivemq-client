@@ -7,36 +7,13 @@
     <version>1.0.1-SNAPSHOT</version>
   </parent>
   <artifactId>quarkus-hivemq-client-kitchensink</artifactId>
-  <name>Quarkus - HiveMQ Client - Kitchen Sink</name>
-  <properties>
-    <compiler-plugin.version>3.8.1</compiler-plugin.version>
-    <maven.compiler.parameters>true</maven.compiler.parameters>
-    <maven.compiler.release>11</maven.compiler.release>
-    <maven.compiler.source>11</maven.compiler.source>
-    <maven.compiler.target>11</maven.compiler.target>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <quarkus-plugin.version>2.16.1.Final</quarkus-plugin.version>
-    <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
-    <quarkus.platform.group-id>io.quarkus</quarkus.platform.group-id>
-    <quarkus.platform.version>2.16.1.Final</quarkus.platform.version>
-    <surefire-plugin.version>3.1.2</surefire-plugin.version>
-    <lombok.version>1.18.30</lombok.version>
-  </properties>
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
-        <groupId>${quarkus.platform.group-id}</groupId>
-        <artifactId>${quarkus.platform.artifact-id}</artifactId>
-        <version>${quarkus.platform.version}</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
+  <name>Quarkus - HiveMQ Client - Integration Tests Kitchen Sink</name>
+<properties>
+  <surefire-plugin.version>3.1.2</surefire-plugin.version>
+  <lombok.version>1.18.30</lombok.version>
+</properties>
   <dependencies>
-
-    <dependency><!-- Lombok deve essere in cima alle dipendenze perchè il suo generatore deve essere processato per primo -->
+    <dependency><!-- Lombok must be at the top of the dependencies because its generator must be processed first -->
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
       <version>${lombok.version}</version>
@@ -46,7 +23,7 @@
     <dependency>
       <groupId>io.quarkiverse.hivemqclient</groupId>
       <artifactId>quarkus-hivemq-client</artifactId>
-      <version>1.0.1-SNAPSHOT</version>
+      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>io.quarkus</groupId>
@@ -76,7 +53,7 @@
       <plugin>
         <groupId>io.quarkus</groupId>
         <artifactId>quarkus-maven-plugin</artifactId>
-        <version>${quarkus-plugin.version}</version>
+        <version>${quarkus.version}</version>
         <extensions>true</extensions>
         <executions>
           <execution>
