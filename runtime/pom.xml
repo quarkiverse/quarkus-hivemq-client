@@ -10,7 +10,7 @@
   <name>Quarkus - HiveMQ Client - Runtime</name>
   <properties>
     <microprofile-reactive-streams.version>3.0</microprofile-reactive-streams.version>
-    <mutiny.version>1.9.0</mutiny.version>
+    <mutiny.version>1.10.0</mutiny.version>
   </properties>
   <dependencies>
     <dependency>
