@@ -14,7 +14,17 @@
         "code",
         "maintenance"
       ]
-    }
+    },
+    {
+          "login": "pjgg",
+          "name": "pjgg",
+          "avatar_url": "https://avatars.githubusercontent.com/u/3541131?v=4",
+          "profile": "https://github.com/pjgg",
+          "contributions": [
+            "code",
+            "maintenance"
+          ]
+        }
   ],
   "contributorsPerLine": 7,
   "projectName": "quarkus-hivemq-client",

@@ -5,9 +5,15 @@
 
 version: 2
 updates:
+  # Maintain dependencies for Maven
   - package-ecosystem: "maven"
     directory: "/"
     schedule:
       interval: "daily"
     ignore:
       - dependency-name: "org.apache.maven.plugins:maven-compiler-plugin"
+  # Maintain dependencies for GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "daily"

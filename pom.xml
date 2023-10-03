@@ -14,7 +14,7 @@
   <modules>
     <module>deployment</module>
     <module>runtime</module>
-    <module>kitchensink</module>
+    <module>integration-tests</module>
   </modules>
   <scm>
     <connection>scm:git:git@github.com:quarkiverse/quarkus-hivemq-client.git</connection>
@@ -31,6 +31,7 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <quarkus.version>2.16.2.Final</quarkus.version>
     <smallrye-reactive-messaging-mqtt.version>4.9.0</smallrye-reactive-messaging-mqtt.version>
+    <failsafe-plugin.version>2.22.2</failsafe-plugin.version>
   </properties>
   <dependencyManagement>
     <dependencies>
