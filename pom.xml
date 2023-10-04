@@ -31,7 +31,7 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <smallrye-reactive-messaging-mqtt.version>4.10.1</smallrye-reactive-messaging-mqtt.version>
     <quarkus.version>2.16.10.Final</quarkus.version>
-    <failsafe-plugin.version>2.22.2</failsafe-plugin.version>
+    <failsafe-plugin.version>3.1.2</failsafe-plugin.version>
   </properties>
   <dependencyManagement>
     <dependencies>
