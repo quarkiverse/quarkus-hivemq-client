@@ -1,6 +1,6 @@
 # Quarkus - Hivemq Client
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-5-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ## Introduction
@@ -31,6 +31,9 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <table>
   <tr>
     <td align="center"><a href="https://github.com/masini"><img src="https://avatars.githubusercontent.com/u/2060870?v=4?s=100" width="100px;" alt=""/><br /><sub><b>masini</b></sub></a><br /><a href="https://github.com/quarkiverse/quarkus-hivemq-client/commits?author=masini" title="Code">💻</a> <a href="#maintenance-masini" title="Maintenance">🚧</a></td>
+  </tr>
+  <tr>
+    <td align="center"><a href="https://github.com/pjgg"><img src="https://avatars.githubusercontent.com/u/3541131?v=4" width="100px;" alt=""/><br /><sub><b>pjgg</b></sub></a><br /><a href="https://github.com/quarkiverse/quarkus-hivemq-client/commits?author=pjgg" title="Code">💻</a> <a href="#maintenance-pjgg" title="Maintenance">🚧</a></td>
   </tr>
 </table>
 

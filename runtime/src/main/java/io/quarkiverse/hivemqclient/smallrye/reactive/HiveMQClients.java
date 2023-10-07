@@ -16,8 +16,6 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-import javax.net.ssl.TrustManagerFactory;
-
 import com.hivemq.client.mqtt.MqttClientSslConfigBuilder;
 import com.hivemq.client.mqtt.mqtt3.Mqtt3BlockingClient;
 import com.hivemq.client.mqtt.mqtt3.Mqtt3Client;
@@ -28,6 +26,8 @@ import com.hivemq.client.mqtt.mqtt3.message.connect.connack.Mqtt3ConnAck;
 import io.smallrye.mutiny.Uni;
 import io.smallrye.mutiny.converters.uni.UniRxConverters;
 import io.smallrye.reactive.messaging.health.HealthReport;
+
+import javax.net.ssl.TrustManagerFactory;
 
 public class HiveMQClients {
 
