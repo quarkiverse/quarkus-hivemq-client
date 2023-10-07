@@ -1,15 +1,11 @@
 package io.quarkiverse.hivemqclient.smallrye.reactive;
 
-import static io.smallrye.reactive.messaging.annotations.ConnectorAttribute.Direction.*;
+import static io.smallrye.reactive.messaging.annotations.ConnectorAttribute.Direction.INCOMING;
+import static io.smallrye.reactive.messaging.annotations.ConnectorAttribute.Direction.INCOMING_AND_OUTGOING;
+import static io.smallrye.reactive.messaging.annotations.ConnectorAttribute.Direction.OUTGOING;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
-
-import javax.annotation.PostConstruct;
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.context.Destroyed;
-import javax.enterprise.event.Observes;
-import javax.inject.Inject;
 
 import org.eclipse.microprofile.config.Config;
 import org.eclipse.microprofile.reactive.messaging.Message;
@@ -24,6 +20,12 @@ import io.smallrye.reactive.messaging.health.HealthReport;
 import io.smallrye.reactive.messaging.health.HealthReporter;
 import io.smallrye.reactive.messaging.providers.connectors.ExecutionHolder;
 import io.vertx.mutiny.core.Vertx;
+
+import javax.annotation.PostConstruct;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.Destroyed;
+import javax.enterprise.event.Observes;
+import javax.inject.Inject;
 
 @ApplicationScoped
 @Connector(HiveMQMqttConnector.CONNECTOR_NAME)
