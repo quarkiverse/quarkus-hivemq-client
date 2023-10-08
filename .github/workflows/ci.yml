@@ -74,33 +74,33 @@ jobs:
       run: tar -xzf maven-repo.tgz -C ~
     - name: Build with Maven
       run: mvn -V -B -am clean verify
-#  TODO there is an error under investigation on Native mode
-#  linux-build-native:
-#    name: PR - Linux - Native build - Latest Version
-#    runs-on: ubuntu-latest
-#    timeout-minutes: 60
-#    needs: validate-format
-#    strategy:
-#      matrix:
-#        java: [ 11 ]
-#    steps:
-#    - uses: actions/checkout@v4
-#    - name: Install JDK {{ matrix.java }}
-#      # Uses sha for added security since tags can be updated
-#      uses: actions/setup-java@v3
-#      with:
-#        distribution: 'temurin'
-#        java-version: ${{ matrix.java }}
-#        check-latest: true
-#        cache: 'maven'
-#    - name: Download Maven Repo
-#      uses: actions/download-artifact@v3
-#      with:
-#        name: maven-repo
-#        path: .
-#    - name: Extract Maven Repo
-#      shell: bash
-#      run: tar -xzf maven-repo.tgz -C ~
-#    - name: Build with Maven
-#      run: mvn -V -B -am clean verify -Dnative
+  linux-build-native:
+    name: PR - Linux - Native build - Latest Version
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    needs: validate-format
+    strategy:
+      matrix:
+        java: [ 11, 17 ]
+        image: [ "ubi-quarkus-native-image:22.3-java17", "ubi-quarkus-mandrel:22.3-java17", "ubi-quarkus-graalvmce-builder-image:22.3-java17" ]
+    steps:
+    - uses: actions/checkout@v4
+    - name: Install JDK {{ matrix.java }}
+      # Uses sha for added security since tags can be updated
+      uses: actions/setup-java@v3
+      with:
+        distribution: 'temurin'
+        java-version: ${{ matrix.java }}
+        check-latest: true
+        cache: 'maven'
+    - name: Download Maven Repo
+      uses: actions/download-artifact@v3
+      with:
+        name: maven-repo
+        path: .
+    - name: Extract Maven Repo
+      shell: bash
+      run: tar -xzf maven-repo.tgz -C ~
+    - name: Build with Maven
+      run: mvn -V -B -am clean verify -Dnative -Dquarkus.native.builder-image=quay.io/quarkus/${{ matrix.image }}
 

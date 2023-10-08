@@ -29,15 +29,14 @@
     <maven.compiler.target>11</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <smallrye-reactive-messaging-mqtt.version>4.10.1</smallrye-reactive-messaging-mqtt.version>
-    <microprofile-reactive-streams.version>3.0</microprofile-reactive-streams.version>
-    <microprofile-metrics-api.version>5.0.1</microprofile-metrics-api.version>
+    <smallrye-reactive-messaging-mqtt.version>3.22.1</smallrye-reactive-messaging-mqtt.version>
+    <microprofile-reactive-streams.version>1.0.1</microprofile-reactive-streams.version>
+    <microprofile-metrics-api.version>3.0.1</microprofile-metrics-api.version>
     <impsort-maven-plugin.version>1.9.0</impsort-maven-plugin.version>
     <formatter-maven-plugin.version>2.23.0</formatter-maven-plugin.version>
     <maven-checkstyle-plugin.version>3.3.0</maven-checkstyle-plugin.version>
     <src.format.goal>format</src.format.goal>
     <src.sort.goal>sort</src.sort.goal>
-    <mutiny-rxjava.version>1.9.0</mutiny-rxjava.version>
     <hivemq.client.version>1.3.3</hivemq.client.version>
     <checkstyle.version>10.12.4</checkstyle.version>
     <quarkus.version>2.16.10.Final</quarkus.version>
@@ -137,6 +136,12 @@
     </plugins>
   </build>
   <profiles>
+    <profile>
+      <id>native</id>
+      <properties>
+        <quarkus.package.type>native</quarkus.package.type>
+      </properties>
+    </profile>
     <profile>
       <id>it</id>
       <activation>
