@@ -32,7 +32,7 @@
     <smallrye-reactive-messaging-mqtt.version>4.10.1</smallrye-reactive-messaging-mqtt.version>
     <microprofile-reactive-streams.version>3.0</microprofile-reactive-streams.version>
     <microprofile-metrics-api.version>5.0.1</microprofile-metrics-api.version>
-    <impsort-maven-plugin.version>1.8.0</impsort-maven-plugin.version>
+    <impsort-maven-plugin.version>1.9.0</impsort-maven-plugin.version>
     <formatter-maven-plugin.version>2.21.0</formatter-maven-plugin.version>
     <maven-checkstyle-plugin.version>3.2.1</maven-checkstyle-plugin.version>
     <src.format.goal>format</src.format.goal>
