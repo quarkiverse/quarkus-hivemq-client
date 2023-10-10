@@ -33,7 +33,7 @@
     <microprofile-reactive-streams.version>3.0</microprofile-reactive-streams.version>
     <microprofile-metrics-api.version>5.0.1</microprofile-metrics-api.version>
     <impsort-maven-plugin.version>1.9.0</impsort-maven-plugin.version>
-    <formatter-maven-plugin.version>2.21.0</formatter-maven-plugin.version>
+    <formatter-maven-plugin.version>2.23.0</formatter-maven-plugin.version>
     <maven-checkstyle-plugin.version>3.3.0</maven-checkstyle-plugin.version>
     <src.format.goal>format</src.format.goal>
     <src.sort.goal>sort</src.sort.goal>
