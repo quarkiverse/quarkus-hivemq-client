@@ -12,6 +12,7 @@
 
 # Package Files #
 *.jar
+!/**/hivemq-file-rbac-extension-4.5.3.jar
 *.war
 *.nar
 *.ear
