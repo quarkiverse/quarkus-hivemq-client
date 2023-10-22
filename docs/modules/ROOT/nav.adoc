@@ -1,1 +1,4 @@
-* xref:index.adoc[Quarkus - Hivemq Client]
+* xref:index.adoc[Quarkus - Hivemq Client Overview]
+* xref:index.adoc[Matrix compatibility]
+* xref:index.adoc[Receiving messages from MQTT]
+* xref:index.adoc[Configuration Reference]
