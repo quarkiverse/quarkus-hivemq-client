@@ -13,10 +13,24 @@ public class HivemqProfiles {
         }
     }
 
-    public static class BasicAuth implements QuarkusTestProfile {
+    public static class RbacAuth implements QuarkusTestProfile {
         @Override
         public List<TestResourceEntry> testResources() {
             return Collections.singletonList(new TestResourceEntry(RbacAuthResources.class));
+        }
+    }
+
+    public static class TlsAuth implements QuarkusTestProfile {
+        @Override
+        public List<TestResourceEntry> testResources() {
+            return Collections.singletonList(new TestResourceEntry(TlsAuthResources.class));
+        }
+    }
+
+    public static class MtlsAuth implements QuarkusTestProfile {
+        @Override
+        public List<TestResourceEntry> testResources() {
+            return Collections.singletonList(new TestResourceEntry(MtlsAuthResources.class));
         }
     }
 }
