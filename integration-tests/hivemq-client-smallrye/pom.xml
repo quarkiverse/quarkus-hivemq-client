@@ -11,9 +11,9 @@
     <name>Quarkus - Hivemq Client - Integration Tests smallrye</name>
 
     <properties>
+        <surefire-plugin.version>3.2.2</surefire-plugin.version>
         <hive.testcontainers.version>1.19.2</hive.testcontainers.version>
-        <exclude.quarkus.native.tests>**/*Native*IT.java</exclude.quarkus.native.tests>
-        <include.tests>**/*Test.java</include.tests>
+        <include.tests>**/*IT.java</include.tests>
     </properties>
 
     <dependencies>
@@ -21,10 +21,12 @@
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-resteasy-reactive</artifactId>
         </dependency>
+
         <dependency>
             <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-smallrye-reactive-messaging-mqtt</artifactId>
+            <artifactId>quarkus-smallrye-reactive-messaging</artifactId>
         </dependency>
+
         <dependency>
             <groupId>io.quarkiverse.hivemqclient</groupId>
             <artifactId>quarkus-hivemq-client</artifactId>
@@ -70,6 +72,17 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${surefire-plugin.version}</version>
+                <configuration>
+                    <systemPropertyVariables>
+                        <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
+                        <maven.home>${maven.home}</maven.home>
+                    </systemPropertyVariables>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <version>${failsafe-plugin.version}</version>
                 <executions>
@@ -79,9 +92,6 @@
                             <goal>verify</goal>
                         </goals>
                         <configuration>
-                            <excludes>
-                                <exclude>${exclude.quarkus.native.tests}</exclude>
-                            </excludes>
                             <includes>
                                 <include>${include.tests}</include>
                             </includes>
