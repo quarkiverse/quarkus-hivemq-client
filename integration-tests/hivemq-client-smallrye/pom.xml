@@ -11,7 +11,7 @@
     <name>Quarkus - Hivemq Client - Integration Tests smallrye</name>
 
     <properties>
-        <hive.testcontainers.version>1.19.1</hive.testcontainers.version>
+        <hive.testcontainers.version>1.19.2</hive.testcontainers.version>
         <exclude.quarkus.native.tests>**/*Native*IT.java</exclude.quarkus.native.tests>
         <include.tests>**/*Test.java</include.tests>
     </properties>
