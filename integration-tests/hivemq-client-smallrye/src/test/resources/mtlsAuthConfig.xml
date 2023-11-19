@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<hivemq>
+<listeners>
+    <tls-tcp-listener>
+        <port>1883</port>
+        <bind-address>0.0.0.0</bind-address>
+        <proxy-protocol>true</proxy-protocol>
+        <tls>
+            <keystore>
+                <path>/opt/hivemq/conf/hivemq.jks</path>
+                <password>changeme</password>
+                <private-key-password>changeme</private-key-password>
+            </keystore>
+            <server-certificate-truststore>
+                <path>/opt/hivemq/conf/hivemq.jks</path>
+                <password>changeme</password>
+            </server-certificate-truststore>
+            <client-authentication-mode>REQUIRED</client-authentication-mode>
+            <server-certificate-truststore>
+                <path>/opt/hivemq/conf/hivemq.jks</path>
+                <password>changeme</password>
+            </server-certificate-truststore>
+            <truststore>
+                <path>/opt/hivemq/conf/hivemq-trust-store.jks</path>
+                <password>changeme</password>
+            </truststore>
+        </tls>
+    </tls-tcp-listener>
+    <tls-websocket-listener>
+        <port>8000</port>
+        <bind-address>0.0.0.0</bind-address>
+        <name>my-secure-websocket-listener</name>
+        <path>/mqtt</path>
+        <subprotocols>
+            <subprotocol>mqttv3.1</subprotocol>
+            <subprotocol>mqtt</subprotocol>
+        </subprotocols>
+        <allow-extensions>true</allow-extensions>
+        <tls>
+            <keystore>
+                <path>/opt/hivemq/conf/hivemq.jks</path>
+                <password>changeme</password>
+                <private-key-password>changeme</private-key-password>
+            </keystore>
+            <client-authentication-mode>REQUIRED</client-authentication-mode>
+            <server-certificate-truststore>
+                <path>/opt/hivemq/conf/hivemq.jks</path>
+                <password>changeme</password>
+            </server-certificate-truststore>
+            <truststore>
+                <path>/opt/hivemq/conf/hivemq-trust-store.jks</path>
+                <password>changeme</password>
+            </truststore>
+        </tls>
+    </tls-websocket-listener>
+</listeners>
+</hivemq>

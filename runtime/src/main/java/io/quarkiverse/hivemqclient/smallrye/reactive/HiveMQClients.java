@@ -3,15 +3,7 @@ package io.quarkiverse.hivemqclient.smallrye.reactive;
 import static io.smallrye.reactive.messaging.mqtt.i18n.MqttLogging.log;
 import static java.lang.String.format;
 
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.security.KeyStore;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.cert.Certificate;
-import java.security.cert.CertificateException;
-import java.security.cert.CertificateFactory;
+import java.io.File;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -23,10 +15,13 @@ import com.hivemq.client.mqtt.mqtt3.Mqtt3ClientBuilder;
 import com.hivemq.client.mqtt.mqtt3.Mqtt3RxClient;
 import com.hivemq.client.mqtt.mqtt3.message.connect.connack.Mqtt3ConnAck;
 
+import io.quarkiverse.hivemqclient.ssl.IgnoreHostnameVerifier;
+import io.quarkiverse.hivemqclient.ssl.KeyStoreUtil;
 import io.smallrye.mutiny.Uni;
 import io.smallrye.mutiny.converters.uni.UniRxConverters;
 import io.smallrye.reactive.messaging.health.HealthReport;
 
+import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.TrustManagerFactory;
 
 public class HiveMQClients {
@@ -68,20 +63,9 @@ public class HiveMQClients {
         }
         options.getClientId().ifPresent(clientid -> builder.identifier(clientid));
 
-        options.getUsername().ifPresent(username -> {
-            builder.simpleAuth()
-                    .username(username)
-                    .password(options.getPassword().orElseThrow(
-                            () -> new IllegalArgumentException("password null with authentication enabled (username not null)"))
-                            .getBytes())
-                    .applySimpleAuth();
-        });
-
+        options.getUsername().ifPresent(username -> setupBasicAuth(options, username, builder));
         if (options.getSsl()) {
-            final MqttClientSslConfigBuilder.Nested<? extends Mqtt3ClientBuilder> nested = builder.sslConfig();
-            options.getCaCartFile()
-                    .ifPresent(file -> nested.trustManagerFactory(createSelfSignedTrustManagerFactory(file)));
-            nested.applySslConfig();
+            setupSslConfig(options, builder);
         }
 
         return builder
@@ -90,6 +74,52 @@ public class HiveMQClients {
                     log.info(format("connected to %s:%d", context.getClientConfig().getServerHost(),
                             context.getClientConfig().getServerPort()));
                 }).buildRx();
+    }
+
+    private static void setupBasicAuth(HiveMQMqttConnectorCommonConfiguration options, String username,
+            Mqtt3ClientBuilder builder) {
+        builder.simpleAuth()
+                .username(username)
+                .password(options.getPassword().orElseThrow(
+                        () -> new IllegalArgumentException("password null with authentication enabled (username not null)"))
+                        .getBytes())
+                .applySimpleAuth();
+    }
+
+    private static void setupSslConfig(HiveMQMqttConnectorCommonConfiguration options, Mqtt3ClientBuilder builder) {
+        final MqttClientSslConfigBuilder.Nested<? extends Mqtt3ClientBuilder> nested = builder.sslConfig();
+
+        String truststoreLocation = options.getSslTruststoreLocation()
+                .orElseThrow(() -> new RuntimeException("Missing required 'ssl.truststore.location' property"));
+        String truststorePassword = options.getSslTruststorePassword()
+                .orElseThrow(() -> new RuntimeException("Missing required 'ssl.truststore.password' property"));
+        final TrustManagerFactory trustManagerFactory = KeyStoreUtil.trustManagerFromKeystore(new File(truststoreLocation),
+                truststorePassword, options.getSslTruststoreType());
+
+        nested.trustManagerFactory(trustManagerFactory);
+
+        // you must provide a keystore if you are running mTls
+        setupMtlsConfig(options, nested);
+
+        if (!options.getSslHostVerifier()) {
+            nested.hostnameVerifier(new IgnoreHostnameVerifier());
+        }
+
+        nested.applySslConfig();
+    }
+
+    private static void setupMtlsConfig(HiveMQMqttConnectorCommonConfiguration options,
+            MqttClientSslConfigBuilder.Nested<? extends Mqtt3ClientBuilder> nested) {
+        if (options.getSslKeystoreLocation().isPresent() || options.getSslKeystorePassword().isPresent()) {
+            String keystoreLocation = options.getSslKeystoreLocation()
+                    .orElseThrow(() -> new RuntimeException("Missing required 'ssl.keystore.location' property"));
+            String keystorePassword = options.getSslKeystorePassword()
+                    .orElseThrow(() -> new RuntimeException("Missing required 'ssl.keystore.password' property"));
+            final KeyManagerFactory keyManagerFactory = KeyStoreUtil.keyManagerFromKeystore(new File(keystoreLocation),
+                    keystorePassword, keystorePassword, options.getSslKeystoreType());
+
+            nested.keyManagerFactory(keyManagerFactory);
+        }
     }
 
     /**
@@ -166,38 +196,6 @@ public class HiveMQClients {
             if (mqtt3BlockingClient.getState().isConnected()) {
                 mqtt3BlockingClient.disconnect();
             }
-        }
-    }
-
-    public static TrustManagerFactory createSelfSignedTrustManagerFactory(String selfSignedTrustManager) {
-        try {
-            // Add support for self-signed (local) SSL certificates
-            // Based on http://developer.android.com/training/articles/security-ssl.html#UnknownCa
-
-            // Load CAs from an InputStream
-            // (could be from a resource or ByteArrayInputStream or ...)
-            CertificateFactory cf = CertificateFactory.getInstance("X.509");
-            // From https://www.washington.edu/itconnect/security/ca/load-der.crt
-            InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream(selfSignedTrustManager);
-            Certificate ca;
-            try (InputStream caInput = new BufferedInputStream(is)) {
-                ca = cf.generateCertificate(caInput);
-            }
-
-            // Create a KeyStore containing our trusted CAs
-            String keyStoreType = KeyStore.getDefaultType();
-            KeyStore keyStore = KeyStore.getInstance(keyStoreType);
-            keyStore.load(null, null);
-            keyStore.setCertificateEntry("ca", ca);
-
-            // Create a TrustManager that trusts the CAs in our KeyStore
-            String tmfAlgorithm = TrustManagerFactory.getDefaultAlgorithm();
-            TrustManagerFactory tmf = TrustManagerFactory.getInstance(tmfAlgorithm);
-            tmf.init(keyStore);
-
-            return tmf;
-        } catch (CertificateException | IOException | KeyStoreException | NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
         }
     }
 }

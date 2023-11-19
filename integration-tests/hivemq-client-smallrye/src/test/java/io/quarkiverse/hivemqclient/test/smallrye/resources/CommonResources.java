@@ -5,13 +5,16 @@ import static org.testcontainers.utility.DockerImageName.parse;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.slf4j.event.Level;
 import org.testcontainers.hivemq.HiveMQContainer;
 
 import io.quarkus.test.common.QuarkusTestResourceLifecycleManager;
 
 public class CommonResources implements QuarkusTestResourceLifecycleManager {
 
-    protected final static HiveMQContainer hivemqContainer = new HiveMQContainer(parse("hivemq/hivemq-ce"));
+    private final static Level LOG_LEVEL = Level.DEBUG;
+    protected final static HiveMQContainer hivemqContainer = new HiveMQContainer(parse("hivemq/hivemq-ce"))
+            .withLogLevel(LOG_LEVEL);
 
     @Override
     public Map<String, String> start() {
