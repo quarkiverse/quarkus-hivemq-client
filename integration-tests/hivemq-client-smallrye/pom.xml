@@ -12,7 +12,7 @@
 
     <properties>
         <surefire-plugin.version>3.2.2</surefire-plugin.version>
-        <hive.testcontainers.version>1.19.2</hive.testcontainers.version>
+        <hive.testcontainers.version>1.19.3</hive.testcontainers.version>
         <include.tests>**/*IT.java</include.tests>
     </properties>
 
