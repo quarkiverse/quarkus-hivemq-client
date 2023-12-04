@@ -10,7 +10,7 @@ on:
 env:
   ECOSYSTEM_CI_REPO: quarkusio/quarkus-ecosystem-ci
   ECOSYSTEM_CI_REPO_FILE: context.yaml
-  JAVA_VERSION: 17
+  JAVA_VERSION: 11 # move to Java 17 on Quarkus 3.x branch
 
   #########################
   # Repo specific setting #
