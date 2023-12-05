@@ -31,7 +31,9 @@ jobs:
 
       - uses: actions/setup-java@v4
         with:
+          distribution: 'temurin'
           java-version: 11
+          check-latest: true
 
       - name: Cache local Maven repository
         uses: actions/cache@v3
