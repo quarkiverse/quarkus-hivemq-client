@@ -18,8 +18,9 @@ import com.hivemq.client.mqtt.mqtt3.message.connect.connack.Mqtt3ConnAck;
 import io.quarkiverse.hivemqclient.ssl.IgnoreHostnameVerifier;
 import io.quarkiverse.hivemqclient.ssl.KeyStoreUtil;
 import io.smallrye.mutiny.Uni;
-import io.smallrye.mutiny.converters.uni.UniRxConverters;
+import io.smallrye.mutiny.operators.multi.processors.BroadcastProcessor;
 import io.smallrye.reactive.messaging.health.HealthReport;
+import io.vertx.mutiny.mqtt.messages.MqttPublishMessage;
 
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.TrustManagerFactory;
@@ -48,7 +49,6 @@ public class HiveMQClients {
         String clientId = options.getClientId().orElse("");
 
         String id = host + ":" + port + "<" + server + ">-[" + clientId + "]";
-
         return clients.computeIfAbsent(id, key -> new ClientHolder(options));
     }
 
@@ -147,10 +147,12 @@ public class HiveMQClients {
         private final Boolean checkTopicEnabled;
 
         private long lastMqttUpdate = 0;
+        private final BroadcastProcessor<MqttPublishMessage> messages;
 
         public ClientHolder(HiveMQMqttConnectorCommonConfiguration options) {
             client = create(options);
 
+            messages = BroadcastProcessor.create();
             livenessTimeout = options.getLivenessTimeout();
             readinessTimeout = options.getReadinessTimeout();
             checkTopicEnabled = options.getCheckTopicEnabled();
@@ -165,8 +167,8 @@ public class HiveMQClients {
                         .send();
             }
 
-            connection = Uni.createFrom().converter(UniRxConverters.fromSingle(), client.connect()).memoize()
-                    .indefinitely();
+            connection = Uni.createFrom().future(client.connect().toFuture());
+            connection.subscribe().with(c -> log.info(c.getReturnCode()));
 
         }
 

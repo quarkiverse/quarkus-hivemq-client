@@ -3,12 +3,12 @@ package io.quarkiverse.hivemqclient.test.smallrye;
 import java.time.Duration;
 import java.util.Random;
 
+import jakarta.enterprise.context.ApplicationScoped;
+
 import org.eclipse.microprofile.reactive.messaging.Outgoing;
 import org.jboss.logging.Logger;
 
 import io.smallrye.mutiny.Multi;
-
-import javax.enterprise.context.ApplicationScoped;
 
 /**
  * A bean producing random prices every second.
