@@ -30,7 +30,7 @@
     <maven.compiler.target>17</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <smallrye-reactive-messaging-mqtt.version>3.22.1</smallrye-reactive-messaging-mqtt.version>
+    <smallrye-reactive-messaging-mqtt.version>4.13.0</smallrye-reactive-messaging-mqtt.version>
     <microprofile-reactive-streams.version>1.0.1</microprofile-reactive-streams.version>
     <microprofile-metrics-api.version>3.0.1</microprofile-metrics-api.version>
     <impsort-maven-plugin.version>1.9.0</impsort-maven-plugin.version>
