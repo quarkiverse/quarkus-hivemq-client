@@ -1,12 +1,12 @@
 package io.quarkiverse.hivemqclient.test.smallrye;
 
+import jakarta.enterprise.context.ApplicationScoped;
+
 import org.eclipse.microprofile.reactive.messaging.Incoming;
 import org.eclipse.microprofile.reactive.messaging.Outgoing;
 import org.jboss.logging.Logger;
 
 import io.smallrye.reactive.messaging.annotations.Broadcast;
-
-import javax.enterprise.context.ApplicationScoped;
 
 /**
  * A bean consuming data from the "prices" MQTT topic and applying some conversion.

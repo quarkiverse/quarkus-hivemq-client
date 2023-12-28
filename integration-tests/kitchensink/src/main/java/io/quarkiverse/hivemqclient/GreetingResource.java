@@ -1,19 +1,22 @@
 package io.quarkiverse.hivemqclient;
 
+import jakarta.inject.Inject;
+import jakarta.ws.rs.DefaultValue;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.QueryParam;
+import jakarta.ws.rs.core.MediaType;
+
 import org.eclipse.microprofile.reactive.messaging.Channel;
 import org.eclipse.microprofile.reactive.messaging.Emitter;
 import org.eclipse.microprofile.reactive.messaging.Incoming;
 import org.eclipse.microprofile.reactive.messaging.OnOverflow;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import io.smallrye.reactive.messaging.mqtt.MqttMessage;
 
-import javax.inject.Inject;
-import javax.ws.rs.DefaultValue;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.MediaType;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
@@ -21,9 +24,11 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class GreetingResource {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(GreetingResource.class);
+
     @Incoming("incoming-messages")
     public void creaOAggiornaTerminale(byte[] incoming) {
-        log.info("new payload: {}", new String(incoming));
+        LOGGER.info("new payload: {}", new String(incoming));
     }
 
     @Channel("commands")

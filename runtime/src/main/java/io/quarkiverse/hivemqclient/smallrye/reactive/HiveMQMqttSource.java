@@ -3,25 +3,23 @@ package io.quarkiverse.hivemqclient.smallrye.reactive;
 import static io.smallrye.reactive.messaging.mqtt.i18n.MqttExceptions.ex;
 import static io.smallrye.reactive.messaging.mqtt.i18n.MqttLogging.log;
 
+import java.util.concurrent.Flow;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.Pattern;
-
-import org.eclipse.microprofile.reactive.streams.operators.PublisherBuilder;
-import org.eclipse.microprofile.reactive.streams.operators.ReactiveStreams;
 
 import com.hivemq.client.mqtt.datatypes.MqttQos;
 import com.hivemq.client.mqtt.mqtt3.message.publish.Mqtt3Publish;
 
 import io.smallrye.mutiny.Multi;
-import io.smallrye.mutiny.converters.multi.MultiRxConverters;
 import io.smallrye.reactive.messaging.mqtt.MqttFailStop;
 import io.smallrye.reactive.messaging.mqtt.MqttFailureHandler;
 import io.smallrye.reactive.messaging.mqtt.MqttIgnoreFailure;
-import io.smallrye.reactive.messaging.mqtt.MqttMessage;
+
+import mutiny.zero.flow.adapters.AdaptersToFlow;
 
 public class HiveMQMqttSource {
 
-    private final PublisherBuilder<MqttMessage<?>> source;
+    private final Flow.Publisher<HiveMQReceivingMqttMessage> source;
     private final AtomicBoolean subscribed = new AtomicBoolean();
     private final Pattern pattern;
 
@@ -42,20 +40,14 @@ public class HiveMQMqttSource {
 
         HiveMQClients.ClientHolder holder = HiveMQClients.getHolder(config);
 
-        this.source = ReactiveStreams.fromPublisher(
-                holder.connect()
-                        .onItem()
-                        .transformToMulti(client -> Multi.createFrom()
-                                .converter(MultiRxConverters.fromFlowable(), client.subscribePublishesWith()
-                                        .topicFilter(topic).qos(MqttQos.fromCode(qos))
-                                        .applySubscribe().doOnSingle(subAck -> {
-                                            subscribed.set(true);
-                                        }))
-                                //TODO: do we really need this ?
-                                .filter(m -> matches(topic, m))
-                                .onItem()
-                                .transform(x -> new HiveMQReceivingMqttMessage(x,
-                                        onNack)))
+        this.source = holder.connect()
+                .onItem()
+                .transformToMulti(client -> Multi.createFrom()
+                        .publisher(AdaptersToFlow.publisher(client.subscribePublishesWith()
+                                .topicFilter(topic).qos(MqttQos.fromCode(qos))
+                                .applySubscribe().doOnSingle(subAck -> subscribed.set(true))))
+                        .filter(m -> matches(topic, m))
+                        .onItem().transform(x -> new HiveMQReceivingMqttMessage(x, onNack))
                         .stage(multi -> {
                             if (broadcast) {
                                 return multi.broadcast().toAllSubscribers();
@@ -85,7 +77,7 @@ public class HiveMQMqttSource {
         }
     }
 
-    public PublisherBuilder<MqttMessage<?>> getSource() {
+    public Flow.Publisher<HiveMQReceivingMqttMessage> getSource() {
         return source;
     }
 

@@ -5,20 +5,23 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.net.URI;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import jakarta.ws.rs.client.Client;
+import jakarta.ws.rs.client.ClientBuilder;
+import jakarta.ws.rs.client.WebTarget;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.sse.SseEventSource;
 
 import org.jboss.logging.Logger;
 import org.junit.jupiter.api.Test;
 
 import io.quarkus.test.common.http.TestHTTPResource;
 
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.sse.SseEventSource;
-
 public class CommonScenarios {
-
+    private static final int TIMEOUT_SEC = 5;
     private static final Logger LOG = Logger.getLogger(CommonScenarios.class);
 
     @TestHTTPResource("prices/stream")
@@ -35,24 +38,24 @@ public class CommonScenarios {
 
     @Test
     public void shouldGetStreamOfPrices() {
+        AtomicInteger totalAmountReceived = new AtomicInteger(0);
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(pricesUrl);
-
-        AtomicInteger priceCount = new AtomicInteger();
+        CountDownLatch expectedAmount = new CountDownLatch(2);
 
         try (SseEventSource source = SseEventSource.target(target).build()) {
             source.register(event -> {
-                Double value = event.readData(Double.class);
-                LOG.infof("Received price: %f", value);
-                priceCount.incrementAndGet();
+                String value = event.readData(String.class, MediaType.APPLICATION_JSON_TYPE);
+                LOG.infof("Received price: %s", value);
+                totalAmountReceived.incrementAndGet();
             });
             source.open();
-            Thread.sleep(15 * 1000L);
+            expectedAmount.await(TIMEOUT_SEC, TimeUnit.SECONDS);
         } catch (InterruptedException ignored) {
+        } finally {
+            int received = totalAmountReceived.get();
+            assertTrue(received > 1, "Expected more than 2 prices read from the source, got " + received);
         }
-
-        int count = priceCount.get();
-        assertTrue(count > 1, "Expected more than 2 prices read from the source, got " + count);
     }
 
 }

@@ -6,26 +6,25 @@ import static io.smallrye.reactive.messaging.annotations.ConnectorAttribute.Dire
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.Flow;
+
+import jakarta.annotation.PostConstruct;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.Destroyed;
+import jakarta.enterprise.event.Observes;
+import jakarta.inject.Inject;
 
 import org.eclipse.microprofile.config.Config;
 import org.eclipse.microprofile.reactive.messaging.Message;
 import org.eclipse.microprofile.reactive.messaging.spi.Connector;
-import org.eclipse.microprofile.reactive.messaging.spi.IncomingConnectorFactory;
-import org.eclipse.microprofile.reactive.messaging.spi.OutgoingConnectorFactory;
-import org.eclipse.microprofile.reactive.streams.operators.PublisherBuilder;
-import org.eclipse.microprofile.reactive.streams.operators.SubscriberBuilder;
 
 import io.smallrye.reactive.messaging.annotations.ConnectorAttribute;
+import io.smallrye.reactive.messaging.connector.InboundConnector;
+import io.smallrye.reactive.messaging.connector.OutboundConnector;
 import io.smallrye.reactive.messaging.health.HealthReport;
 import io.smallrye.reactive.messaging.health.HealthReporter;
 import io.smallrye.reactive.messaging.providers.connectors.ExecutionHolder;
 import io.vertx.mutiny.core.Vertx;
-
-import javax.annotation.PostConstruct;
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.context.Destroyed;
-import javax.enterprise.event.Observes;
-import javax.inject.Inject;
 
 @ApplicationScoped
 @Connector(HiveMQMqttConnector.CONNECTOR_NAME)
@@ -65,7 +64,7 @@ import javax.inject.Inject;
 @ConnectorAttribute(name = "check-topic-name", direction = INCOMING_AND_OUTGOING, description = "Topic Used to check liveness/readiness", type = "string", defaultValue = "$SYS/broker/uptime")
 @ConnectorAttribute(name = "readiness-timeout", direction = INCOMING_AND_OUTGOING, description = "Timeout to declare the MQTT Client not ready", type = "int", defaultValue = "20000")
 @ConnectorAttribute(name = "liveness-timeout", direction = INCOMING_AND_OUTGOING, description = "Timeout to declare the MQTT Client not alive", type = "int", defaultValue = "120000")
-public class HiveMQMqttConnector implements IncomingConnectorFactory, OutgoingConnectorFactory, HealthReporter {
+public class HiveMQMqttConnector implements InboundConnector, OutboundConnector, HealthReporter {
 
     public static final String CONNECTOR_NAME = "smallrye-mqtt-hivemq";
 
@@ -79,21 +78,6 @@ public class HiveMQMqttConnector implements IncomingConnectorFactory, OutgoingCo
     @PostConstruct
     void init() {
         this.vertx = executionHolder.vertx();
-    }
-
-    @Override
-    public PublisherBuilder<? extends Message<?>> getPublisherBuilder(Config config) {
-        HiveMQMqttSource source = new HiveMQMqttSource(
-                new HiveMQMqttConnectorIncomingConfiguration(config));
-        sources.add(source);
-        return source.getSource();
-    }
-
-    @Override
-    public SubscriberBuilder<? extends Message<?>, Void> getSubscriberBuilder(Config config) {
-        HiveMQMqttSink sink = new HiveMQMqttSink(vertx, new HiveMQMqttConnectorOutgoingConfiguration(config));
-        sinks.add(sink);
-        return sink.getSink();
     }
 
     public boolean isReady() {
@@ -134,4 +118,18 @@ public class HiveMQMqttConnector implements IncomingConnectorFactory, OutgoingCo
         return builder.build();
     }
 
+    @Override
+    public Flow.Publisher<? extends Message<?>> getPublisher(Config config) {
+        HiveMQMqttSource source = new HiveMQMqttSource(
+                new HiveMQMqttConnectorIncomingConfiguration(config));
+        sources.add(source);
+        return source.getSource();
+    }
+
+    @Override
+    public Flow.Subscriber<? extends Message<?>> getSubscriber(Config config) {
+        HiveMQMqttSink sink = new HiveMQMqttSink(vertx, new HiveMQMqttConnectorOutgoingConfiguration(config));
+        sinks.add(sink);
+        return sink.getSink();
+    }
 }
