@@ -11,7 +11,7 @@
     <name>Quarkus - Hivemq Client - Integration Tests smallrye</name>
 
     <properties>
-        <surefire-plugin.version>3.2.3</surefire-plugin.version>
+        <surefire-plugin.version>3.2.5</surefire-plugin.version>
         <hive.testcontainers.version>1.19.3</hive.testcontainers.version>
         <include.tests>**/*IT.java</include.tests>
     </properties>
