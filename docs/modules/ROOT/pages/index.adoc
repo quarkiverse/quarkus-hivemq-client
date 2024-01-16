@@ -1,4 +1,4 @@
-= Quarkus - Hivemq Client Overview
+= Overview
 :extension-status: preview
 
 This extension allows usage of the _HiveMQ MQTT Client_ inside a Quarkus App, in JVM and Native mode.
@@ -28,7 +28,8 @@ This adds some benefits to the original SmallRye MQTT:
 | 2.16.10.Final
 | 1.3.2
 |===
-== Using the HiveMQ-SmallRye Extension
+
+== Add/use HiveMQ Extension
 
 Requirements:
 
@@ -75,7 +76,7 @@ mp.messaging.incoming.[channel-name].connector=smallrye-mqtt-hivemq
 mp.messaging.outgoing.[channel-name].connector=smallrye-mqtt-hivemq
 ```
 
-== Receiving messages from MQTT
+== How to Subscribe to MQTT Topics?
 
 Let’s imagine you have a HiveMQ broker running, and accessible using the localhost:1883 address. Configure your application to receive MQTT messages on the prices channel as follows:
 
@@ -86,7 +87,7 @@ mp.messaging.incoming.prices.port=1883
 mp.messaging.incoming.prices.auto-generated-client-id=true
 ```
 
-Then, your application receives Message<byte[]>. You can consumes the payload directly:
+Then, your application receives Message<byte[]>. You can consume the payload directly:
 
 ```
 package inbound;
@@ -109,6 +110,47 @@ public class MqttPriceConsumer {
 ```
 
 If you want a more detailed example, please take a look the following end-to-end link:https://github.com/quarkiverse/quarkus-hivemq-client/tree/main/integration-tests/hivemq-client-smallrye[Test]
+
+== How to Publish to MQTT Topics?
+
+Let's configure the 'outgoing' channel
+
+```
+mp.messaging.outgoing.topic-price.connector=smallrye-mqtt-hivemq
+mp.messaging.outgoing.topic-price.topic=prices
+mp.messaging.outgoing.topic-price.auto-generated-client-id=true
+```
+
+And then implement an emitter or producer, for example as this one:
+
+```
+package outbound;
+
+import org.eclipse.microprofile.reactive.messaging.Outgoing;
+
+import jakarta.enterprise.context.ApplicationScoped;
+
+@ApplicationScoped
+public class PriceGenerator {
+
+    private static final Logger LOG = Logger.getLogger(PriceGenerator.class);
+
+    private Random random = new Random();
+
+    @Outgoing("topic-price")
+    public Multi<Integer> generate() {
+        return Multi.createFrom().ticks().every(Duration.ofSeconds(1))
+                .onOverflow().drop()
+                .map(tick -> {
+                    int price = random.nextInt(100);
+                    LOG.infof("Sending price: %d", price);
+                    return price;
+                });
+    }
+
+}
+```
+
 
 == Configuration Reference
 

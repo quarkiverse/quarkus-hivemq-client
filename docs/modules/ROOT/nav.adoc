@@ -1,4 +1,6 @@
-* xref:index.adoc[Quarkus - Hivemq Client Overview]
+* xref:index.adoc[Overview]
 * xref:index.adoc[Matrix compatibility]
-* xref:index.adoc[Receiving messages from MQTT]
+* xref:index.adoc[Add/use HiveMQ Extension]
+* xref:index.adoc[How to Subscribe to MQTT Topics?]
+* xref:index.adoc[How to Publish to MQTT Topics?]
 * xref:index.adoc[Configuration Reference]
