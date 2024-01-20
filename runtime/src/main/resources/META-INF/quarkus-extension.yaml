@@ -1,11 +1,13 @@
 name: Quarkus - HiveMQ Client
 artifact: ${project.groupId}:${project.artifactId}:${project.version}
-description: Quarkus - Hivemq Client Implementation of MQQ Messaging
+description: Transform your business with the most trusted MQTT platform
 metadata:
   keywords:
     - "mqtt"
     - "reactive-mqtt"
     - "hivemq"
+  guide: "https://quarkiverse.github.io/quarkiverse-docs/quarkus-hivemq-client/dev/index.html"
+  icon-url: "https://github.com/quarkiverse/quarkus-hivemq-client/blob/main/docs/img/HiveMQlogo.png"
   categories:
     - "messaging"
   status: "preview"
