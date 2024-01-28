@@ -10,6 +10,8 @@ This adds some benefits to the original SmallRye MQTT:
 * Battle tested MQTT Client outside Vertx landscape
 * Management of external CA file for secure connections with self-signed certificates
 * Backpressure support integrated with MQTT QOS
+* Native mode support
+* DevServices support
 * Automatic and configurable reconnection handling and message redelivery
 * Real Health Check against a configurable topic (defaults to the standard MQTT $SYS/broker/uptime) integrated in Quarkus HealthReport
 * Many others you can read in official documentation https://hivemq.github.io/hivemq-mqtt-client/[here].
@@ -75,6 +77,23 @@ mp.messaging.incoming.[channel-name].connector=smallrye-mqtt-hivemq
 # Outbound
 mp.messaging.outgoing.[channel-name].connector=smallrye-mqtt-hivemq
 ```
+
+== Native mode support
+
+There is nothing special on HiveMQ extension that require any additional information than the https://quarkus.io/guides/building-native-image[official one].
+
+Currently, we are using the following images on CI:
+```
+ubi-quarkus-native-image
+ubi-quarkus-mandrel
+ubi-quarkus-graalvmce-builder-image
+```
+
+for example, you can run `mvn -V -B -am clean verify -Dnative -Dquarkus.native.builder-image=quay.io/quarkus/ubi-quarkus-mandrel:22.3-java17`
+
+== Dev Services
+
+If no `outgoing/incoming host/port` is defined then Dev Services will launch a default instance and will connect your channels to the HiveMQ broker.
 
 == How to Subscribe to MQTT Topics?
 
