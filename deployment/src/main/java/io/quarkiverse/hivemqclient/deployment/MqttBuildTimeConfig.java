@@ -4,7 +4,7 @@ import io.quarkus.runtime.annotations.ConfigItem;
 import io.quarkus.runtime.annotations.ConfigPhase;
 import io.quarkus.runtime.annotations.ConfigRoot;
 
-@ConfigRoot(name = "hivemq", phase = ConfigPhase.BUILD_TIME)
+@ConfigRoot(name = "mqtt", phase = ConfigPhase.BUILD_TIME)
 public class MqttBuildTimeConfig {
 
     /**
