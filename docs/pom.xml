@@ -48,11 +48,11 @@
                             <goal>copy-resources</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>${project.basedir}/modules/ROOT/pages/</outputDirectory>
+                            <outputDirectory>${project.basedir}/modules/ROOT/pages/includes/</outputDirectory>
                             <resources>
                                 <resource>
                                     <directory>${project.basedir}/../target/asciidoc/generated/config/</directory>
-                                    <include>quarkus-helm.adoc</include>
+                                    <include>config.adoc</include>
                                     <filtering>false</filtering>
                                 </resource>
                             </resources>

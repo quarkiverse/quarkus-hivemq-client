@@ -173,4 +173,4 @@ public class PriceGenerator {
 
 == Configuration Reference
 
-include::config.adoc[leveloffset=+1, opts=optional]
+include::includes/config.adoc[leveloffset=+1, opts=optional]
