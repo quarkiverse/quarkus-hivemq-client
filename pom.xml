@@ -15,6 +15,7 @@
     <module>deployment</module>
     <module>runtime</module>
     <module>integration-tests</module>
+    <module>docs</module>
   </modules>
   <scm>
     <connection>scm:git:git@github.com:quarkiverse/quarkus-hivemq-client.git</connection>
