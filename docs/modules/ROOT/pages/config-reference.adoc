@@ -1,0 +1,3 @@
+= Quarkus HiveMQ - Configuration Reference
+
+include::includes/config.adoc[leveloffset=+1, opts=optional]
