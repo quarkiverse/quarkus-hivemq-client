@@ -13,7 +13,7 @@ import io.quarkus.test.common.QuarkusTestResourceLifecycleManager;
 public class CommonResources implements QuarkusTestResourceLifecycleManager {
 
     private final static Level LOG_LEVEL = Level.DEBUG;
-    protected final static HiveMQContainer hivemqContainer = new HiveMQContainer(parse("hivemq/hivemq-ce"))
+    protected final static HiveMQContainer hivemqContainer = new HiveMQContainer(parse("hivemq/hivemq-ce").withTag("2024.2"))
             .withLogLevel(LOG_LEVEL);
 
     @Override
