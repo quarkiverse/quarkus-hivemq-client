@@ -7,7 +7,7 @@ metadata:
     - "reactive-mqtt"
     - "hivemq"
   guide: "https://quarkiverse.github.io/quarkiverse-docs/quarkus-hivemq-client/dev/index.html"
-  icon-url: "https://github.com/quarkiverse/quarkus-hivemq-client/blob/main/docs/img/HiveMQlogo.png"
+  icon-url: "https://raw.githubusercontent.com/quarkiverse/quarkus-hivemq-client/main/docs/img/HiveMQlogo.png"
   categories:
     - "messaging"
   status: "preview"
