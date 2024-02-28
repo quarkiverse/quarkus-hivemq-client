@@ -10,4 +10,9 @@ metadata:
   icon-url: "https://raw.githubusercontent.com/quarkiverse/quarkus-hivemq-client/main/docs/img/HiveMQlogo.png"
   categories:
     - "messaging"
+  codestart:
+    name: "HiveMQ Prices codestart"
+    languages:
+      - "java"
+    artifact: "io.quarkiverse.hivemqclient:quarkus-hivemq-client:codestarts:jar:${project.version}"
   status: "preview"

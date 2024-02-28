@@ -1,0 +1,9 @@
+name: hivemq-prices-codestart
+ref: hivemq
+type: code
+tags: extension-codestart
+metadata:
+  title: HiveMQ prices codestart
+  description: This is a tiny app to get started with Quarkus HiveMQ extension.
+  path: /prices.html
+  related-guide-section: https://docs.quarkiverse.io/quarkus-hivemq-client/dev/
