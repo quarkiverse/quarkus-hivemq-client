@@ -3,6 +3,7 @@ package io.quarkiverse.hivemqclient.smallrye.reactive;
 import static io.smallrye.reactive.messaging.mqtt.i18n.MqttLogging.log;
 
 import java.nio.ByteBuffer;
+import java.util.Optional;
 import java.util.concurrent.Flow;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
@@ -16,8 +17,7 @@ import com.hivemq.client.mqtt.mqtt3.message.publish.Mqtt3PublishResult;
 
 import io.reactivex.Flowable;
 import io.smallrye.mutiny.Uni;
-import io.smallrye.reactive.messaging.mqtt.MqttMessage;
-import io.smallrye.reactive.messaging.mqtt.SendingMqttMessage;
+import io.smallrye.reactive.messaging.mqtt.SendingMqttMessageMetadata;
 import io.smallrye.reactive.messaging.providers.helpers.MultiUtils;
 import io.vertx.core.json.Json;
 import io.vertx.core.json.JsonArray;
@@ -84,8 +84,11 @@ public class HiveMQMqttSink {
         MqttQos actualQoS = MqttQos.fromCode(this.qos);
         boolean isRetain = false;
 
-        if (msg instanceof SendingMqttMessage) {
-            MqttMessage<?> mm = ((SendingMqttMessage<?>) msg);
+        Optional<SendingMqttMessageMetadata> sendingMqttMessageMetadata = msg.getMetadata()
+                .get(SendingMqttMessageMetadata.class);
+
+        if (sendingMqttMessageMetadata.isPresent()) {
+            var mm = sendingMqttMessageMetadata.get();
             actualTopicToBeUsed = mm.getTopic() == null ? topic : mm.getTopic();
             actualQoS = MqttQos.fromCode(mm.getQosLevel() == null ? actualQoS.getCode() : mm.getQosLevel().value());
             isRetain = mm.isRetain();

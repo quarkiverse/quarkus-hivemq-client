@@ -31,7 +31,7 @@ public class MqttDevServicesBuildTimeConfig {
     /**
      * The image to use.
      */
-    @ConfigItem(defaultValue = "hivemq/hivemq-ce:2023.9")
+    @ConfigItem(defaultValue = "hivemq/hivemq-ce:2024.3")
     public String imageName;
 
     /**

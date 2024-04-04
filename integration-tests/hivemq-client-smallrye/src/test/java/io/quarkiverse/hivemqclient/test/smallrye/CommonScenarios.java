@@ -27,6 +27,9 @@ public class CommonScenarios {
     @TestHTTPResource("prices/stream")
     URI pricesUrl;
 
+    @TestHTTPResource("prices/topic")
+    URI customTopicUrl;
+
     @Test
     public void shouldGetHello() {
         given()
@@ -47,6 +50,28 @@ public class CommonScenarios {
             source.register(event -> {
                 String value = event.readData(String.class, MediaType.APPLICATION_JSON_TYPE);
                 LOG.infof("Received price: %s", value);
+                totalAmountReceived.incrementAndGet();
+            });
+            source.open();
+            expectedAmount.await(TIMEOUT_SEC, TimeUnit.SECONDS);
+        } catch (InterruptedException ignored) {
+        } finally {
+            int received = totalAmountReceived.get();
+            assertTrue(received > 1, "Expected more than 2 prices read from the source, got " + received);
+        }
+    }
+
+    @Test
+    public void testReceivedCustomTopic() {
+        AtomicInteger totalAmountReceived = new AtomicInteger(0);
+        Client client = ClientBuilder.newClient();
+        WebTarget target = client.target(customTopicUrl);
+        CountDownLatch expectedAmount = new CountDownLatch(2);
+
+        try (SseEventSource source = SseEventSource.target(target).build()) {
+            source.register(event -> {
+                String value = event.readData(String.class, MediaType.APPLICATION_JSON_TYPE);
+                LOG.infof("Received from custom topic value: %s", value);
                 totalAmountReceived.incrementAndGet();
             });
             source.open();
