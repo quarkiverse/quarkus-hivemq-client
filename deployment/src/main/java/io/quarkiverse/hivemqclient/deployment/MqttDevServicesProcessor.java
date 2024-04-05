@@ -192,7 +192,7 @@ public class MqttDevServicesProcessor {
         Map<String, String> configMap = new HashMap<>();
         configMap.put("mp.messaging.connector.smallrye-mqtt-hivemq.host", host);
         configMap.put("mp.messaging.connector.smallrye-mqtt-hivemq.port", String.valueOf(port));
-        return new RunningDevService(Feature.SMALLRYE_REACTIVE_MESSAGING_MQTT.getName(),
+        return new RunningDevService(Feature.MESSAGING_MQTT.getName(),
                 containerId, closeable, configMap);
     }
 
