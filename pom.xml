@@ -24,14 +24,14 @@
     <tag>HEAD</tag>
   </scm>
   <properties>
-    <compiler-plugin.version>3.10.1</compiler-plugin.version>
+    <compiler-plugin.version>3.12.0</compiler-plugin.version>
     <maven.compiler.parameters>true</maven.compiler.parameters>
     <maven.compiler.release>17</maven.compiler.release>
     <maven.compiler.source>17</maven.compiler.source>
     <maven.compiler.target>17</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <smallrye-reactive-messaging-mqtt.version>4.20.0</smallrye-reactive-messaging-mqtt.version>
+    <smallrye-reactive-messaging-mqtt.version>4.19.0</smallrye-reactive-messaging-mqtt.version>
     <microprofile-reactive-streams.version>1.0.1</microprofile-reactive-streams.version>
     <microprofile-metrics-api.version>4.0.1</microprofile-metrics-api.version>
     <impsort-maven-plugin.version>1.9.0</impsort-maven-plugin.version>
