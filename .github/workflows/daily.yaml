@@ -34,7 +34,7 @@ jobs:
     needs: validate-format
     strategy:
       matrix:
-        java: [ 17 ]
+        java: [ 17, 21 ]
     steps:
       - uses: actions/checkout@v4
       - name: Install JDK {{ matrix.java }}
@@ -62,8 +62,8 @@ jobs:
     needs: validate-format
     strategy:
       matrix:
-        java: [ 17 ]
-        image: [ "ubi-quarkus-native-image:22.3-java17", "ubi-quarkus-mandrel:22.3-java17", "ubi-quarkus-graalvmce-builder-image:22.3-java17" ]
+        java: [ 17, 21 ]
+        image: [ "ubi-quarkus-mandrel-builder-image:jdk-21", "ubi-quarkus-graalvmce-builder-image:jdk-21" ]
     steps:
       - uses: actions/checkout@v4
       - name: Install JDK {{ matrix.java }}
