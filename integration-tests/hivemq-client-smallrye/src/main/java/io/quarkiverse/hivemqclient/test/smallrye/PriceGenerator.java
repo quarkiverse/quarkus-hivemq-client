@@ -1,21 +1,23 @@
 package io.quarkiverse.hivemqclient.test.smallrye;
 
-import io.smallrye.mutiny.Multi;
-import io.smallrye.reactive.messaging.mqtt.MqttMessage;
+import java.time.Duration;
+import java.util.Random;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+
 import org.eclipse.microprofile.reactive.messaging.Channel;
 import org.eclipse.microprofile.reactive.messaging.Emitter;
 import org.eclipse.microprofile.reactive.messaging.OnOverflow;
 import org.eclipse.microprofile.reactive.messaging.Outgoing;
 import org.jboss.logging.Logger;
 
-import java.time.Duration;
-import java.util.Random;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+import io.smallrye.mutiny.Multi;
+import io.smallrye.reactive.messaging.mqtt.MqttMessage;
 
 /**
  * A bean producing random prices every second.
