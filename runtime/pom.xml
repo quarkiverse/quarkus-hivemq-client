@@ -103,7 +103,7 @@
             <path>
               <groupId>org.jboss.logging</groupId>
               <artifactId>jboss-logging-processor</artifactId>
-              <version>2.2.1.Final</version>
+              <version>3.0.2.Final</version>
             </path>
             <path>
               <groupId>io.smallrye.reactive</groupId>
