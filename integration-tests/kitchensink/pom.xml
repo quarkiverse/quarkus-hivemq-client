@@ -9,7 +9,7 @@
   <artifactId>quarkus-hivemq-client-kitchensink</artifactId>
   <name>Quarkus - HiveMQ Client - Integration Tests Kitchen Sink</name>
 <properties>
-  <surefire-plugin.version>3.5.0</surefire-plugin.version>
+  <surefire-plugin.version>3.5.1</surefire-plugin.version>
   <lombok.version>1.18.34</lombok.version>
 </properties>
   <dependencies>
