@@ -14,8 +14,6 @@
   <modules>
     <module>deployment</module>
     <module>runtime</module>
-    <module>integration-tests</module>
-    <module>docs</module>
   </modules>
   <scm>
     <connection>scm:git:git@github.com:quarkiverse/quarkus-hivemq-client.git</connection>
@@ -139,9 +137,34 @@
   </build>
   <profiles>
     <profile>
+      <id>docs</id>
+      <activation>
+        <property>
+          <name>performRelease</name>
+          <value>!true</value>
+        </property>
+      </activation>
+      <modules>
+        <module>docs</module>
+      </modules>
+    </profile>
+    <profile>
       <id>native</id>
       <properties>
         <quarkus.package.type>native</quarkus.package.type>
+      </properties>
+    </profile>
+    <profile>
+      <id>validate-format</id>
+      <activation>
+        <property>
+          <name>validate-format</name>
+        </property>
+      </activation>
+      <properties>
+        <xml.format.goal>xml-check</xml.format.goal>
+        <src.format.goal>validate</src.format.goal>
+        <src.sort.goal>check</src.sort.goal>
       </properties>
     </profile>
     <profile>
@@ -155,19 +178,6 @@
       <modules>
         <module>integration-tests</module>
       </modules>
-    </profile>
-    <profile>
-      <id>validate-format</id>
-      <activation>
-        <property>
-          <name>validate-format</name>
-        </property>
-      </activation>
-      <properties>
-        <src.format.goal>validate</src.format.goal>
-        <src.sort.goal>check</src.sort.goal>
-        <xml.format.goal>xml-check</xml.format.goal>
-      </properties>
     </profile>
   </profiles>
 </project>
