@@ -66,4 +66,14 @@ public class MqttDevServicesBuildTimeConfig {
      */
     @ConfigItem
     public Map<String, String> containerEnv;
+
+    public MqttDevServicesBuildTimeConfig(Boolean enabled, String imageName, int port, boolean shared, String serviceName,
+            Map<String, String> containerEnv) {
+        this.enabled = Optional.ofNullable(enabled);
+        this.port = OptionalInt.of(port);
+        this.imageName = imageName;
+        this.shared = shared;
+        this.serviceName = serviceName;
+        this.containerEnv = containerEnv;
+    }
 }

@@ -57,12 +57,11 @@ public class MqttDevServicesProcessor {
     public DevServicesResultBuildItem startMqttDevService(
             DockerStatusBuildItem dockerStatusBuildItem,
             LaunchModeBuildItem launchMode,
-            MqttBuildTimeConfig mqttClientBuildTimeConfig,
             Optional<ConsoleInstalledBuildItem> consoleInstalledBuildItem,
             LoggingSetupBuildItem loggingSetupBuildItem,
             GlobalDevServicesConfig devServicesConfig) {
 
-        MqttDevServiceCfg configuration = getConfiguration(mqttClientBuildTimeConfig);
+        MqttDevServiceCfg configuration = getConfiguration();
 
         if (devService != null) {
             boolean shouldShutdownTheBroker = !configuration.equals(cfg);
@@ -82,7 +81,6 @@ public class MqttDevServicesProcessor {
             if (newDevService != null) {
                 devService = newDevService;
 
-                Map<String, String> config = devService.getConfig();
                 if (devService.isOwner()) {
                     log.info("Dev Services for MQTT started.");
                 }
@@ -148,7 +146,7 @@ public class MqttDevServicesProcessor {
             return null;
         }
 
-        if (!dockerStatusBuildItem.isDockerAvailable()) {
+        if (!dockerStatusBuildItem.isContainerRuntimeAvailable()) {
             log.warn("Docker isn't working, please configure the MQTT broker location.");
             return null;
         }
@@ -218,9 +216,16 @@ public class MqttDevServicesProcessor {
         return false;
     }
 
-    private MqttDevServiceCfg getConfiguration(MqttBuildTimeConfig cfg) {
-        MqttDevServicesBuildTimeConfig devServicesConfig = cfg.devservices;
-        return new MqttDevServiceCfg(devServicesConfig);
+    private MqttDevServiceCfg getConfiguration() {
+        Config config = ConfigProvider.getConfig();
+        boolean devServicesEnabled = config.getOptionalValue("hivemq.devservices.enabled", Boolean.class).orElse(true);
+        String imageName = config.getOptionalValue("hivemq.devservices.image-name", String.class).orElse("hivemq/hivemq4");
+        Integer fixedExposedPort = config.getOptionalValue("hivemq.devservices.port", Integer.class).orElse(0);
+        boolean shared = config.getOptionalValue("hivemq.devservices.shared", Boolean.class).orElse(false);
+        String serviceName = config.getOptionalValue("hivemq.devservices.service-name", String.class).orElse("mqtt");
+        Map<String, String> containerEnv = new HashMap<>();
+        return new MqttDevServiceCfg(new MqttDevServicesBuildTimeConfig(devServicesEnabled, imageName, fixedExposedPort, shared,
+                serviceName, containerEnv));
     }
 
     private static final class MqttDevServiceCfg {
