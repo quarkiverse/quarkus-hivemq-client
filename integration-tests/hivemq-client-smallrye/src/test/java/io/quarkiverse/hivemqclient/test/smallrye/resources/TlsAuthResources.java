@@ -8,7 +8,7 @@ import org.testcontainers.utility.MountableFile;
 // server Keystore(privateKey): keytool -genkey -keyalg RSA -alias hivemq -keystore hivemq.jks -storepass changeme -validity 3600 -keysize 2048
 // keystore to a PEM file: keytool -exportcert -alias hivemq -keystore hivemq.jks -rfc -file server.pem
 // client truststore(publicKey) file(Tls): keytool -importcert -alias hivemq -file server.pem -keystore server.jks -storepass changeme
-public class TlsAuthResources extends CommonResources {
+public class TlsAuthResources extends HiveMQCommunityEdition {
 
     private final static String CONFIG_FILE_NAME = "/tlsAuthConfig.xml";
 

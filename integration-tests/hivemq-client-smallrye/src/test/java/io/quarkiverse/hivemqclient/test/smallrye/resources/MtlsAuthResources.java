@@ -15,7 +15,7 @@ import org.testcontainers.utility.MountableFile;
 // client keystore (privateKey):
 // openssl pkcs12 -export -in mqtt-client-cert.pem -inkey mqtt-client-key.pem -out client-keystore.p12 -name client-keystore
 // keytool -importkeystore -srckeystore client-keystore.p12 -srcstoretype PKCS12 -destkeystore client-keystore.jks -deststoretype JKS
-public class MtlsAuthResources extends CommonResources {
+public class MtlsAuthResources extends HiveMQCommunityEdition {
 
     private final static String CONFIG_FILE_NAME = "/mtlsAuthConfig.xml";
 

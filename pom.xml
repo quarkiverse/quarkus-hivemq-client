@@ -41,6 +41,8 @@
     <checkstyle.version>10.21.1</checkstyle.version>
     <quarkus.version>3.16.0</quarkus.version>
     <failsafe-plugin.version>3.5.2</failsafe-plugin.version>
+    <nimbus-jose-jwt.version>10.0.1</nimbus-jose-jwt.version>
+    <wiremock-standalone.version>3.12.0</wiremock-standalone.version>
   </properties>
   <dependencyManagement>
     <dependencies>

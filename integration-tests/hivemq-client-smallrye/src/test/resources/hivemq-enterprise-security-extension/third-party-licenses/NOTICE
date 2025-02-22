@@ -1,0 +1,8 @@
+Please have a look at the file "licenses" in this folder for a complete list of all third party libraries of the HiveMQ Enterprise Security Extension and their license information.
+
+Special note for MariaDB client library:
+The MariaDB client library for Java is included with the Enterprise Security Extension for convenience.
+The library is provided without modifications and can be either removed or modified as to the provided GNU Lesser General Public License 2.1 and higher.
+The extension only uses the library to connect to a database if configured by the user.
+Further license information can be found here: https://mariadb.com/kb/en/about-mariadb-connector-j/#license
+The source code for the MariaDB client library for Java is available here: https://mariadb.org/connector-java/all-releases/#2-7

@@ -4,7 +4,7 @@ import java.util.Map;
 
 import org.testcontainers.utility.MountableFile;
 
-public class RbacAuthResources extends CommonResources {
+public class RbacAuthResources extends HiveMQCommunityEdition {
 
     private final static String CONFIG_FILE_NAME = "/rbacAuthConfig.xml";
     private final static String DEFAULT_USERNAME = "test";

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<enterprise-security-extension
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="config.xsd"
+        version="1">
+    <realms>
+        <jwt-realm>
+            <name>jwt-provider</name>
+            <enabled>true</enabled>
+            <configuration>
+                <jwks-endpoint>http://jwt-wiremock-container:8080/.well-known/jwks.json</jwks-endpoint>
+            </configuration>
+        </jwt-realm>
+    </realms>
+    <pipelines>
+        <listener-pipeline listener="ALL">
+            <!-- JWT Authentication Manager -->
+            <jwt-authentication-manager>
+                <realm>jwt-provider</realm>
+                <jwt-validation>
+                    <exp-grace disconnect-after-expiry="true">300</exp-grace>
+                </jwt-validation>
+            </jwt-authentication-manager>
+
+            <!-- Authorization Manager: Allow all -->
+            <allow-all-authorization-manager />
+        </listener-pipeline>
+    </pipelines>
+</enterprise-security-extension>

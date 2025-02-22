@@ -33,4 +33,11 @@ public class HivemqProfiles {
             return Collections.singletonList(new TestResourceEntry(MtlsAuthResources.class));
         }
     }
+
+    public static class JwtAuth implements QuarkusTestProfile {
+        @Override
+        public List<TestResourceEntry> testResources() {
+            return Collections.singletonList(new TestResourceEntry(EnterpriseJwtAuthResources.class));
+        }
+    }
 }

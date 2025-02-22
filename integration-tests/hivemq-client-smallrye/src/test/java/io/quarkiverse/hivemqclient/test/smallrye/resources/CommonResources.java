@@ -1,34 +1,29 @@
 package io.quarkiverse.hivemqclient.test.smallrye.resources;
 
-import static org.testcontainers.utility.DockerImageName.parse;
-
 import java.util.HashMap;
 import java.util.Map;
 
-import org.slf4j.event.Level;
 import org.testcontainers.hivemq.HiveMQContainer;
 
 import io.quarkus.test.common.QuarkusTestResourceLifecycleManager;
 
-public class CommonResources implements QuarkusTestResourceLifecycleManager {
+public abstract class CommonResources implements QuarkusTestResourceLifecycleManager {
 
-    private final static Level LOG_LEVEL = Level.DEBUG;
-    protected final static HiveMQContainer hivemqContainer = new HiveMQContainer(parse("hivemq/hivemq-ce").withTag("2024.2"))
-            .withLogLevel(LOG_LEVEL);
+    protected abstract HiveMQContainer getHiveMQContainer();
 
     @Override
     public Map<String, String> start() {
-        hivemqContainer.start();
+        getHiveMQContainer().start();
         Map<String, String> config = new HashMap<>();
-        config.put("mp.messaging.outgoing.topic-price.host", hivemqContainer.getHost());
-        config.put("mp.messaging.outgoing.topic-price.port", "" + hivemqContainer.getMqttPort());
-        config.put("mp.messaging.incoming.prices.host", hivemqContainer.getHost());
-        config.put("mp.messaging.incoming.prices.port", "" + hivemqContainer.getMqttPort());
+        config.put("mp.messaging.outgoing.topic-price.host", getHiveMQContainer().getHost());
+        config.put("mp.messaging.outgoing.topic-price.port", "" + getHiveMQContainer().getMqttPort());
+        config.put("mp.messaging.incoming.prices.host", getHiveMQContainer().getHost());
+        config.put("mp.messaging.incoming.prices.port", "" + getHiveMQContainer().getMqttPort());
         return config;
     }
 
     @Override
     public void stop() {
-        hivemqContainer.stop();
+        getHiveMQContainer().stop();
     }
 }

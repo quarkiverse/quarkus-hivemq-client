@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xs:element name="ese-file-realm">
+        <xs:complexType>
+            <xs:all>
+                <xs:element name="mqtt" type="mqttEntity" minOccurs="0"/>
+                <xs:element name="control-center" type="controlCenterEntity" minOccurs="0"/>
+                <xs:element name="rest-api" type="restApiEntity" minOccurs="0"/>
+            </xs:all>
+
+            <xs:attribute name="version" type="xs:string"/>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="mqttEntity">
+        <xs:all>
+            <xs:element name="users" minOccurs="0">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="user" type="mqttUserEntity" minOccurs="0" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="roles" minOccurs="0">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="role" type="mqttRoleEntity" minOccurs="0" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:all>
+    </xs:complexType>
+
+    <xs:complexType name="mqttUserEntity">
+        <xs:all>
+            <xs:element name="name">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:minLength value="1"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="password" type="encodedString" minOccurs="0"/>
+            <xs:element name="iterations" type="xs:unsignedInt" minOccurs="0"/>
+            <xs:element name="salt" type="encodedString" minOccurs="0"/>
+            <xs:element name="algorithm" type="hashAlgorithm" minOccurs="0"/>
+            <xs:element name="roles" minOccurs="0">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="role" minOccurs="0" maxOccurs="unbounded">
+                            <xs:simpleType>
+                                <xs:restriction base="xs:string">
+                                    <xs:minLength value="1"/>
+                                </xs:restriction>
+                            </xs:simpleType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="permissions" minOccurs="0">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="permission" type="mqttPermissionEntity" minOccurs="0" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:all>
+    </xs:complexType>
+
+    <xs:complexType name="mqttPermissionEntity">
+        <xs:all>
+            <xs:element name="topic" type="xs:string" default=""/>
+            <xs:element name="activity" type="mqttActivity"/>
+            <xs:element name="qos" type="qos"/>
+            <xs:element name="retain" type="retain" default="NOT_RETAINED" minOccurs="0"/>
+            <xs:element name="shared-subscription" type="sharedSubscription" default="NOT_SHARED" minOccurs="0"/>
+            <xs:element name="shared-group" type="xs:string" default="" minOccurs="0"/>
+        </xs:all>
+    </xs:complexType>
+
+    <xs:complexType name="mqttRoleEntity">
+        <xs:all>
+            <xs:element name="id">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:minLength value="1"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="permissions" minOccurs="0">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="permission" type="mqttPermissionEntity" minOccurs="0" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:all>
+    </xs:complexType>
+
+    <xs:complexType name="controlCenterEntity">
+        <xs:all>
+            <xs:element name="users" minOccurs="0">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="user" type="ccUserEntity" minOccurs="0" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="roles" minOccurs="0">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="role" type="ccRoleEntity" minOccurs="0" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:all>
+    </xs:complexType>
+
+    <xs:complexType name="ccUserEntity">
+        <xs:all>
+            <xs:element name="name">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:minLength value="1"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="password" type="encodedString" minOccurs="0"/>
+            <xs:element name="iterations" type="xs:unsignedInt" minOccurs="0"/>
+            <xs:element name="salt" type="encodedString" minOccurs="0"/>
+            <xs:element name="algorithm" type="hashAlgorithm" minOccurs="0"/>
+            <xs:element name="roles" minOccurs="0">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="role" minOccurs="0" maxOccurs="unbounded">
+                            <xs:simpleType>
+                                <xs:restriction base="xs:string">
+                                    <xs:minLength value="1"/>
+                                </xs:restriction>
+                            </xs:simpleType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="permissions" minOccurs="0">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="permission" minOccurs="0" maxOccurs="unbounded">
+                            <xs:simpleType>
+                                <xs:restriction base="xs:string">
+                                    <xs:minLength value="1"/>
+                                </xs:restriction>
+                            </xs:simpleType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:all>
+    </xs:complexType>
+
+    <xs:complexType name="ccRoleEntity">
+        <xs:all>
+            <xs:element name="id">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:minLength value="1"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="permissions" minOccurs="0">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="permission" minOccurs="0" maxOccurs="unbounded">
+                            <xs:simpleType>
+                                <xs:restriction base="xs:string">
+                                    <xs:minLength value="1"/>
+                                </xs:restriction>
+                            </xs:simpleType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:all>
+    </xs:complexType>
+
+    <xs:complexType name="restApiEntity">
+        <xs:all>
+            <xs:element name="users" minOccurs="0">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="user" type="restApiUserEntity" minOccurs="0" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="roles" minOccurs="0">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="role" type="restApiRoleEntity" minOccurs="0" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:all>
+    </xs:complexType>
+
+    <xs:complexType name="restApiUserEntity">
+        <xs:all>
+            <xs:element name="name">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:minLength value="1"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="password" type="encodedString" minOccurs="0"/>
+            <xs:element name="iterations" type="xs:unsignedInt" minOccurs="0"/>
+            <xs:element name="salt" type="encodedString" minOccurs="0"/>
+            <xs:element name="algorithm" type="hashAlgorithm" minOccurs="0"/>
+            <xs:element name="roles" minOccurs="0">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="role" minOccurs="0" maxOccurs="unbounded">
+                            <xs:simpleType>
+                                <xs:restriction base="xs:string">
+                                    <xs:minLength value="1"/>
+                                </xs:restriction>
+                            </xs:simpleType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="permissions" minOccurs="0">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="permission" minOccurs="0" maxOccurs="unbounded">
+                            <xs:simpleType>
+                                <xs:restriction base="xs:string">
+                                    <xs:minLength value="1"/>
+                                </xs:restriction>
+                            </xs:simpleType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:all>
+    </xs:complexType>
+
+    <xs:complexType name="restApiRoleEntity">
+        <xs:all>
+            <xs:element name="id">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:minLength value="1"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="permissions" minOccurs="0">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="permission" minOccurs="0" maxOccurs="unbounded">
+                            <xs:simpleType>
+                                <xs:restriction base="xs:string">
+                                    <xs:minLength value="1"/>
+                                </xs:restriction>
+                            </xs:simpleType>
+                        </xs:element>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:all>
+    </xs:complexType>
+
+    <xs:simpleType name="mqttActivity">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="PUBLISH"/>
+            <xs:enumeration value="SUBSCRIBE"/>
+            <xs:enumeration value="ALL"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="qos">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="ZERO"/>
+            <xs:enumeration value="ONE"/>
+            <xs:enumeration value="TWO"/>
+            <xs:enumeration value="ZERO_ONE"/>
+            <xs:enumeration value="ZERO_TWO"/>
+            <xs:enumeration value="ONE_TWO"/>
+            <xs:enumeration value="ALL"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="retain">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="RETAINED"/>
+            <xs:enumeration value="NOT_RETAINED"/>
+            <xs:enumeration value="ALL"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="sharedSubscription">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="SHARED"/>
+            <xs:enumeration value="NOT_SHARED"/>
+            <xs:enumeration value="ALL"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="hashAlgorithm">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="PLAIN"/>
+            <xs:enumeration value="MD5"/>
+            <xs:enumeration value="SHA512"/>
+            <xs:enumeration value="BCRYPT"/>
+            <xs:enumeration value="PKCS5S2"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="encodedString">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute name="encoding" type="encoding"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+
+    <xs:simpleType name="encoding">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="UTF8"/>
+            <xs:enumeration value="Base64"/>
+            <xs:enumeration value="Hex"/>
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>
