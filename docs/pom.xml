@@ -4,7 +4,7 @@
     <parent>
         <groupId>io.quarkiverse.hivemqclient</groupId>
         <artifactId>quarkus-hivemq-client-parent</artifactId>
-        <version>2.3.1-SNAPSHOT</version>
+        <version>2.4.0</version>
     </parent>
 
     <artifactId>quarkus-hivemq-docs</artifactId>
