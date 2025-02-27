@@ -1,4 +1,4 @@
 package io.quarkiverse.hivemqclient.test.smallrye.resources;
 
-public class NoAuthResources extends CommonResources {
+public class NoAuthResources extends HiveMQCommunityEdition {
 }

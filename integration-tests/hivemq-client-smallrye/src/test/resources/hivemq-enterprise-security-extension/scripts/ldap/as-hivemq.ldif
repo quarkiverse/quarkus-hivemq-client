@@ -1,0 +1,213 @@
+# SCHEMA "HiveMQ"
+dn: cn=hivemq, ou=schema
+objectclass: metaSchema
+objectclass: top
+cn: mqtt
+m-dependencies: system
+
+dn: ou=attributetypes, cn=hivemq, ou=schema
+objectclass: organizationalUnit
+objectclass: top
+ou: attributetypes
+
+dn: m-oid=1.3.6.1.4.1.54795.2.3.1, ou=attributetypes, cn=hivemq, ou=schema
+objectclass: metaAttributeType
+objectclass: metaTop
+objectclass: top
+m-oid: 1.3.6.1.4.1.54795.2.3.1
+m-name: hmq-topicPermission
+m-description: The topicPermission abstracts all rights associated with a single
+  MQTT topic-filter string.
+m-equality: distinguishedNameMatch
+m-syntax: 1.3.6.1.4.1.1466.115.121.1.12
+
+dn: m-oid=1.3.6.1.4.1.54795.2.3.2, ou=attributetypes, cn=hivemq, ou=schema
+objectclass: metaAttributeType
+objectclass: metaTop
+objectclass: top
+m-oid: 1.3.6.1.4.1.54795.2.3.2
+m-name: hmq-topicFilter
+m-description: The MQTT topic-filter is the central element of this permission. 
+ The permission applies to all topic-strings matched under this filter.
+m-equality: caseExactMatch
+m-ordering: caseExactOrderingMatch
+m-substr: caseExactSubstringsMatch
+m-syntax: 1.3.6.1.4.1.1466.115.121.1.15
+m-singleValue: TRUE
+
+dn: m-oid=1.3.6.1.4.1.54795.2.3.3, ou=attributetypes, cn=hivemq, ou=schema
+objectclass: metaAttributeType
+objectclass: metaTop
+objectclass: top
+m-oid: 1.3.6.1.4.1.54795.2.3.3
+m-name: hmq-qualityOfService
+m-description: To which qos does the permission apply? Only values from 0 to 2 ar
+ e valid.
+m-equality: integerMatch
+m-ordering: integerOrderingMatch
+m-syntax: 1.3.6.1.4.1.1466.115.121.1.27
+m-length: 1
+
+dn: m-oid=1.3.6.1.4.1.54795.2.3.4, ou=attributetypes, cn=hivemq, ou=schema
+objectclass: metaAttributeType
+objectclass: metaTop
+objectclass: top
+m-oid: 1.3.6.1.4.1.54795.2.3.4
+m-name: hmq-publish
+m-description: Applies the permission to publishing to a topic under the guardin
+ g topicFilter?
+m-equality: booleanMatch
+m-syntax: 1.3.6.1.4.1.1466.115.121.1.7
+m-singleValue: TRUE
+
+dn: m-oid=1.3.6.1.4.1.54795.2.3.5, ou=attributetypes, cn=hivemq, ou=schema
+objectclass: metaAttributeType
+objectclass: metaTop
+objectclass: top
+m-oid: 1.3.6.1.4.1.54795.2.3.5
+m-name: hmq-subscribe
+m-description: Applies the permission to subscribing to a topic under the guardi
+ ng topicFilter?
+m-equality: booleanMatch
+m-syntax: 1.3.6.1.4.1.1466.115.121.1.7
+m-singleValue: TRUE
+
+dn: m-oid=1.3.6.1.4.1.54795.2.3.6, ou=attributetypes, cn=hivemq, ou=schema
+objectclass: metaAttributeType
+objectclass: metaTop
+objectclass: top
+m-oid: 1.3.6.1.4.1.54795.2.3.6
+m-name: hmq-retain
+m-description: Applies the permission to publishing retained messages to a topic
+  under the guarding topicFilter?
+m-equality: booleanMatch
+m-syntax: 1.3.6.1.4.1.1466.115.121.1.7
+m-singleValue: TRUE
+
+dn: m-oid=1.3.6.1.4.1.54795.2.3.7, ou=attributetypes, cn=hivemq, ou=schema
+objectclass: metaAttributeType
+objectclass: metaTop
+objectclass: top
+m-oid: 1.3.6.1.4.1.54795.2.3.7
+m-name: hmq-share
+m-description: Applies the permission to joining shared subscriptions for a topi
+ c under the guarding topicFilter?
+m-equality: booleanMatch
+m-syntax: 1.3.6.1.4.1.1466.115.121.1.7
+m-singleValue: TRUE
+
+dn: m-oid=1.3.6.1.4.1.54795.2.3.8, ou=attributetypes, cn=hivemq, ou=schema
+objectclass: metaAttributeType
+objectclass: metaTop
+objectclass: top
+m-oid: 1.3.6.1.4.1.54795.2.3.8
+m-name: hmq-sharedGroup
+m-description: The shared group ($share/<group>/topic) the permission applies to
+ . This is only relevant if share (OID 1.3.6.1.4.1.54795.2.3.7) is set to TRUE.
+m-syntax: 1.3.6.1.4.1.1466.115.121.1.15
+m-singleValue: TRUE
+
+dn: m-oid=1.3.6.1.4.1.54795.2.3.9, ou=attributetypes, cn=hivemq, ou=schema
+objectclass: metaAttributeType
+objectclass: metaTop
+objectclass: top
+m-oid: 1.3.6.1.4.1.54795.2.3.9
+m-name: hmq-controlCenterPermission
+m-description: Permission string for the HiveMQ Control Center.
+m-equality: caseExactMatch
+m-ordering: caseExactOrderingMatch
+m-substr: caseExactSubstringsMatch
+m-syntax: 1.3.6.1.4.1.1466.115.121.1.15
+
+dn: ou=comparators, cn=hivemq, ou=schema
+objectclass: organizationalUnit
+objectclass: top
+ou: comparators
+
+dn: ou=ditcontentrules, cn=hivemq, ou=schema
+objectclass: organizationalUnit
+objectclass: top
+ou: ditcontentrules
+
+dn: ou=ditstructurerules, cn=hivemq, ou=schema
+objectclass: organizationalUnit
+objectclass: top
+ou: ditstructurerules
+
+dn: ou=matchingrules, cn=hivemq, ou=schema
+objectclass: organizationalUnit
+objectclass: top
+ou: matchingrules
+
+dn: ou=matchingruleuse, cn=hivemq, ou=schema
+objectclass: organizationalUnit
+objectclass: top
+ou: matchingruleuse
+
+dn: ou=nameforms, cn=hivemq, ou=schema
+objectclass: organizationalUnit
+objectclass: top
+ou: nameforms
+
+dn: ou=normalizers, cn=hivemq, ou=schema
+objectclass: organizationalUnit
+objectclass: top
+ou: normalizers
+
+dn: ou=objectclasses, cn=hivemq, ou=schema
+objectclass: organizationalUnit
+objectclass: top
+ou: objectClasses
+
+dn: m-oid=1.3.6.1.4.1.54795.2.4.1, ou=objectclasses, cn=hivemq, ou=schema
+objectclass: metaObjectClass
+objectclass: metaTop
+objectclass: top
+m-oid: 1.3.6.1.4.1.54795.2.4.1
+m-name: hmq-mqttClient
+m-description: Used to authorize an MQTT Client with 1 .. N mqtt mqttPermissions
+ . Can represent a single client or when attached to a groupOfNames or groupOfUn
+ iqueNames a RBAC role.
+m-typeObjectClass: AUXILIARY
+m-must: hmq-topicPermission
+
+dn: m-oid=1.3.6.1.4.1.54795.2.4.2, ou=objectclasses, cn=hivemq, ou=schema
+objectclass: metaObjectClass
+objectclass: metaTop
+objectclass: top
+m-oid: 1.3.6.1.4.1.54795.2.4.2
+m-name: hmq-mqttPermission
+m-description: The authorization information for a single MQTT topic(-filter). I
+ f multiple permissions for the same topic-string are to be used the commonName 
+ should be part of the dn.
+m-must: hmq-topicFilter
+m-may: hmq-qualityOfService
+m-may: hmq-publish
+m-may: hmq-subscribe
+m-may: hmq-retain
+m-may: hmq-share
+m-may: hmq-sharedGroup
+m-may: description
+m-may: cn
+
+dn: m-oid=1.3.6.1.4.1.54795.2.4.3, ou=objectclasses, cn=hivemq, ou=schema
+objectclass: metaObjectClass
+objectclass: metaTop
+objectclass: top
+m-oid: 1.3.6.1.4.1.54795.2.4.3
+m-name: hmq-controlCenterUser
+m-description: A hmq-controlCenterUser has different permissions for HiveMQ
+ Control Center views.
+m-typeObjectClass: AUXILIARY
+m-must: hmq-controlCenterPermission
+
+dn: ou=syntaxcheckers, cn=hivemq, ou=schema
+objectclass: organizationalUnit
+objectclass: top
+ou: syntaxcheckers
+
+dn: ou=syntaxes, cn=hivemq, ou=schema
+objectclass: organizationalUnit
+objectclass: top
+ou: syntaxes
+

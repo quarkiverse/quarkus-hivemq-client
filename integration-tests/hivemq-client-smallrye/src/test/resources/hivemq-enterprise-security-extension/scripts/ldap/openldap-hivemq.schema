@@ -1,0 +1,68 @@
+attributetype ( 1.3.6.1.4.1.54795.2.3.1 NAME 'hmq-topicPermission'
+	DESC 'The topicPermission abstracts all rights associated with a single MQTT topic-filter string.'
+	EQUALITY distinguishedNameMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.12
+	USAGE userApplications )
+attributetype ( 1.3.6.1.4.1.54795.2.3.2 NAME 'hmq-topicFilter'
+	DESC 'The MQTT topic-filter is the central element of this permission. The permission applies to all topic-strings matched under this filter.'
+	EQUALITY caseExactMatch
+	ORDERING caseExactOrderingMatch
+	SUBSTR caseExactSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+	SINGLE-VALUE
+	USAGE userApplications )
+attributetype ( 1.3.6.1.4.1.54795.2.3.9 NAME 'hmq-controlCenterPermission'
+	DESC 'Permission string for the HiveMQ Control Center.'
+	EQUALITY caseExactMatch
+	ORDERING caseExactOrderingMatch
+	SUBSTR caseExactSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+	USAGE userApplications )
+attributetype ( 1.3.6.1.4.1.54795.2.3.3 NAME 'hmq-qualityOfService'
+	DESC 'To which qos does the permission apply? Only values from 0 to 2 are valid.'
+	EQUALITY integerMatch
+	ORDERING integerOrderingMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.27{1}
+	USAGE userApplications )
+attributetype ( 1.3.6.1.4.1.54795.2.3.4 NAME 'hmq-publish'
+	DESC 'Applies the permission to publishing to a topic under the guarding topicFilter?'
+	EQUALITY booleanMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.7
+	SINGLE-VALUE
+	USAGE userApplications )
+attributetype ( 1.3.6.1.4.1.54795.2.3.5 NAME 'hmq-subscribe'
+	DESC 'Applies the permission to subscribing to a topic under the guarding topicFilter?'
+	EQUALITY booleanMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.7
+	SINGLE-VALUE
+	USAGE userApplications )
+attributetype ( 1.3.6.1.4.1.54795.2.3.6 NAME 'hmq-retain'
+	DESC 'Applies the permission to publishing retained messages to a topic under the guarding topicFilter?'
+	EQUALITY booleanMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.7
+	SINGLE-VALUE
+	USAGE userApplications )
+attributetype ( 1.3.6.1.4.1.54795.2.3.7 NAME 'hmq-share'
+	DESC 'Applies the permission to joining shared subscriptions for a topic under the guarding topicFilter?'
+	EQUALITY booleanMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.7
+	SINGLE-VALUE
+	USAGE userApplications )
+attributetype ( 1.3.6.1.4.1.54795.2.3.8 NAME 'hmq-sharedGroup'
+	DESC 'The shared group ($share/<group>/topic) the permission applies to. This is only relevant if share (OID 1.3.6.1.4.1.54795.2.3.7) is set to TRUE.'
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+	SINGLE-VALUE
+	USAGE userApplications )
+objectclass ( 1.3.6.1.4.1.54795.2.4.1 NAME 'hmq-mqttClient'
+	DESC 'Used to authorize an MQTT Client with 1 .. N mqtt mqttPermissions. Can represent a single client or when attached to a groupOfNames or groupOfUniqueNames a RBAC role.'
+	AUXILIARY
+	MUST hmq-topicPermission )
+objectclass ( 1.3.6.1.4.1.54795.2.4.2 NAME 'hmq-mqttPermission'
+	DESC 'The authorization information for a single MQTT topic(-filter). If multiple permissions for the same topic-string are to be used the commonName should be part of the dn.'
+	STRUCTURAL
+	MUST hmq-topicFilter
+	MAY ( hmq-qualityOfService $ hmq-publish $ hmq-subscribe $ hmq-retain $ hmq-share $ hmq-sharedGroup $ description $ cn ) )
+objectclass ( 1.3.6.1.4.1.54795.2.4.3 NAME 'hmq-controlCenterUser'
+	DESC 'A hmq-controlCenterUser has different permissions for HiveMQ Control Center views.'
+	AUXILIARY
+	MUST hmq-controlCenterPermission )

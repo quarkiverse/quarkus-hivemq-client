@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<schema name="mqtt">
+    <attributetypes>
+        <attributetype oid="1.3.6.1.4.1.54795.2.3.1" obsolete="false" singlevalue="false" collective="false"
+                       nousermodification="false">
+            <aliases>
+                <alias>hmq-topicPermission</alias>
+            </aliases>
+            <description>The topicPermission abstracts all rights associated with a single MQTT topic-filter string.
+            </description>
+            <usage>USER_APPLICATIONS</usage>
+            <syntax>1.3.6.1.4.1.1466.115.121.1.12</syntax>
+            <equality>distinguishedNameMatch</equality>
+        </attributetype>
+        <attributetype oid="1.3.6.1.4.1.54795.2.3.2" obsolete="false" singlevalue="true" collective="false"
+                       nousermodification="false">
+            <aliases>
+                <alias>hmq-topicFilter</alias>
+            </aliases>
+            <description>The MQTT topic-filter is the central element of this permission. The permission applies to all
+                topic-strings matched under this filter.
+            </description>
+            <usage>USER_APPLICATIONS</usage>
+            <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
+            <equality>caseExactMatch</equality>
+            <ordering>caseExactOrderingMatch</ordering>
+            <substring>caseExactSubstringsMatch</substring>
+        </attributetype>
+        <attributetype oid="1.3.6.1.4.1.54795.2.3.3" obsolete="false" singlevalue="false" collective="false"
+                       nousermodification="false">
+            <aliases>
+                <alias>hmq-qualityOfService</alias>
+            </aliases>
+            <description>To which qos does the permission apply? Only values from 0 to 2 are valid.</description>
+            <usage>USER_APPLICATIONS</usage>
+            <syntax>1.3.6.1.4.1.1466.115.121.1.27</syntax>
+            <syntaxlength>1</syntaxlength>
+            <equality>integerMatch</equality>
+            <ordering>integerOrderingMatch</ordering>
+        </attributetype>
+        <attributetype oid="1.3.6.1.4.1.54795.2.3.4" obsolete="false" singlevalue="true" collective="false"
+                       nousermodification="false">
+            <aliases>
+                <alias>hmq-publish</alias>
+            </aliases>
+            <description>Applies the permission to publishing to a topic under the guarding topicFilter?</description>
+            <usage>USER_APPLICATIONS</usage>
+            <syntax>1.3.6.1.4.1.1466.115.121.1.7</syntax>
+            <equality>booleanMatch</equality>
+        </attributetype>
+        <attributetype oid="1.3.6.1.4.1.54795.2.3.5" obsolete="false" singlevalue="true" collective="false"
+                       nousermodification="false">
+            <aliases>
+                <alias>hmq-subscribe</alias>
+            </aliases>
+            <description>Applies the permission to subscribing to a topic under the guarding topicFilter?</description>
+            <usage>USER_APPLICATIONS</usage>
+            <syntax>1.3.6.1.4.1.1466.115.121.1.7</syntax>
+            <equality>booleanMatch</equality>
+        </attributetype>
+        <attributetype oid="1.3.6.1.4.1.54795.2.3.6" obsolete="false" singlevalue="true" collective="false"
+                       nousermodification="false">
+            <aliases>
+                <alias>hmq-retain</alias>
+            </aliases>
+            <description>Applies the permission to publishing retained messages to a topic under the guarding
+                topicFilter?
+            </description>
+            <usage>USER_APPLICATIONS</usage>
+            <syntax>1.3.6.1.4.1.1466.115.121.1.7</syntax>
+            <equality>booleanMatch</equality>
+        </attributetype>
+        <attributetype oid="1.3.6.1.4.1.54795.2.3.7" obsolete="false" singlevalue="true" collective="false"
+                       nousermodification="false">
+            <aliases>
+                <alias>hmq-share</alias>
+            </aliases>
+            <description>Applies the permission to joining shared subscriptions for a topic under the guarding
+                topicFilter?
+            </description>
+            <usage>USER_APPLICATIONS</usage>
+            <syntax>1.3.6.1.4.1.1466.115.121.1.7</syntax>
+            <equality>booleanMatch</equality>
+        </attributetype>
+        <attributetype oid="1.3.6.1.4.1.54795.2.3.8" obsolete="false" singlevalue="true" collective="false"
+                       nousermodification="false">
+            <aliases>
+                <alias>hmq-sharedGroup</alias>
+            </aliases>
+            <description>The shared group ($share/&lt;group&gt;/topic) the permission applies to. This is only relevant
+                if share (OID 1.3.6.1.4.1.54795.2.3.7) is set to TRUE.
+            </description>
+            <usage>USER_APPLICATIONS</usage>
+            <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
+        </attributetype>
+        <attributetype oid="1.3.6.1.4.1.54795.2.3.9" obsolete="false" singlevalue="false" collective="false"
+                       nousermodification="false">
+            <aliases>
+                <alias>hmq-controlCenterPermission</alias>
+            </aliases>
+            <description>Permission string for the HiveMQ Control Center.</description>
+            <usage>USER_APPLICATIONS</usage>
+            <syntax>1.3.6.1.4.1.1466.115.121.1.15</syntax>
+            <equality>caseExactMatch</equality>
+            <ordering>caseExactOrderingMatch</ordering>
+            <substring>caseExactSubstringsMatch</substring>
+        </attributetype>
+    </attributetypes>
+    <objectclasses>
+        <objectclass oid="1.3.6.1.4.1.54795.2.4.1" obsolete="false">
+            <aliases>
+                <alias>hmq-mqttClient</alias>
+            </aliases>
+            <description>Used to authorize an MQTT Client with 1 .. N mqtt mqttPermissions. Can represent a single
+                client or when attached to a groupOfNames or groupOfUniqueNames a RBAC role.
+            </description>
+            <type>AUXILIARY</type>
+            <mandatory>
+                <attributetype>hmq-topicPermission</attributetype>
+            </mandatory>
+        </objectclass>
+        <objectclass oid="1.3.6.1.4.1.54795.2.4.2" obsolete="false">
+            <aliases>
+                <alias>hmq-mqttPermission</alias>
+            </aliases>
+            <description>The authorization information for a single MQTT topic(-filter). If multiple permissions for the
+                same topic-string are to be used the commonName should be part of the dn.
+            </description>
+            <type>STRUCTURAL</type>
+            <mandatory>
+                <attributetype>hmq-topicFilter</attributetype>
+            </mandatory>
+            <optional>
+                <attributetype>hmq-qualityOfService</attributetype>
+                <attributetype>hmq-publish</attributetype>
+                <attributetype>hmq-subscribe</attributetype>
+                <attributetype>hmq-retain</attributetype>
+                <attributetype>hmq-share</attributetype>
+                <attributetype>hmq-sharedGroup</attributetype>
+                <attributetype>description</attributetype>
+                <attributetype>cn</attributetype>
+            </optional>
+        </objectclass>
+        <objectclass oid="1.3.6.1.4.1.54795.2.4.3" obsolete="false">
+            <aliases>
+                <alias>hmq-controlCenterUser</alias>
+            </aliases>
+            <description>A hmq-controlCenterUser has different permissions for HiveMQ Control Center views.
+            </description>
+            <type>AUXILIARY</type>
+            <mandatory>
+                <attributetype>hmq-controlCenterPermission</attributetype>
+            </mandatory>
+        </objectclass>
+    </objectclasses>
+</schema>
