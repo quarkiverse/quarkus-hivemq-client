@@ -43,6 +43,7 @@
     <failsafe-plugin.version>3.5.2</failsafe-plugin.version>
     <nimbus-jose-jwt.version>10.0.2</nimbus-jose-jwt.version>
     <wiremock-standalone.version>3.12.1</wiremock-standalone.version>
+    <jboss-logging-processor.version>3.0.4.Final</jboss-logging-processor.version>
   </properties>
   <dependencyManagement>
     <dependencies>
