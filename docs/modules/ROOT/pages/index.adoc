@@ -174,4 +174,27 @@ for example, you can run `mvn -V -B -am clean verify -Dnative -Dquarkus.native.b
 
 == Dev Services
 
-If no `outgoing/incoming host/port` is defined then Dev Services will launch a default instance and will connect your channels to the HiveMQ broker.
+The **Dev Services** feature in the HiveMQ Quarkus extension simplifies the integration of a local MQTT broker in your application for testing and development. If no custom host/port configuration is defined, Dev Services will automatically launch an instance of the MQTT broker and connect your messaging channels to it.
+
+The configuration for Dev Services can be controlled via the `application.properties` file. The following properties are available for customization:
+
+[source,properties]
+----
+# Enable/Disable DevServices globally
+quarkus.devservices.enabled=true
+
+# Enable/Disable MQTT DevServices specifically
+quarkus.hivemq.devservices.enabled=true
+
+# Set the image name for the MQTT broker (defaults to 'hivemq/hivemq4')
+quarkus.hivemq.devservices.image-name=hivemq/hivemq4
+
+# Set a fixed port for the MQTT broker (set to 0 to let Docker pick an available port)
+quarkus.hivemq.devservices.port=0
+
+# Configure whether the DevService should be shared across multiple tests
+quarkus.hivemq.devservices.shared=false
+
+# Set a custom service name for the DevService container
+quarkus.hivemq.devservices.service-name=mqtt
+----

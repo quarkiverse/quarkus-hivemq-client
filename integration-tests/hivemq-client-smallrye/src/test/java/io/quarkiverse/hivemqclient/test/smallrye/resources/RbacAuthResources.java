@@ -24,6 +24,10 @@ public class RbacAuthResources extends HiveMQCommunityEdition {
         config.put("mp.messaging.outgoing.topic-price.password", DEFAULT_PASSWORD);
         config.put("mp.messaging.incoming.prices.username", DEFAULT_USERNAME);
         config.put("mp.messaging.incoming.prices.password", DEFAULT_PASSWORD);
+        config.put("mp.messaging.incoming.custom-topic-sink.username", DEFAULT_USERNAME);
+        config.put("mp.messaging.incoming.custom-topic-sink.password", DEFAULT_PASSWORD);
+        config.put("mp.messaging.outgoing.custom-topic.username", DEFAULT_USERNAME);
+        config.put("mp.messaging.outgoing.custom-topic.password", DEFAULT_PASSWORD);
         return config;
     }
 }

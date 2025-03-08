@@ -33,6 +33,17 @@ public class TlsAuthResources extends HiveMQCommunityEdition {
         config.put("mp.messaging.incoming.prices.ssl.truststore.password", "changeme");
         config.put("mp.messaging.incoming.prices.ssl.truststore.hostVerifier", "false");
 
+        config.put("mp.messaging.outgoing.custom-topic.ssl", "true");
+        config.put("mp.messaging.outgoing.custom-topic.ssl.truststore.type", "jks");
+        config.put("mp.messaging.outgoing.custom-topic.ssl.truststore.location", "src/test/resources/certs/server.jks");
+        config.put("mp.messaging.outgoing.custom-topic.ssl.truststore.password", "changeme");
+        config.put("mp.messaging.outgoing.custom-topic.ssl.truststore.hostVerifier", "false");
+
+        config.put("mp.messaging.incoming.custom-topic-sink.ssl", "true");
+        config.put("mp.messaging.incoming.custom-topic-sink.ssl.truststore.type", "jks");
+        config.put("mp.messaging.incoming.custom-topic-sink.ssl.truststore.location", "src/test/resources/certs/server.jks");
+        config.put("mp.messaging.incoming.custom-topic-sink.ssl.truststore.password", "changeme");
+        config.put("mp.messaging.incoming.custom-topic-sink.ssl.truststore.hostVerifier", "false");
         return config;
     }
 }

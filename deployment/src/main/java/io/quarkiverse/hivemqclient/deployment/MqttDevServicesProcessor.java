@@ -218,12 +218,18 @@ public class MqttDevServicesProcessor {
 
     private MqttDevServiceCfg getConfiguration() {
         Config config = ConfigProvider.getConfig();
-        boolean devServicesEnabled = config.getOptionalValue("hivemq.devservices.enabled", Boolean.class).orElse(true);
-        String imageName = config.getOptionalValue("hivemq.devservices.image-name", String.class).orElse("hivemq/hivemq4");
-        Integer fixedExposedPort = config.getOptionalValue("hivemq.devservices.port", Integer.class).orElse(0);
-        boolean shared = config.getOptionalValue("hivemq.devservices.shared", Boolean.class).orElse(false);
-        String serviceName = config.getOptionalValue("hivemq.devservices.service-name", String.class).orElse("mqtt");
+        boolean globalDevServiceEnabled = config.getOptionalValue("quarkus.devservices.enabled", Boolean.class).orElse(true);
+        boolean mqttDevServiceEnabled = config.getOptionalValue("quarkus.hivemq.devservices.enabled", Boolean.class)
+                .orElse(true);
+
+        boolean devServicesEnabled = globalDevServiceEnabled && mqttDevServiceEnabled;
+        String imageName = config.getOptionalValue("quarkus.hivemq.devservices.image-name", String.class)
+                .orElse("hivemq/hivemq4");
+        Integer fixedExposedPort = config.getOptionalValue("quarkus.hivemq.devservices.port", Integer.class).orElse(0);
+        boolean shared = config.getOptionalValue("quarkus.hivemq.devservices.shared", Boolean.class).orElse(false);
+        String serviceName = config.getOptionalValue("quarkus.hivemq.devservices.service-name", String.class).orElse("mqtt");
         Map<String, String> containerEnv = new HashMap<>();
+
         return new MqttDevServiceCfg(new MqttDevServicesBuildTimeConfig(devServicesEnabled, imageName, fixedExposedPort, shared,
                 serviceName, containerEnv));
     }

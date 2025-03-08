@@ -40,4 +40,11 @@ public class HivemqProfiles {
             return Collections.singletonList(new TestResourceEntry(EnterpriseJwtAuthResources.class));
         }
     }
+
+    public static class DevServiceEnabled implements QuarkusTestProfile {
+        @Override
+        public String getConfigProfile() {
+            return "dev-service";
+        }
+    }
 }

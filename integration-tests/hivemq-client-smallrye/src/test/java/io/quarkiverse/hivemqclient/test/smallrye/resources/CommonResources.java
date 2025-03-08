@@ -19,6 +19,12 @@ public abstract class CommonResources implements QuarkusTestResourceLifecycleMan
         config.put("mp.messaging.outgoing.topic-price.port", "" + getHiveMQContainer().getMqttPort());
         config.put("mp.messaging.incoming.prices.host", getHiveMQContainer().getHost());
         config.put("mp.messaging.incoming.prices.port", "" + getHiveMQContainer().getMqttPort());
+
+        // custom topic scenario
+        config.put("mp.messaging.incoming.custom-topic-sink.host", getHiveMQContainer().getHost());
+        config.put("mp.messaging.incoming.custom-topic-sink.port", "" + getHiveMQContainer().getMqttPort());
+        config.put("mp.messaging.outgoing.custom-topic.host", getHiveMQContainer().getHost());
+        config.put("mp.messaging.outgoing.custom-topic.port", "" + getHiveMQContainer().getMqttPort());
         return config;
     }
 
