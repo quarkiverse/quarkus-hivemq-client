@@ -179,7 +179,13 @@ public class HiveMQClients {
             }
 
             connection = Uni.createFrom().future(client.connect().toFuture());
-            connection.subscribe().with(c -> log.info(c.getReturnCode()));
+            connection.subscribe().with(
+                    c -> {
+                        log.info("Mqtt3 connection Ack: " + c.getReturnCode());
+                    },
+                    failure -> {
+                        log.error("Failed to connect to MQTT broker: " + failure.getMessage(), failure);
+                    });
 
         }
 

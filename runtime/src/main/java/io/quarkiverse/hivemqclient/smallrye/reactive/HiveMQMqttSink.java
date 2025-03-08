@@ -7,6 +7,7 @@ import java.util.Optional;
 import java.util.concurrent.Flow;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
 
 import org.eclipse.microprofile.reactive.messaging.Message;
 
@@ -38,44 +39,10 @@ public class HiveMQMqttSink {
     public HiveMQMqttSink(Vertx vertx, HiveMQMqttConnectorOutgoingConfiguration config) {
         topic = config.getTopic().orElseGet(config::getChannel);
         qos = config.getQos();
-
+        HiveMQPing.isServerReachable(HiveMQClients.getHolder(config));
         AtomicReference<Mqtt3RxClient> reference = new AtomicReference<>();
 
-        sink = MultiUtils.via(msg -> msg.onSubscription()
-                .call(() -> {
-
-                    final Mqtt3RxClient client = reference.get();
-                    if (client != null) {
-                        if (client.getState().isConnected()) {
-                            connected.set(true);
-                        } else {
-                            vertx.setPeriodic(100, id -> {
-                                if (client.getState().isConnected()) {
-                                    vertx.cancelTimer(id);
-                                    connected.set(true);
-                                }
-                            });
-                        }
-                    }
-
-                    return HiveMQClients.getConnectedClient(config)
-                            .onItem().invoke(c -> {
-                                reference.set(c);
-                                connected.set(true);
-                            });
-                })
-                .onItem().transformToUniAndConcatenate(m -> send(reference, m))
-                .onCompletion().invoke(() -> {
-                    Mqtt3RxClient c = reference.getAndSet(null);
-                    if (c != null) {
-                        c.toBlocking().disconnect();
-                        connected.set(false);
-                    }
-                })
-                .onFailure().invoke(e -> {
-                    connected.set(false);
-                    log.errorWhileSendingMessageToBroker(e);
-                }));
+        this.sink = createMqttSink(vertx, config, reference);
     }
 
     private Uni<? extends Message<?>> send(AtomicReference<Mqtt3RxClient> reference, Message<?> msg) {
@@ -110,6 +77,7 @@ public class HiveMQMqttSink {
                 .publisher(AdaptersToFlow.publisher(publish))
                 .onItemOrFailure().transformToUni((s, f) -> {
                     if (f != null) {
+                        log.error("Failed to send MQTT message: " + f.getMessage(), f);
                         return Uni.createFrom().completionStage(msg.nack(f).thenApply(x -> msg));
                     } else {
                         return Uni.createFrom().completionStage(msg.ack().thenApply(x -> msg));
@@ -151,5 +119,62 @@ public class HiveMQMqttSink {
 
     public boolean isReady() {
         return connected.get();
+    }
+
+    private Flow.Subscriber<? extends Message<?>> createMqttSink(Vertx vertx, HiveMQMqttConnectorOutgoingConfiguration config,
+            AtomicReference<Mqtt3RxClient> reference) {
+        return MultiUtils.via(msg -> msg.onSubscription()
+                .call(() -> connectClientOnSubscription(vertx, reference, config))
+                .onItem().transformToUniAndConcatenate(m -> send(reference, m))
+                .onCompletion().invoke(() -> disconnectClient(reference))
+                .onFailure().invoke(e -> handleError(e)));
+    }
+
+    private Uni<Void> connectClientOnSubscription(Vertx vertx, AtomicReference<Mqtt3RxClient> reference,
+            HiveMQMqttConnectorOutgoingConfiguration config) {
+        final Mqtt3RxClient client = reference.get();
+        if (client != null) {
+            if (client.getState().isConnected()) {
+                connected.set(true);
+            } else {
+                handleClientConnectionInProgress(vertx, id -> {
+                    if (client.getState().isConnected()) {
+                        vertx.cancelTimer(id);
+                        connected.set(true);
+                    }
+                });
+            }
+        }
+
+        return HiveMQClients.getConnectedClient(config)
+                .onItem().invoke(c -> {
+                    reference.set(c);
+                    connected.set(true);
+                    log.info("Successfully connected to MQTT broker.");
+                })
+                .onFailure().invoke(error -> handleConnectionFailure(error))
+                .onItem().transformToUni(i -> Uni.createFrom().voidItem());
+    }
+
+    private void handleClientConnectionInProgress(Vertx vertx, Consumer<Long> handler) {
+        vertx.setPeriodic(100, handler);
+    }
+
+    private void handleConnectionFailure(Throwable error) {
+        connected.set(false);
+        log.error("Failed to connect to MQTT broker: " + error.getMessage(), error);
+    }
+
+    private void disconnectClient(AtomicReference<Mqtt3RxClient> reference) {
+        Mqtt3RxClient client = reference.getAndSet(null);
+        if (client != null) {
+            client.toBlocking().disconnect();
+            connected.set(false);
+        }
+    }
+
+    private void handleError(Throwable e) {
+        connected.set(false);
+        log.errorWhileSendingMessageToBroker(e);
     }
 }

@@ -30,32 +30,19 @@ public class HiveMQMqttSource {
         MqttFailureHandler.Strategy strategy = MqttFailureHandler.Strategy.from(config.getFailureStrategy());
         MqttFailureHandler onNack = createFailureHandler(strategy, config.getChannel());
 
-        if (topic.contains("#") || topic.contains("+")) {
-            String replace = topic.replace("+", "[^/]+")
-                    .replace("#", ".+");
-            pattern = Pattern.compile(replace);
-        } else {
-            pattern = null;
-        }
+        this.pattern = createPatternFromTopic(topic);
 
         HiveMQClients.ClientHolder holder = HiveMQClients.getHolder(config);
+        HiveMQPing.isServerReachable(HiveMQClients.getHolder(config));
+        this.source = createMqttSource(holder, topic, qos, broadcast, onNack);
+    }
 
-        this.source = holder.connect()
-                .onItem()
-                .transformToMulti(client -> Multi.createFrom()
-                        .publisher(AdaptersToFlow.publisher(client.subscribePublishesWith()
-                                .topicFilter(topic).qos(MqttQos.fromCode(qos))
-                                .applySubscribe().doOnSingle(subAck -> subscribed.set(true))))
-                        .filter(m -> matches(topic, m))
-                        .onItem().transform(x -> new HiveMQReceivingMqttMessage(x, onNack))
-                        .stage(multi -> {
-                            if (broadcast) {
-                                return multi.broadcast().toAllSubscribers();
-                            }
-                            return multi;
-                        })
-                        .onCancellation().invoke(() -> subscribed.set(false))
-                        .onFailure().invoke(log::unableToConnectToBroker));
+    private Pattern createPatternFromTopic(String topic) {
+        if (topic.contains("#") || topic.contains("+")) {
+            String regex = topic.replace("+", "[^/]+").replace("#", ".+");
+            return Pattern.compile(regex);
+        }
+        return null;
     }
 
     private boolean matches(String topic, Mqtt3Publish m) {
@@ -83,5 +70,24 @@ public class HiveMQMqttSource {
 
     public boolean isSubscribed() {
         return subscribed.get();
+    }
+
+    private Multi<HiveMQReceivingMqttMessage> createMqttSource(
+            HiveMQClients.ClientHolder holder, String topic, int qos, boolean broadcast, MqttFailureHandler onNack) {
+
+        return holder.connect()
+                .onItem()
+                .transformToMulti(client -> Multi.createFrom()
+                        .publisher(AdaptersToFlow.publisher(
+                                client.subscribePublishesWith()
+                                        .topicFilter(topic)
+                                        .qos(MqttQos.fromCode(qos))
+                                        .applySubscribe()
+                                        .doOnSingle(subAck -> subscribed.set(true))))
+                        .filter(m -> matches(topic, m))
+                        .onItem().transform(x -> new HiveMQReceivingMqttMessage(x, onNack))
+                        .stage(multi -> broadcast ? multi.broadcast().toAllSubscribers() : multi)
+                        .onCancellation().invoke(() -> subscribed.set(false))
+                        .onFailure().invoke(log::unableToConnectToBroker));
     }
 }
