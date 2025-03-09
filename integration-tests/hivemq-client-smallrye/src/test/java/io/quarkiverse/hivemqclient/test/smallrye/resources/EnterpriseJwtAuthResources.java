@@ -48,6 +48,10 @@ public class EnterpriseJwtAuthResources extends HiveMQEnterpriseEdition {
         config.put("mp.messaging.outgoing.topic-price.password", jwt);
         config.put("mp.messaging.incoming.prices.username", DEFAULT_USERNAME);
         config.put("mp.messaging.incoming.prices.password", jwt);
+        config.put("mp.messaging.incoming.custom-topic-sink.username", DEFAULT_USERNAME);
+        config.put("mp.messaging.incoming.custom-topic-sink.password", jwt);
+        config.put("mp.messaging.outgoing.custom-topic.username", DEFAULT_USERNAME);
+        config.put("mp.messaging.outgoing.custom-topic.password", jwt);
         return config;
     }
 
