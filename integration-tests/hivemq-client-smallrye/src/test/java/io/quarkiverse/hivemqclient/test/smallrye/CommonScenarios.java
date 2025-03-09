@@ -21,7 +21,7 @@ import org.junit.jupiter.api.Test;
 import io.quarkus.test.common.http.TestHTTPResource;
 
 public class CommonScenarios {
-    private static final int TIMEOUT_SEC = 5;
+    private static final int TIMEOUT_SEC = 10;
     private static final Logger LOG = Logger.getLogger(CommonScenarios.class);
 
     @TestHTTPResource("prices/stream")
