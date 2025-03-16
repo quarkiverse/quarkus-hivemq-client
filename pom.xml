@@ -154,8 +154,15 @@
     <profile>
       <id>native</id>
       <properties>
+        <skipITs>false</skipITs>
+        <quarkus.native.enabled>true</quarkus.native.enabled>
         <quarkus.package.type>native</quarkus.package.type>
       </properties>
+      <activation>
+        <property>
+          <name>native</name>
+        </property>
+      </activation>
     </profile>
     <profile>
       <id>validate-format</id>

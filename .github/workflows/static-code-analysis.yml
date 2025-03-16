@@ -21,8 +21,14 @@ jobs:
           java-version: 17
           cache: maven
 
+      - name: Debug Maven Version
+        run: mvn --version
+
+      - name: Build the Project
+        run: mvn clean install -DskipTests
+
       - name: Collect and submit dependencies
-        uses: advanced-security/maven-dependency-submission-action@v4
+        uses: advanced-security/maven-dependency-submission-action@v3
         with:
           directory: "."
           correlator: ${{ github.job }}-quarkus-hivemq-client
