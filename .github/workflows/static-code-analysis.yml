@@ -1,15 +1,21 @@
 name: Maven Dependency Submission
 on:
   workflow_dispatch:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
   schedule:
     - cron: '30 0 * * *'
 
 jobs:
-  dependencies:
-    name: Submit Dependencies
+  analyze:
+    name: Analyze Code
     runs-on: ubuntu-latest
     permissions:
-      contents: write
+      security-events: write
+      actions: read
+      contents: read
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -27,11 +33,13 @@ jobs:
       - name: Debug Maven Version
         run: ./mvnw --version
 
-      - name: Build the Project
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: java
+
+      - name: Build Project
         run: mvn clean install -DskipTests
 
-      - name: Collect and submit dependencies
-        uses: advanced-security/maven-dependency-submission-action@v3
-        with:
-          directory: "."
-          ignore-maven-wrapper: true
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
