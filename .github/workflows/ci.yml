@@ -82,7 +82,7 @@ jobs:
     strategy:
       matrix:
         java: [ 17, 21 ]
-        image: [ "ubi-quarkus-mandrel-builder-image:jdk-21", "ubi-quarkus-graalvmce-builder-image:jdk-21" ]
+        image: [ "ubi9-quarkus-mandrel-builder-image:jdk-21", "ubi9-quarkus-graalvmce-builder-image:jdk-21" ]
     steps:
     - uses: actions/checkout@v4
     - name: Install JDK {{ matrix.java }}

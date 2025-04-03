@@ -1,5 +1,4 @@
 name: quarkus-hivemq-client
 title: HiveMQ Client
 version: dev
-nav:
-  - modules/ROOT/nav.adoc
+

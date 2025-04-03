@@ -1,8 +1,0 @@
-* xref:index.adoc[Overview]
-* xref:index.adoc[Matrix compatibility]
-* xref:index.adoc[Installation]
-* xref:index.adoc[Create an application from scratch]
-* xref:index.adoc[Usage]
-* xref:index.adoc[Native mode support]
-* xref:index.adoc[Dev Services]
-* xref:config-reference.adoc[Configuration Reference]
