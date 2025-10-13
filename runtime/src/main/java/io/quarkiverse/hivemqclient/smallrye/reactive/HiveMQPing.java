@@ -5,6 +5,7 @@ import static io.smallrye.reactive.messaging.mqtt.i18n.MqttLogging.log;
 import java.time.Duration;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import com.hivemq.client.mqtt.datatypes.MqttQos;
 import com.hivemq.client.mqtt.mqtt3.Mqtt3AsyncClient;
@@ -76,7 +77,13 @@ public class HiveMQPing {
                     .get(5, TimeUnit.SECONDS);
 
             return pongReceived.get(PING_TIMEOUT_SEC, TimeUnit.SECONDS);
+        } catch (TimeoutException e) {
+            log.warn("MQTT ping timeout after " + PING_TIMEOUT_SEC + " seconds. " +
+                    "Broker may be slow or unreachable. Check network connectivity and broker responsiveness.", e);
+            return false;
         } catch (Exception e) {
+            log.error("MQTT connection health check failed: " + e.getMessage() + ". " +
+                    "Verify broker configuration, authentication credentials, and network connectivity.", e);
             return false;
         } finally {
             client.unsubscribeWith()

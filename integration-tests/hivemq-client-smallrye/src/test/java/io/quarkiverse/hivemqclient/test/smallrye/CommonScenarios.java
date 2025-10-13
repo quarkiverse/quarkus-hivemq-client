@@ -1,24 +1,26 @@
 package io.quarkiverse.hivemqclient.test.smallrye;
 
-import io.quarkus.runtime.Quarkus;
-import io.quarkus.test.common.http.TestHTTPResource;
-import jakarta.ws.rs.client.Client;
-import jakarta.ws.rs.client.ClientBuilder;
-import jakarta.ws.rs.client.WebTarget;
-import jakarta.ws.rs.core.MediaType;
-import jakarta.ws.rs.sse.SseEventSource;
-import org.jboss.logging.Logger;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.Test;
+import static io.restassured.RestAssured.given;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.net.URI;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static io.restassured.RestAssured.given;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import jakarta.ws.rs.client.Client;
+import jakarta.ws.rs.client.ClientBuilder;
+import jakarta.ws.rs.client.WebTarget;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.sse.SseEventSource;
+
+import org.jboss.logging.Logger;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Test;
+
+import io.quarkus.runtime.Quarkus;
+import io.quarkus.test.common.http.TestHTTPResource;
 
 public class CommonScenarios {
     private static final int TIMEOUT_SEC = 10;

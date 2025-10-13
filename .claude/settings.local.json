@@ -14,7 +14,10 @@
       "Bash(git tag:*)",
       "Bash(npm install:*)",
       "Bash(npx content-collections:*)",
-      "Bash(cp:*)"
+      "Bash(cp:*)",
+      "Bash(mvn dependency:*)",
+      "Bash(mvn test:*)",
+      "Bash(mvn verify:*)"
     ]
   },
   "hooks": {
