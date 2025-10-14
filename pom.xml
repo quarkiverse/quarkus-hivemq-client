@@ -44,6 +44,7 @@
     <nimbus-jose-jwt.version>10.5</nimbus-jose-jwt.version>
     <wiremock-standalone.version>3.13.0</wiremock-standalone.version>
     <jboss-logging-processor.version>3.0.4.Final</jboss-logging-processor.version>
+    <assertj-core.version>3.26.3</assertj-core.version>
   </properties>
   <dependencyManagement>
     <dependencies>
