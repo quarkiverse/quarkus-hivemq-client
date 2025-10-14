@@ -35,7 +35,7 @@ jobs:
           languages: java
 
       - name: Build Project
-        run: mvn clean install -DskipTests
+        run: ./mvnw clean install -DskipTests
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v4
