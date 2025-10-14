@@ -37,7 +37,7 @@ jobs:
         java-version: ${{ matrix.java }}
         check-latest: true
     - name: format
-      run: mvn -V -B formatter:validate verify -DskipTests -DskipITs
+      run: ./mvnw -V -B formatter:validate verify -DskipTests -DskipITs
     - name: Tar Maven Repo
       shell: bash
       run: tar -I 'pigz -9' -cf maven-repo.tgz -C ~ .m2/repository
@@ -73,7 +73,7 @@ jobs:
       shell: bash
       run: tar -xzf maven-repo.tgz -C ~
     - name: Build with Maven
-      run: mvn -V -B -am clean verify
+      run: ./mvnw -V -B -am clean verify
   linux-build-native:
     name: PR - Linux - Native build - Latest Version
     runs-on: ubuntu-latest
@@ -102,5 +102,5 @@ jobs:
       shell: bash
       run: tar -xzf maven-repo.tgz -C ~
     - name: Build with Maven
-      run: mvn -V -B -am clean verify -Dnative -Dquarkus.native.builder-image=quay.io/quarkus/${{ matrix.image }}
+      run: ./mvnw -V -B -am clean verify -Dnative -Dquarkus.native.builder-image=quay.io/quarkus/${{ matrix.image }}
 

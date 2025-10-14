@@ -17,7 +17,11 @@
       "Bash(cp:*)",
       "Bash(mvn dependency:*)",
       "Bash(mvn test:*)",
-      "Bash(mvn verify:*)"
+      "Bash(mvn verify:*)",
+      "WebSearch",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "WebFetch(domain:github.com)",
+      "Bash(./mvnw:*)"
     ]
   },
   "hooks": {
