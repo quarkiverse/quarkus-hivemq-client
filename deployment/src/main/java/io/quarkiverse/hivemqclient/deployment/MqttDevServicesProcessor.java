@@ -230,8 +230,7 @@ public class MqttDevServicesProcessor {
         String serviceName = config.getOptionalValue("quarkus.hivemq.devservices.service-name", String.class).orElse("mqtt");
         Map<String, String> containerEnv = new HashMap<>();
 
-        return new MqttDevServiceCfg(new MqttDevServicesBuildTimeConfig(devServicesEnabled, imageName, fixedExposedPort, shared,
-                serviceName, containerEnv));
+        return new MqttDevServiceCfg(devServicesEnabled, imageName, fixedExposedPort, shared, serviceName, containerEnv);
     }
 
     private static final class MqttDevServiceCfg {
@@ -243,13 +242,14 @@ public class MqttDevServicesProcessor {
         private final String serviceName;
         private final Map<String, String> containerEnv;
 
-        public MqttDevServiceCfg(MqttDevServicesBuildTimeConfig devServicesConfig) {
-            this.devServicesEnabled = devServicesConfig.enabled.orElse(true);
-            this.imageName = devServicesConfig.imageName;
-            this.fixedExposedPort = devServicesConfig.port.orElse(0);
-            this.shared = devServicesConfig.shared;
-            this.serviceName = devServicesConfig.serviceName;
-            this.containerEnv = devServicesConfig.containerEnv;
+        public MqttDevServiceCfg(boolean devServicesEnabled, String imageName, Integer fixedExposedPort,
+                boolean shared, String serviceName, Map<String, String> containerEnv) {
+            this.devServicesEnabled = devServicesEnabled;
+            this.imageName = imageName;
+            this.fixedExposedPort = fixedExposedPort;
+            this.shared = shared;
+            this.serviceName = serviceName;
+            this.containerEnv = containerEnv;
         }
 
         @Override
