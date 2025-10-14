@@ -4,11 +4,9 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.OptionalInt;
 
-import io.quarkus.runtime.annotations.ConfigGroup;
-import io.quarkus.runtime.annotations.ConfigItem;
+import io.smallrye.config.WithDefault;
 
-@ConfigGroup
-public class MqttDevServicesBuildTimeConfig {
+public interface MqttDevServicesBuildTimeConfig {
     /**
      * If Dev Services for MQTT has been explicitly enabled or disabled. Dev Services are generally enabled
      * by default, unless there is an existing configuration present. For MQTT, Dev Services starts a broker unless
@@ -17,22 +15,20 @@ public class MqttDevServicesBuildTimeConfig {
      * with
      * {@code host} or {@code port}.
      */
-    @ConfigItem
-    public Optional<Boolean> enabled = Optional.empty();
+    Optional<Boolean> enabled();
 
     /**
      * Optional fixed port the dev service will listen to.
      * <p>
      * If not defined, the port will be chosen randomly.
      */
-    @ConfigItem
-    public OptionalInt port;
+    OptionalInt port();
 
     /**
      * The image to use.
      */
-    @ConfigItem(defaultValue = "hivemq/hivemq-ce:2024.3")
-    public String imageName;
+    @WithDefault("hivemq/hivemq-ce:2024.3")
+    String imageName();
 
     /**
      * Indicates if the MQTT broker managed by Quarkus Dev Services is shared.
@@ -45,8 +41,8 @@ public class MqttDevServicesBuildTimeConfig {
      * <p>
      * Container sharing is only used in dev mode.
      */
-    @ConfigItem(defaultValue = "true")
-    public boolean shared;
+    @WithDefault("true")
+    boolean shared();
 
     /**
      * The value of the {@code quarkus-dev-service-mqtt} label attached to the started container.
@@ -58,22 +54,11 @@ public class MqttDevServicesBuildTimeConfig {
      * <p>
      * This property is used when you need multiple shared MQTT brokers.
      */
-    @ConfigItem(defaultValue = "mqtt")
-    public String serviceName;
+    @WithDefault("mqtt")
+    String serviceName();
 
     /**
      * Environment variables that are passed to the container.
      */
-    @ConfigItem
-    public Map<String, String> containerEnv;
-
-    public MqttDevServicesBuildTimeConfig(Boolean enabled, String imageName, int port, boolean shared, String serviceName,
-            Map<String, String> containerEnv) {
-        this.enabled = Optional.ofNullable(enabled);
-        this.port = OptionalInt.of(port);
-        this.imageName = imageName;
-        this.shared = shared;
-        this.serviceName = serviceName;
-        this.containerEnv = containerEnv;
-    }
+    Optional<Map<String, String>> containerEnv();
 }
