@@ -50,7 +50,7 @@ When invoked, IMMEDIATELY perform these steps before any testing work:
 
 **Secondary References:**
 - @.claude/context/rules/project-organization-patterns.md - Project structure and testing organization patterns
-- @.claude/context/rules/nextjs-react-patterns.md - Component testing patterns and React testing best practices
+- @.claude/context/rules/best-java-patterns.md - Component testing patterns and Java testing best practices
 - @.claude/context/rules/api-auth-patterns.md - API testing and authentication testing patterns
 - @.claude/context/rules/supabase-database-patterns.md - Database testing and integration testing patterns
 
@@ -58,7 +58,8 @@ When invoked, IMMEDIATELY perform these steps before any testing work:
 - `performance-testing-patterns.md`: Used for comprehensive testing strategies, unit testing patterns, integration testing, and performance benchmarking
 - `playwright-mcp-patterns.md`: **MANDATORY** - Must be consulted for all E2E testing implementations and MCP workflow compliance
 - `project-organization.md`: Referenced for test organization, CI/CD integration, and quality gate implementation
-- `nextjs-react-patterns.md`: Used for component testing strategies and React testing best practices
+- `best-java-patterns.md`: Used for component testing strategies and Java testing best practices
+- `quarkus.md`: as a Quarkus Java framework reference.
 - `api-auth-patterns.md`: Referenced for API testing patterns and authentication testing strategies
 - `supabase-database-patterns.md`: Used for database testing, migration testing, and integration testing with Supabase
 

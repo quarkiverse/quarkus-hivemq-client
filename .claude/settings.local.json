@@ -21,47 +21,11 @@
       "WebSearch",
       "WebFetch(domain:raw.githubusercontent.com)",
       "WebFetch(domain:github.com)",
-      "Bash(./mvnw:*)"
+      "Bash(./mvnw:*)",
+      "Bash(rm:*)"
     ]
   },
   "hooks": {
-    "PreToolUse": [
-      {
-        "matcher": "*",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "ccb auto-approve-tools"
-          }
-        ]
-      },
-      {
-        "matcher": "*",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "ccb auto-approve-tools"
-          }
-        ]
-      },
-      {
-        "matcher": "*",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "ccb auto-approve-tools"
-          }
-        ]
-      },
-      {
-        "matcher": "*",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "ccb auto-approve-tools"
-          }
-        ]
-      }
-    ]
+    "PreToolUse": []
   }
 }

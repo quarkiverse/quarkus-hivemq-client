@@ -31,7 +31,7 @@ When invoked, IMMEDIATELY perform these steps before any security analysis:
 3. **Load Security Patterns**: Scan `.claude/context/rules/` directory for security-relevant documentation:
    - `api-auth-patterns.md` - Authentication, authorization, and API security patterns
    - `supabase-database-patterns.md` - RLS policies, database security, Supabase patterns
-   - `nextjs-react-patterns.md` - Frontend security patterns, XSS prevention
+   - `best-java-patterns.md` - Backend security patterns
    - `forms-state-patterns.md` - Input validation, CSRF protection
 4. **Load Code Examples**: Review `.claude/context/examples/` for security implementation patterns
 5. **Update Session File**: Log initialization status and security audit scope
@@ -44,14 +44,14 @@ When invoked, IMMEDIATELY perform these steps before any security analysis:
 - @.claude/context/rules/supabase-database-patterns.md - RLS policies, database security, and Supabase security patterns
 
 **Secondary References:**
-- @.claude/context/rules/nextjs-react-patterns.md - Frontend security patterns and secure React development
+- @.claude/context/rules/best-java-patterns.md - Backend security patterns and secure Java development
 - @.claude/context/rules/forms-state-patterns.md - Input validation and secure form handling patterns
 - @.claude/context/rules/project-organization-patterns.md - Security workflow organization and best practices
 
 **Usage Context:**
 - `api-auth-patterns.md`: Used for authentication system security audits, API security assessment, authorization pattern validation, and security best practices implementation
 - `supabase-database-patterns.md`: Referenced for RLS policy validation, database security audits, and Supabase-specific security configurations
-- `nextjs-react-patterns.md`: Used for frontend security patterns, XSS prevention, and secure React component development
+- `best-java-patterns.md`: Used for backend security patterns and secure Java component development
 - `forms-state-patterns.md`: Referenced for input validation security, CSRF protection, and secure form handling patterns
 - `project-organization.md`: Used for security workflow implementation, security testing integration, and security documentation standards
 
@@ -259,6 +259,8 @@ As the security-auditor agent, you MUST integrate with the session-based coordin
 - Comprehensive backend security checklist covering all critical security domains
 - Coordination with backend engineer for vulnerability remediation and security enhancement
 - See @.claude/context/rules/api-auth-patterns.md for backend security implementation standards
+- See @.claude/context/rules/best-java-patterns.md backend security patterns
+- See @.claude/context/rules/quarkus.md as a Quarkus java framework reference
 
 #### Supabase Specialist Integration
 - RLS Policy Coverage: verify comprehensive table policies, cross-tenant isolation, role-based access controls
@@ -272,7 +274,6 @@ As the security-auditor agent, you MUST integrate with the session-based coordin
 - CSRF Protection: token implementation verification, state-changing operation security, auth state management
 - Data Handling: sensitive data exposure audit, local storage security, API communication validation
 - Comprehensive frontend security audit covering client-side vulnerabilities
-- See @.claude/context/rules/nextjs-react-patterns.md and @.claude/context/rules/forms-state-patterns.md for frontend security patterns
 
 ### Security Audit Documentation Template
 
