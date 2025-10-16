@@ -1,50 +1,48 @@
-# ClaudeFast Sub-agents Suite
+# Java Backend Sub-Agents Suite
 
 ## Overview
 
-This directory contains a comprehensive suite of specialized sub-agents designed to enhance Claude Code development workflows. These agents replace and extend the previous SuperClaude framework with native Claude Code sub-agent support.
+This directory contains a comprehensive suite of specialized sub-agents designed for Java backend development with the Quarkus HiveMQ Client extension. These agents work through native Claude Code sub-agent support, providing focused expertise for backend engineering, testing, security, and documentation.
 
-**📝 Code Examples Migration**: All implementation examples and code snippets have been moved from agent files to:
+**Documentation Organization**: All implementation patterns and code examples are organized in:
 - **Implementation patterns**: @.claude/context/rules/
-- **Code examples**: @.claude/context/examples/
 - **System workflows**: @.claude/context/control/
+- **Code examples**: @.claude/context/examples/
 
-Agent files now focus on WHAT each agent does (roles, responsibilities, coordination patterns) rather than HOW (specific implementation details).
+Agent files focus on WHAT each agent does (roles, responsibilities, coordination patterns) rather than HOW (specific implementation details).
 
 ## Agent Architecture
 
 ### Tier 1: Master Orchestration Agent
-- **master-orchestrator** - Unified planning and coordination intelligence combining strategic architecture with tactical execution. Handles ALL technical planning, task breakdown, TodoWrite integration, and session orchestration
+- **master-orchestrator** - Unified planning and coordination intelligence combining strategic architecture with tactical execution. Handles ALL technical planning, task breakdown, TodoWrite integration, and session orchestration for Java backend projects
 
 ### Tier 2: Core Development Agents
-- **frontend-specialist** - React components, UI implementation, forms, responsive design  
-- **backend-engineer** - Server actions, database operations, API development
-- **security-auditor** - Security reviews, RLS policies, OWASP compliance
-- **quality-engineer** - Testing strategies, test automation, quality assurance
+- **backend-engineer** - Java development, Quarkus framework, REST APIs, HiveMQ integration, Maven builds
+- **security-auditor** - Security reviews, vulnerability scanning, REST API security, authentication
+- **quality-engineer** - JUnit testing, integration tests, test automation, quality assurance
 
 ### Tier 3: Specialized Domain Agents
-- **performance-optimizer** - Core Web Vitals, bundle optimization, database tuning
-- **supabase-specialist** - Database design, RLS policies, Edge Functions, real-time features
+- **performance-optimizer** - JVM optimization, message throughput, performance monitoring, profiling
 - **debugger-detective** - Systematic debugging, root cause analysis, forensic investigation
-- **deep-researcher** - Technical research, evidence gathering, Context7 integration
-- **content-copywriter** - All content creation: website copy, landing pages, blog posts, email marketing, SEO-optimized content
+- **deep-researcher** - Technical research, evidence gathering, documentation analysis
+- **content-copywriter** - Technical documentation, API docs, README files, javadoc generation
 
 ## Usage Patterns
 
 ### Direct Agent Invocation
 Use the Task tool to invoke specific agents for specialized tasks:
 - @master-orchestrator: analyze codebase and coordinate feature implementation
-- @frontend-specialist: create responsive dashboard components
-- @security-auditor: review authentication systems
+- @backend-engineer: implement HiveMQ message routing feature
+- @security-auditor: review REST API security implementation
 
 ### Auto-selection by Claude
 Claude automatically selects appropriate agents based on context:
-- "Build a workspace analytics feature with real-time updates" → master-orchestrator coordinates supabase-specialist, frontend-specialist
-- "Our app is loading slowly, help optimize performance" → master-orchestrator analyzes and coordinates performance-optimizer
+- "Add message filtering to HiveMQ client" → master-orchestrator coordinates backend-engineer, quality-engineer
+- "The connection pool is experiencing timeouts" → master-orchestrator analyzes and coordinates debugger-detective, deep-researcher, performance-optimizer
 
 ### Multi-agent Coordination
 Complex tasks requiring multiple specialists:
-- "Implement a complete user invitation system with security and real-time notifications" → master-orchestrator analyzes, plans, and coordinates backend-engineer, security-auditor, supabase-specialist, quality-engineer
+- "Implement connection pooling with health monitoring and metrics" → master-orchestrator analyzes, plans, and coordinates backend-engineer, quality-engineer, performance-optimizer, security-auditor
 
 ## Integration with Project Patterns
 
@@ -53,29 +51,13 @@ Each agent is designed to reference relevant patterns from `.claude/context/rule
 
 **Agent Pattern References:**
 - master-orchestrator → ALL patterns (comprehensive codebase oversight and living documentation)
-- frontend-specialist → nextjs-react-patterns.md, ui-styling-patterns.md, forms-state-patterns.md
-- backend-engineer → api-auth-patterns.md, supabase-database-patterns.md
-- security-auditor → api-auth-patterns.md, supabase-database-patterns.md
-- quality-engineer → performance-testing-patterns.md, playwright-mcp-patterns.md
-- master-orchestrator → @.claude/context/control/system-workflows.md, session templates
-- performance-optimizer → performance-testing-patterns.md, nextjs-react-patterns.md
-- supabase-specialist → supabase-database-patterns.md, api-auth-patterns.md
+- backend-engineer → best-java-patterns.md, java-patterns.md, quarkus.md, api-auth-patterns.md
+- security-auditor → api-auth-patterns.md, best-java-patterns.md
+- quality-engineer → performance-testing-patterns.md, best-java-patterns.md
+- performance-optimizer → performance-testing-patterns.md, quarkus.md, best-java-patterns.md
 - debugger-detective → ALL patterns (context-dependent)
 - deep-researcher → context7-mcp-patterns.md
-- content-copywriter → email-content-patterns.md, project-organization-patterns.md, nextjs-react-patterns.md, typescript-patterns.md
-
-### SuperClaude Migration Map
-
-| SuperClaude Component | Sub-agent Equivalent | Enhancement |
-|----------------------|---------------------|-------------|
-| `--persona-architect` + `/analyze --code` + Command orchestration | `master-orchestrator` | Combined codebase analysis, architecture, feature coordination + living documentation |
-| `--persona-frontend` | `frontend-specialist` | React 19 + Next.js 15 focus |
-| `--persona-backend` | `backend-engineer` | Server Actions + Supabase integration |
-| `--persona-security` | `security-auditor` | OWASP + RLS policy expertise |
-| `--persona-qa` | `quality-engineer` | Modern testing stack (Vitest + Playwright) |
-| `--persona-performance` | `performance-optimizer` | Core Web Vitals optimization |
-| Context7 MCP | Native web search + specialists | Built-in research capabilities |
-| Magic MCP | `frontend-specialist` | Component generation patterns |
+- content-copywriter → project-organization-patterns.md, best-java-patterns.md, java-patterns.md, quarkus.md
 
 ## Agent Tool Permissions
 
@@ -86,20 +68,22 @@ Each agent is designed to reference relevant patterns from `.claude/context/rule
 - **security-auditor**: `read`, `grep`, `glob`, `web_search`
 
 ### Implementation Agents (Full Development)
-- **frontend-specialist**: `read`, `edit`, `multi-edit`, `write`, `bash`
 - **backend-engineer**: `read`, `edit`, `multi-edit`, `write`, `bash`
-- **supabase-specialist**: `read`, `edit`, `multi-edit`, `write`, `bash`
 - **performance-optimizer**: `read`, `edit`, `bash`, `web_search`
 
 ### Testing & Validation Agents
 - **quality-engineer**: `read`, `edit`, `write`, `bash`
 
+### Research & Documentation Agents
+- **deep-researcher**: `read`, `web_search`, `grep`, `glob`
+- **debugger-detective**: `read`, `grep`, `glob`, `bash`
+- **content-copywriter**: `read`, `edit`, `write`
 
 ## Quality Standards
 
 ### Agent Development Principles
 1. **Domain Expertise**: Each agent focuses on specific technical domains
-2. **Context Integration**: All agents reference project patterns and examples  
+2. **Context Integration**: All agents reference project patterns and examples
 3. **Evidence-Based**: Recommendations based on established best practices
 4. **Security-First**: Security considerations integrated into all workflows
 5. **Performance-Aware**: Performance implications considered in all implementations
@@ -134,13 +118,13 @@ Track agent effectiveness:
 - **Complex Architecture & Feature Development**: Start with `master-orchestrator` for comprehensive analysis, planning, and coordination
 - **Codebase Analysis & Documentation Updates**: Use `master-orchestrator` for living documentation maintenance
 - **Performance Issues**: Begin with `master-orchestrator` for analysis, then coordinate `performance-optimizer`
-- **Security Reviews**: Always include `security-auditor` for auth/data access changes
-- **Database Work**: Prefer `supabase-specialist` for Supabase-specific implementations
+- **Security Reviews**: Always include `security-auditor` for API and authentication changes
+- **Testing Strategy**: Coordinate with `quality-engineer` for comprehensive test coverage
 
 ### Agent Chaining Patterns
 **Master Orchestration**: master-orchestrator analyzes, plans, and coordinates, then delegates to specialists, followed by quality-engineer validation.
 
-**Security-First Development**: master-orchestrator coordinates overall flow, security-auditor reviews requirements, backend-engineer implements secure APIs, frontend-specialist builds secure UI, quality-engineer validates security testing.
+**Security-First Development**: master-orchestrator coordinates overall flow, security-auditor reviews requirements, backend-engineer implements secure APIs, quality-engineer validates security testing.
 
 **Performance Optimization**: master-orchestrator analyzes and coordinates optimization strategy, performance-optimizer implements improvements, specialists handle domain-specific optimizations, with documentation updates throughout.
 
@@ -155,9 +139,8 @@ Track agent effectiveness:
 ### Future Agent Candidates
 Based on project evolution:
 - **devops-specialist**: Deployment, monitoring, infrastructure
-- **design-system-curator**: Design system maintenance and evolution
 - **api-integration-specialist**: Third-party integrations and webhooks
-- **mobile-specialist**: React Native or mobile-specific implementations
+- **database-specialist**: Database optimization and migration strategies
 
 ## Success Metrics
 
@@ -173,4 +156,4 @@ Based on project evolution:
 - **Test Coverage**: QA expertise ensures comprehensive testing
 - **Code Consistency**: Specialists ensure domain-specific best practices
 
-This sub-agent suite represents a evolution from generic AI assistance to specialized, domain-expert AI collaboration that maintains context awareness while providing focused expertise for complex development workflows.
+This sub-agent suite represents an evolution from generic AI assistance to specialized, domain-expert AI collaboration that maintains context awareness while providing focused expertise for Java backend development workflows.

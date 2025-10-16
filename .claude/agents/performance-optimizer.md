@@ -37,7 +37,8 @@ When invoked, IMMEDIATELY perform these steps before any optimization work:
 
 2. **Context Integration**: Scan `.claude/context/rules/` directory for:
    - `performance-testing-patterns.md` (PRIMARY reference)
-   - `nextjs-react-patterns.md` (React/Next.js performance patterns)
+   - `best-java-patterns.md` (Java performance patterns)
+   - `ùarkus.md` (Java Quarkus framework reference)
    - `supabase-database-patterns.md` (Database optimization patterns)
    - `ui-styling-patterns.md` (CSS and styling performance)
 
@@ -57,13 +58,15 @@ When invoked, IMMEDIATELY perform these steps before any optimization work:
 - @.claude/context/rules/performance-testing-patterns.md - Performance optimization patterns and Core Web Vitals strategies
 
 **Secondary References:**
-- @.claude/context/rules/nextjs-react-patterns.md - React performance optimization and Next.js performance patterns
+- @.claude/context/rules/best-java-patterns.md - Java performance optimization patterns
+- @.claude/context/rules/quarkus.md - Used in the Java Quarkus framework as a basic fundamental.
 - @.claude/context/rules/supabase-database-patterns.md - Database performance optimization and query tuning
 - @.claude/context/rules/ui-styling-patterns.md - CSS performance and styling optimization patterns
 
 **Usage Context:**
 - `performance-testing-patterns.md`: Used for comprehensive performance analysis, optimization strategies, Core Web Vitals improvement, and performance monitoring implementation
-- `nextjs-react-patterns.md`: Referenced for React component optimization, Next.js performance features, and frontend performance best practices
+- `best-java-patterns.md`: Referenced for Java component optimization and backend performance best practices
+- `quarkus.md`: Java Quarkus framework references.
 - `supabase-database-patterns.md`: Used for database query optimization, indexing strategies, and Supabase performance tuning
 - `ui-styling-patterns.md`: Referenced for CSS optimization, bundle size reduction, and styling performance improvements
 
@@ -232,7 +235,8 @@ Use this checklist to validate all performance optimization work:
 - Next.js configuration with performance optimizations and SWC minification
 - Server and client bundle analysis with separate reporting
 - Image optimization with AVIF/WebP format support and responsive sizing
-- See @.claude/context/rules/nextjs-react-patterns.md for complete bundle optimization configurations
+- See @.claude/context/rules/best-java-patterns.md for complete bundle optimization configurations
+- See @.claude/context/rules/quarkus.md as Java framework reference
 
 ## Database Query Optimization
 - Slow query analysis using pg_stat_statements for performance bottleneck identification
@@ -255,7 +259,7 @@ Use this checklist to validate all performance optimization work:
 - Responsive image strategies with art direction for different viewport sizes
 - AVIF/WebP format support with fallbacks for optimal compression
 - Priority loading configuration for above-the-fold images
-- See @.claude/context/rules/nextjs-react-patterns.md for image optimization patterns
+- See @.claude/context/rules/best-java-patterns.md for image optimization patterns
 
 ## Advanced Performance Patterns
 
@@ -265,7 +269,6 @@ Use this checklist to validate all performance optimization work:
 - Callback function optimization to prevent unnecessary re-renders
 - Virtual scrolling implementation for large datasets using react-window
 - Non-urgent updates with useTransition for better user experience
-- See @.claude/context/rules/nextjs-react-patterns.md for React performance patterns
 
 ### Database Performance Patterns
 - Query optimization with Supabase using specific selects to minimize data transfer
@@ -281,7 +284,7 @@ Use this checklist to validate all performance optimization work:
 - Service Worker implementation for aggressive caching of static assets
 - Cache-Control headers with stale-while-revalidate for optimal user experience
 - Performance metrics collection and monitoring integration
-- See @.claude/context/rules/nextjs-react-patterns.md for infrastructure performance patterns
+- See @.claude/context/rules/best-java-patterns.md for infrastructure performance patterns
 
 **PROJECT PATTERN INTEGRATION:**
 The `.claude/context/` directory contains evolving performance patterns and optimization strategies. Your initialization routine ensures you always work with the latest performance standards and best practices without hardcoded references.
@@ -311,7 +314,8 @@ The `.claude/context/` directory contains evolving performance patterns and opti
 - Component-based lazy loading with loading states and skeletons
 - Client-side only loading for admin features and heavy components
 - Strategic loading optimization to improve initial page load performance
-- See @.claude/context/rules/nextjs-react-patterns.md for complete code splitting strategies
+- See @.claude/context/rules/best-java-patterns.md for complete code splitting strategies
+- See @.claude/context/rules/quarkus.md as a Quarkus Java framework references
 
 **COORDINATION-ENHANCED OUTPUT FORMAT:**
 Structure performance optimizations with full session integration:

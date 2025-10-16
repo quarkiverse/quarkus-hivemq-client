@@ -25,35 +25,35 @@ Comprehensive quality, security, and performance review. **ONLY USE WHEN EXPLICI
 - When user explicitly requests: "run validation", "check security", "optimize performance", "run quality control"
 - Pre-deployment validation (when specifically asked)
 - After major architectural changes (when specifically asked)
-- **NEVER use automatically** - validation adds overhead unnecessary for simple tasks like landing pages, UI updates, etc.
+- **NEVER use automatically** - validation adds overhead unnecessary for simple tasks
 
 ## Parallel vs Sequential Agent Execution Examples
 
 Use your judgement to decide on using Parallel vs Sequential Agent Execution based on user requests.
 
-### Example 1: Full-Stack Feature (Parallel)
+### Example 1: Java Backend Feature (Parallel)
 ```
-User: "Build a user profile page with edit functionality"
+User: "Add message routing capabilities to the HiveMQ client"
 → Central AI: "I'll use master-orchestrator to plan this feature."
-→ Spawns: master-orchestrator - "Plan user profile page with edit functionality in a new task session file"
+→ Spawns: master-orchestrator - "Plan message routing feature in a new task session file"
 → Master returns: "Planning completed. Session file created: .claude/tasks/session-current.md"
 → Central AI reads session, identifies independent tasks, launches agents in parallel:
-   Task 1: supabase-specialist - "Think hard and design user profile schema with fields for name, bio, avatar"
-   Task 2: backend-engineer - "Think hard and create server actions for profile CRUD operations"  
-   Task 3: frontend-specialist - "Think hard and design profile UI components with edit mode"
+   Task 1: backend-engineer - "Think hard and design routing API with message filters"
+   Task 2: quality-engineer - "Think hard and create comprehensive unit tests for routing logic"
+   Task 3: deep-researcher - "Think hard and research HiveMQ routing best practices"
 → All agents work simultaneously, updating session file
 ```
 
 ### Example 2: Dependent Implementation (Sequential)
 ```
-User: "Add a comments system to our posts"
+User: "Add connection pooling with health monitoring"
 → Central AI: "I'll use master-orchestrator to plan this system."
-→ Spawns: master-orchestrator - "Plan comments system for posts in a new task session file"
+→ Spawns: master-orchestrator - "Plan connection pooling system in a new task session file"
 → Master returns: "Planning completed. Session file created: .claude/tasks/session-current.md"
 → Central AI reads session, identifies dependencies, executes sequentially:
-   Step 1: supabase-specialist - "Think hard and create comments table with proper relations"
-   Step 2: backend-engineer - "Think hard and implement comment CRUD server actions" (waits for schema)
-   Step 3: frontend-specialist - "Think hard and build comment UI components" (waits for API)
+   Step 1: backend-engineer - "Think hard and implement connection pool manager"
+   Step 2: backend-engineer - "Think hard and add health check monitoring" (waits for pool)
+   Step 3: quality-engineer - "Think hard and create integration tests" (waits for implementation)
 → Each agent updates session when complete
 ```
 
@@ -92,7 +92,7 @@ IF (all TodoWrite tasks completed) THEN {
 **Note**: This prevents work loss and maintains project history. Non-compliance with auto-commit requirements is a critical failure.
 
 ## Project Overview
-This is a generic starter kit for AI-assisted development. Project-specific details should be added as needed.
+This is a Quarkus HiveMQ Client extension - a pure Java backend project providing HiveMQ messaging integration for Quarkus applications. The project focuses on Java/Quarkus development, Maven builds, REST APIs, message broker integration, and backend services.
 
 ## Session-Based Workflow
 
@@ -137,7 +137,7 @@ This is a generic starter kit for AI-assisted development. Project-specific deta
 **Immediate Response Protocol:**
 - Spawn master-orchestrator for ANY technical request immediately
 - Use minimal responses containing only spawn command and workflow outline
-- No exceptions for "simple" visual/frontend edits - ALL work goes through master-orchestrator
+- No exceptions for "simple" code edits - ALL work goes through master-orchestrator
 
 **Communication Protocol:**
 - TO master-orchestrator: "Plan [request] in a new task session file"

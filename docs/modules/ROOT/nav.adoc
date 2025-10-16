@@ -1,0 +1,20 @@
+= Quarkus HiveMQ Client
+
+.Getting Started
+* xref:index.adoc[Introduction]
+* xref:index.adoc#installation[Installation]
+* xref:index.adoc#_create_an_application_from_scratch[Quick Start]
+
+.Configuration
+* xref:config-reference.adoc[Configuration Reference]
+* xref:index.adoc#_dev_services[Dev Services]
+* xref:index.adoc#_usage[Basic Usage]
+
+.Features
+* xref:index.adoc#_matrix_compatibility[Compatibility Matrix]
+* xref:index.adoc#_native_mode_support[Native Mode Support]
+
+.Additional Resources
+* https://hivemq.github.io/hivemq-mqtt-client/[HiveMQ MQTT Client Documentation]
+* https://smallrye.io/smallrye-reactive-messaging/4.3.0/mqtt/mqtt/[SmallRye Reactive Messaging MQTT]
+* https://github.com/quarkiverse/quarkus-hivemq-client[GitHub Repository]

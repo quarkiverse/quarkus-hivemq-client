@@ -1,477 +1,390 @@
 ---
-description: Project organization and structure guidelines for Next.js applications
-globs: **/*.{ts,tsx}
+description: Project organization and structure guidelines for Quarkus extensions
+globs: **/*.{java}
 alwaysApply: false
 ---
 
-You are an expert Next.js architect with deep knowledge of project organization, file structure, and code organization in modern Next.js applications.
+You are an expert Java Quarkus architect with deep knowledge of project organization, file structure, and code organization in modern Maven-based Quarkus extensions.
 
 # Project Organization Guidelines
 
 ## Overview
-This document outlines the best practices and patterns for organizing a Next.js 15+ application. It covers directory structure, file naming conventions, code organization, and project architecture to ensure consistency and maintainability.
+This document outlines best practices for organizing a Quarkus extension project using Maven and Java 17+. It covers directory structure, file naming, code organization, and architecture for consistency and maintainability.
 
 ## 1. Directory Structure
 
 ### Root-Level Organization
 ```
 /
-├── src/                  # All application code
-│   ├── app/              # Next.js App Router pages
-│   ├── components/       # React components
-│   ├── lib/              # Utility functions and libraries
-│   ├── styles/           # Global styles
-│   ├── types/            # TypeScript type definitions
-│   ├── utils/            # Utility functions
-│   ├── hooks/            # Custom hooks
-│   ├── contexts/         # React contexts
-│   └── supabase-clients/ # Supabase client configurations
-├── public/               # Static assets
-├── supabase/             # Supabase configurations and migrations
-├── emails/               # Email templates
-├── e2e/                  # End-to-end tests
-├── .ai-rules/            # AI assistant rules and configurations
-└── .claude/              # Claude Code configuration and patterns
+├── deployment/           # Build-time processors and deployment logic
+├── docs/                 # Documentation and Antora files
+├── integration-tests/    # Integration and end-to-end tests
+├── runtime/              # Runtime classes and configurations
+├── pom.xml               # Root Maven POM
+├── README.md             # Project overview
+└── LICENSE               # License file
+```
+### Deployment Directory
+
+```
+deployment/
+├── src/
+│   ├── main/
+│   │   └── java/
+│   │       └── io/quarkiverse/hivemqclient/deployment/
+│   │           ├── HiveMQClientProcessor.java
+│   │           ├── MqttBuildTimeConfig.java
+│   │           └── MqttDevServicesProcessor.java
+│   └── test/
+│       └── java/
+│           └── io/quarkiverse/hivemqclient/
+│               ├── HiveMQClientDevModeTest.java
+│               └── HiveMQClientTest.java
+└── pom.xml               # Module POM
 ```
 
-### src/app Directory
+### Docs Directory
+
 ```
-src/app/
-├── api/                    # API route handlers
-│   └── [domain]/
-│       └── route.ts        # Route handler implementation
-├── (dynamic-pages)/        # Dynamic routes grouped
-│   └── [slug]/
-│       ├── page.tsx        # Page component
-│       └── layout.tsx      # Layout component
-├── (external-pages)/       # External/public pages grouped
-├── layout.tsx              # Root layout
-├── page.tsx                # Home page
-├── error.tsx               # Error boundary
-└── not-found.tsx           # 404 page
+docs/
+├── antora.yml            # Antora configuration
+├── img/                  # Images
+├── modules/
+│   └── ROOT/
+│       └── pages/
+│           ├── config-reference.adoc
+│           ├── includes/
+│           │   ├── attributes.adoc
+│           │   └── config.adoc
+│           └── index.adoc
+└── pom.xml               # Module POM
 ```
 
-### src/components Directory
+### Integration-tests Directory
+
 ```
-src/components/
-├── ui/                     # Shadcn UI components
-├── form-components/        # Form-related components
-├── auth-form-components/   # Auth-specific components
-├── [domain]/               # Domain-specific components
-└── [feature]/              # Feature-specific components
+integration-tests/
+├── hivemq-client-smallrye/
+│   ├── src/
+│   │   ├── main/
+│   │   │   ├── java/
+│   │   │   │   └── io/quarkiverse/hivemqclient/test/smallrye/
+│   │   │   │       ├── PriceConverter.java
+│   │   │   │       ├── PriceGenerator.java
+│   │   │   │       └── PriceResource.java
+│   │   │   └── resources/
+│   │   │       ├── application.properties
+│   │   │       └── META-INF/
+│   │   └── test/
+│   │       ├── java/
+│   │       │   └── io/quarkiverse/hivemqclient/test/smallrye/
+│   │       │       ├── CommonScenarios.java
+│   │       │       └── resources/
+│   │       │           └── CommonResources.java
+│   │       └── resources/
+│   │           ├── certs/
+│   │           └── hivemq-enterprise-security-extension/
+│   └── pom.xml
+├── kitchensink/
+│   ├── src/
+│   │   ├── main/
+│   │   │   ├── java/
+│   │   │   │   └── io/quarkiverse/hivemqclient/
+│   │   │   │       └── GreetingResource.java
+│   │   │   └── resources/
+│   │   │       ├── application.properties
+│   │   │       └── META-INF/resources/
+│   │   │           └── index.html
+│   │   └── test/
+│   │       └── java/
+│   │           └── io/quarkiverse/hivemqclient/
+│   │               ├── GreetingResourceTest.java
+│   │               └── NativeGreetingResourceIT.java
+│   └── pom.xml
+└── pom.xml               
 ```
 
-### src/lib Directory
+### Runtime Directory
+
 ```
-src/lib/
-├── database.types.ts       # Supabase database types
-├── utils.ts                # General utilities
-├── safe-action.ts          # Server action utilities
-└── [domain]/               # Domain-specific utilities
+runtime/
+├── src/
+│   ├── main/
+│   │   ├── codestarts/
+│   │   │   └── quarkus/prices-codestart/
+│   │   │       ├── base/src/main/
+│   │   │       │   ├── java/io/codestart/hivemq/
+│   │   │       │   │   ├── PriceConverter.java
+│   │   │       │   │   ├── PriceGenerator.java
+│   │   │       │   │   └── PriceResource.java
+│   │   │       │   └── resources/
+│   │   │       │       ├── application.yaml
+│   │   │       │       └── META-INF/resources/
+│   │   │       │           ├── index.html
+│   │   │       │           └── prices.html
+│   │   │       └── codestart.yml
+│   │   ├── java/
+│   │   │   └── io/quarkiverse/hivemqclient/
+│   │   │       ├── exceptions/
+│   │   │       │   └── SSLConfigException.java
+│   │   │       ├── smallrye/reactive/
+│   │   │       │   ├── HiveMQClients.java
+│   │   │       │   ├── HiveMQMqttConnector.java
+│   │   │       │   └── HiveMQMqttSink.java
+│   │   │       └── ssl/
+│   │   │           ├── IgnoreHostnameVerifier.java
+│   │   │           └── KeyStoreUtil.java
+│   │   └── resources/
+│   │       └── META-INF/
+│   │           └── quarkus-extension.yaml
+│   └── test/
+│       └── java/
+│           └── io/quarkiverse/hivemqclient/
+│               ├── smallrye/reactive/
+│               │   ├── HiveMQMqttConnectorTest.java
+│               │   └── HiveMQPingTest.java
+│               ├── ssl/
+│               │   └── IgnoreHostnameVerifierTest.java
+│               └── test/
+│                   ├── MqttTestBase.java
+│                   └── MqttTestFixtures.java
+└── pom.xml               
 ```
 
 ## 2. File Naming Conventions
 
 ### General Rules
-- Use kebab-case for directory names: `auth-form-components`
-- Use PascalCase for component files: `UserProfile.tsx`
-- Use camelCase for utility files: `formatDate.ts`
-- Use kebab-case for page routes: `user-profile`
-- Append `.test.ts` or `.spec.ts` for test files
-- Append `.d.ts` for type declaration files
+- Use lowercase with hyphens for directory names: smallrye-reactive
+- Use PascalCase for class files: HiveMQClientProcessor.java
+- Use camelCase for method names: getDashboardData()
+- Append Test or IT for test classes: GreetingResourceTest.java
+- Use .properties or .yaml for config files
 
-### Component Files
-- Use PascalCase for component files: `Button.tsx`, `UserCard.tsx`
-- Use index.ts files for re-exporting components from directories
-- Group related components in directories: `UserProfile/index.ts`, `UserProfile/UserAvatar.tsx`
+### Class Files
 
-```typescript
-// Example component file structure
-// src/components/UserProfile/index.ts
-export { UserProfile } from './UserProfile';
+- Use PascalCase: PriceConverter.java, HiveMQClients.java
+- Group related classes in packages: io.quarkiverse.hivemqclient.smallrye.reactive
+- Use subpackages for organization: deployment, runtime, test
 
-// src/components/UserProfile/UserProfile.tsx
-import { UserAvatar } from './UserAvatar';
-import { UserInfo } from './UserInfo';
+```java
+// Example class structure
+// runtime/src/main/java/io/quarkiverse/hivemqclient/smallrye/reactive/HiveMQClients.java
+package io.quarkiverse.hivemqclient.smallrye.reactive;
 
-export function UserProfile() {
-  // Component implementation
+public class HiveMQClients {
+    // Implementation
 }
 ```
 
 ### Utility Files
-- Use descriptive names for utility files: `formatCurrency.ts`, `dateUtils.ts`
-- Group related utilities in directories with index.ts exports
-- Use domain prefixes for specialized utilities: `auth-utils.ts`, `form-utils.ts`
+- Use descriptive names: KeyStoreUtil.java, JwtUtils.java
+- Group in packages with exports via imports
 
-```typescript
-// Example utility file structure
-// src/utils/date/index.ts
-export { formatDate } from './formatDate';
-export { calculateDateDifference } from './calculateDateDifference';
+```java
+// Example utility
+// runtime/src/main/java/io/quarkiverse/hivemqclient/ssl/KeyStoreUtil.java
+package io.quarkiverse.hivemqclient.ssl;
 
-// src/utils/date/formatDate.ts
-export function formatDate(date: Date, format: string): string {
-  // Implementation
+public class KeyStoreUtil {
+    public static void loadKeyStore() {
+        // Implementation
+    }
 }
 ```
 
 ## 3. Code Organization
 
-### Component Organization
-- Split large components into smaller, focused components
-- Keep component files under 300 lines
-- Co-locate related components in feature directories
-- Use composition over prop drilling
+### Class Organization
+- Split large classes into smaller ones
+- Keep classes under 300 lines
+- Co-locate related classes in packages
+- Use dependency injection
 
-```typescript
-// Example component organization
-// src/components/Dashboard/index.ts
-export { Dashboard } from './Dashboard';
+```java
+// Example
+// integration-tests/hivemq-client-smallrye/src/main/java/io/quarkiverse/hivemqclient/test/smallrye/PriceResource.java
+package io.quarkiverse.hivemqclient.test.smallrye;
 
-// src/components/Dashboard/Dashboard.tsx
-import { DashboardHeader } from './DashboardHeader';
-import { DashboardContent } from './DashboardContent';
-import { DashboardSidebar } from './DashboardSidebar';
+import jakarta.inject.Inject;
 
-export function Dashboard() {
-  return (
-    <div className="dashboard-container">
-      <DashboardHeader />
-      <div className="dashboard-layout">
-        <DashboardSidebar />
-        <DashboardContent />
-      </div>
-    </div>
-  );
+public class PriceResource {
+    @Inject
+    PriceConverter converter;
+
+    // Methods
 }
 ```
 
-### Page Organization
-- Keep page components simple
-- Fetch data in page components or layouts
-- Handle errors at the page or layout level
-- Delegate UI rendering to components
+### Resource Organization
+- Keep REST resources simple
+- Handle data in services
+- Use annotations for injection
 
-```typescript
-// Example page organization
-// src/app/dashboard/page.tsx
-import { Dashboard } from '@/components/Dashboard';
-import { getDashboardData } from '@/rsc-data/dashboard';
+```java
+// Example
+// kitchensink/src/main/java/io/quarkiverse/hivemqclient/GreetingResource.java
+package io.quarkiverse.hivemqclient;
 
-export default async function DashboardPage() {
-  const dashboardData = await getDashboardData();
-  
-  return <Dashboard data={dashboardData} />;
-}
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.Path;
 
-// src/app/dashboard/error.tsx
-"use client";
-
-import { ErrorDisplay } from '@/components/ErrorDisplay';
-
-export default function DashboardError({
-  error,
-  reset,
-}: {
-  error: Error;
-  reset: () => void;
-}) {
-  return <ErrorDisplay error={error} reset={reset} />;
+@Path("/greeting")
+public class GreetingResource {
+    @GET
+    public String hello() {
+        return "Hello";
+    }
 }
 ```
 
-## 4. Module Imports and Exports
+## 4. Package Imports
 
 ### Import Order
-- React and Next.js imports first
-- External libraries imports next
-- Internal absolute imports next
-- Internal relative imports last
-- Separate import groups with blank lines
+- Java standard imports first
+- Third-party imports next
+- Internal imports last
+- Separate groups with blank lines
 
-```typescript
-// Example import order
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+```java
+// Example
+import java.util.List;
 
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
+import io.smallrye.mutiny.Uni;
 
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { createUserAction } from '@/data/user/actions';
-
-import { UserSchema } from './schema';
-import { ProfileSection } from './ProfileSection';
+import io.quarkiverse.hivemqclient.smallrye.reactive.HiveMQClients;
 ```
 
-### Export Patterns
-- Use named exports by default
-- Use index.ts files for re-exporting
-- Limit default exports to page components
-- Export types alongside their implementations
+## 5. Data Handling Organization
 
-```typescript
-// Example export patterns
-// src/components/ui/index.ts
-export { Button } from './Button';
-export { Input } from './Input';
-export { Select } from './Select';
+### Build-Time Processors
+- Keep in `deployment` module
+- Organize by feature
+- Use BuildItems
 
-// src/components/ui/Button.tsx
-export interface ButtonProps {
-  // Props definition
-}
+```java
+// Example
+// deployment/src/main/java/io/quarkiverse/hivemqclient/deployment/HiveMQClientProcessor.java
+package io.quarkiverse.hivemqclient.deployment;
 
-export function Button(props: ButtonProps) {
-  // Implementation
+import io.quarkus.arc.deployment.AdditionalBeanBuildItem;
+
+public class HiveMQClientProcessor {
+    // Produce build items
 }
 ```
 
-## 5. Data Fetching Organization
+### Runtime Connectors
+- Keep in `runtime` module
+- Use Quarkus configurations
 
-### Server Component Data Fetching
-- Keep data fetching logic in `rsc-data` directory
-- Organize by domain/entity
-- Use consistent error handling
-- Return fully typed data
+```java
+// Example
+// runtime/src/main/java/io/quarkiverse/hivemqclient/smallrye/reactive/HiveMQMqttConnector.java
+package io.quarkiverse.hivemqclient.smallrye.reactive;
 
-```typescript
-// Example data fetching organization
-// src/rsc-data/dashboard/index.ts
-export { getDashboardData } from './getDashboardData';
+import io.smallrye.reactive.messaging.annotations.Connector;
 
-// src/rsc-data/dashboard/getDashboardData.ts
-import { createSupabaseUserServerComponentClient } from '@/supabase-clients/user/createSupabaseUserServerComponentClient';
-import type { DashboardData } from '@/types/dashboard';
-
-export async function getDashboardData(): Promise<DashboardData> {
-  const supabase = await createSupabaseUserServerComponentClient();
-  
-  // Implementation to fetch dashboard data
-  
-  return data; // Fully typed return value
-}
-```
-
-### Server Actions
-- Keep server actions in `data` directory
-- Organize by domain/entity and action type
-- Use safe-action for validation and type safety
-- Handle errors consistently
-
-```typescript
-// Example server action organization
-// src/data/user/index.ts
-export { createUserAction, updateUserAction, deleteUserAction } from './actions';
-
-// src/data/user/actions.ts
-"use server";
-
-import { authActionClient } from '@/lib/safe-action';
-import { createUserSchema, updateUserSchema } from './schemas';
-
-export const createUserAction = authActionClient
-  .schema(createUserSchema)
-  .action(async ({ parsedInput, ctx }) => {
+@Connector
+public class HiveMQMqttConnector {
     // Implementation
-  });
-
-export const updateUserAction = authActionClient
-  .schema(updateUserSchema)
-  .action(async ({ parsedInput, ctx }) => {
-    // Implementation
-  });
-```
-
-## 6. State Management
-
-### Local State
-- Use React's useState and useReducer for local component state
-- Co-locate state with the components that use it
-- Lift state up when needed by multiple components
-
-### Global State
-- Use React Context for shared application state
-- Keep contexts focused on specific domains
-- Provide proper TypeScript types for context values
-
-```typescript
-// Example context organization
-// src/contexts/AuthContext.tsx
-"use client";
-
-import { createContext, useContext, useState, useEffect } from 'react';
-import type { User } from '@supabase/supabase-js';
-
-interface AuthContextValue {
-  user: User | null;
-  loading: boolean;
-}
-
-const AuthContext = createContext<AuthContextValue | undefined>(undefined);
-
-export function AuthProvider({ children }: { children: React.ReactNode }) {
-  // Implementation
-  
-  return (
-    <AuthContext.Provider value={{ user, loading }}>
-      {children}
-    </AuthContext.Provider>
-  );
-}
-
-export function useAuth() {
-  const context = useContext(AuthContext);
-  
-  if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
-  
-  return context;
 }
 ```
 
-## 7. Configuration Files
+## 6. Configuration Management
 
-### Environment Variables
-- Use `.env.local` for local environment variables
-- Document required variables in `.env.example`
-- Type environment variables in `environment.d.ts`
-- Group related variables with common prefixes
+### Application Config
+- Use `application.properties` or `application.yaml`
+- Document in docs
+- Use Quarkus config annotations
 
-```typescript
-// Example environment.d.ts
-declare namespace NodeJS {
-  interface ProcessEnv {
-    NODE_ENV: 'development' | 'production' | 'test';
-    NEXT_PUBLIC_SUPABASE_URL: string;
-    NEXT_PUBLIC_SUPABASE_ANON_KEY: string;
-    SUPABASE_SERVICE_ROLE_KEY: string;
-    // Other variables
-  }
-}
+```properties
+# Example application.properties
+quarkus.hivemq-client.host=localhost
+quarkus.hivemq-client.port=1883
 ```
 
-### External Service Configs
-- Keep service configurations in dedicated files
-- Store configuration in `src/lib/[service]` directories
-- Use environment variables for sensitive values
-- Document configuration options
+### Extension Config
+- Define in runtime/src/main/resources/META-INF/quarkus-extension.yaml
 
-```typescript
-// Example configuration organization
-// src/lib/sentry/index.ts
-export const sentryConfig = {
-  dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
-  environment: process.env.NODE_ENV,
-  tracesSampleRate: process.env.NODE_ENV === 'production' ? 0.2 : 1.0,
-};
-
-// src/lib/stripe/index.ts
-import Stripe from 'stripe';
-
-export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2022-11-15',
-  appInfo: {
-    name: 'My App',
-    version: '1.0.0',
-  },
-});
-```
-
-## 8. Testing Organization
+## 7. Testing Organization
 
 ### Unit Tests
-- Co-locate test files with the code they test
-- Use `.test.ts` or `.spec.ts` suffixes
-- Group tests by feature or component
-- Use descriptive test names
+- Co-locate with code
+- Use Test suffix
+- Use JUnit5
 
-```typescript
-// Example test organization
-// src/utils/formatCurrency.test.ts
-import { formatCurrency } from './formatCurrency';
+```java
+// Example
+// runtime/src/test/java/io/quarkiverse/hivemqclient/smallrye/reactive/HiveMQMqttConnectorTest.java
+package io.quarkiverse.hivemqclient.smallrye.reactive;
 
-describe('formatCurrency', () => {
-  it('formats USD correctly', () => {
-    expect(formatCurrency(1000, 'USD')).toBe('$1,000.00');
-  });
-  
-  it('formats EUR correctly', () => {
-    expect(formatCurrency(1000, 'EUR')).toBe('€1,000.00');
-  });
-});
+import org.junit.jupiter.api.Test;
+
+class HiveMQMqttConnectorTest {
+    @Test
+    void testConnection() {
+        // Assertions
+    }
+}
 ```
 
-### Integration and E2E Tests
-- Keep integration tests in a `__tests__` directory
-- Keep E2E tests in the `e2e` directory
-- Organize tests by feature or user flow
-- Use descriptive file names
+### Integration Tests
+- In `integration-tests` module
+- Use `@QuarkusTest`
 
-```typescript
-// Example E2E test organization
-// e2e/auth/signup.spec.ts
-import { test, expect } from '@playwright/test';
+```java
+// Example
+// integration-tests/hivemq-client-smallrye/src/test/java/io/quarkiverse/hivemqclient/test/smallrye/NoAuthPriceTest.java
+package io.quarkiverse.hivemqclient.test.smallrye;
 
-test.describe('Sign Up', () => {
-  test('user can sign up with valid credentials', async ({ page }) => {
-    // Test implementation
-  });
-  
-  test('shows validation errors with invalid data', async ({ page }) => {
-    // Test implementation
-  });
-});
+import io.quarkus.test.junit.QuarkusTest;
+
+@QuarkusTest
+class NoAuthPriceTest {
+    // Tests
+}
 ```
 
-## 9. Documentation
+## 8. Documentation
 
 ### Code Comments
-- Use JSDoc comments for functions, interfaces, and types
-- Add inline comments for complex logic
-- Document workarounds and edge cases
+- Use Javadoc for classes, methods
+- Comment complex logic
 
-```typescript
+```java
 /**
- * Formats a number as a currency string.
- * 
- * @param amount - The amount to format
- * @param currency - The currency code (ISO 4217)
- * @returns The formatted currency string
+ * Utility for key stores.
  */
-export function formatCurrency(amount: number, currency: string): string {
-  // Implementation
+public class KeyStoreUtil {
+    /**
+     * Loads a key store.
+     */
+    public static void loadKeyStore() {
+        // Implementation
+    }
 }
 ```
 
 ### README Files
-- Include a root README.md with project overview
-- Add README.md files to complex directories
-- Document setup steps, dependencies, and usage
+- Root README.md with setup
+- Module READMEs if needed
 
-## 10. Do's and Don'ts
+## 9. Do's and Don'ts
 
 ### Do ✅
-- Follow consistent naming conventions
-- Keep directory structure flat when possible
-- Co-locate related code
-- Use index.ts files for clean exports
-- Document complex code and configurations
-- Split large files into smaller ones
-- Use appropriate abstractions
+- Follow Maven module structure
+- Use consistent package naming
+- Co-locate tests
+- Document configs
+- Split large classes
 
 ### Don't ❌
-- Create deeply nested directory structures
-- Mix different concerns in the same file
-- Create overly large files
-- Duplicate code across the project
-- Use ambiguous or abbreviated names
-- Break established project patterns
-- Mix unrelated functionality in the same directory
+- Nest packages deeply
+- Mix concerns in classes
+- Duplicate code
+- Use ambiguous names
+- Break Quarkus patterns
 
 ---
 
-Follow these project organization guidelines consistently to ensure a maintainable, scalable, and developer-friendly codebase for your Next.js application.
+Follow these guidelines for a maintainable Quarkus extension.
