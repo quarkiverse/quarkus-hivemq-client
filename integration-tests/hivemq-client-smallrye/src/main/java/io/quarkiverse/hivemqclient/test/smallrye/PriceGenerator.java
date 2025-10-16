@@ -5,6 +5,7 @@ import java.util.Random;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
@@ -31,6 +32,7 @@ public class PriceGenerator {
 
     private final Random random = new Random();
     private ScheduledExecutorService scheduledExecutor;
+    private final AtomicBoolean generating = new AtomicBoolean(true);
 
     @Channel("custom-topic")
     @Inject
@@ -43,9 +45,11 @@ public class PriceGenerator {
 
         scheduledExecutor = Executors.newScheduledThreadPool(1);
         scheduledExecutor.scheduleAtFixedRate(() -> {
-            int price = random.nextInt(100);
-            LOG.infof("Sending to custom-topic price: %d", price);
-            pricesEmitter.send(MqttMessage.of("custom-topic", price));
+            if (generating.get()) {
+                int price = random.nextInt(100);
+                LOG.infof("Sending to custom-topic price: %d", price);
+                pricesEmitter.send(MqttMessage.of("custom-topic", price));
+            }
         }, 1, 1, TimeUnit.SECONDS);
     }
 
@@ -71,10 +75,39 @@ public class PriceGenerator {
         }
     }
 
+    /**
+     * Stop generating events. This method can be called from tests or REST endpoints
+     * to explicitly stop event generation BEFORE shutdown, preventing race conditions
+     * in native mode.
+     */
+    public void stopGeneratingEvents() {
+        LOG.info("Stopping event generation (test control API)");
+        generating.set(false);
+    }
+
+    /**
+     * Start generating events. This method allows resuming event generation after
+     * it has been stopped.
+     */
+    public void startGeneratingEvents() {
+        LOG.info("Starting event generation (test control API)");
+        generating.set(true);
+    }
+
+    /**
+     * Check if the generator is currently generating events.
+     *
+     * @return true if generating, false otherwise
+     */
+    public boolean isGenerating() {
+        return generating.get();
+    }
+
     @Outgoing("topic-price")
     public Multi<Integer> generate() {
         return Multi.createFrom().ticks().every(Duration.ofSeconds(1))
                 .onOverflow().drop()
+                .filter(tick -> generating.get())
                 .map(tick -> {
                     int price = random.nextInt(100);
                     LOG.infof("Sending price: %d", price);
