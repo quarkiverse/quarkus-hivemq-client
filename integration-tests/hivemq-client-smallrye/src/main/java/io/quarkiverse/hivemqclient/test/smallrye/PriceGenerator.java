@@ -7,6 +7,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import jakarta.annotation.PostConstruct;
+import jakarta.annotation.PreDestroy;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
@@ -29,6 +30,7 @@ public class PriceGenerator {
     private static final Logger LOG = Logger.getLogger(PriceGenerator.class);
 
     private final Random random = new Random();
+    private ScheduledExecutorService scheduledExecutor;
 
     @Channel("custom-topic")
     @Inject
@@ -39,12 +41,34 @@ public class PriceGenerator {
     public void createSender() {
         LOG.info("Create Sender for manual send method");
 
-        ScheduledExecutorService ses = Executors.newScheduledThreadPool(1);
-        ses.scheduleAtFixedRate(() -> {
+        scheduledExecutor = Executors.newScheduledThreadPool(1);
+        scheduledExecutor.scheduleAtFixedRate(() -> {
             int price = random.nextInt(100);
             LOG.infof("Sending to custom-topic price: %d", price);
             pricesEmitter.send(MqttMessage.of("custom-topic", price));
         }, 1, 1, TimeUnit.SECONDS);
+    }
+
+    @PreDestroy
+    public void shutdown() {
+        LOG.info("Shutting down PriceGenerator scheduled executor...");
+        if (scheduledExecutor != null) {
+            scheduledExecutor.shutdown();
+            try {
+                if (!scheduledExecutor.awaitTermination(5, TimeUnit.SECONDS)) {
+                    LOG.warn("Executor did not terminate in time, forcing shutdown...");
+                    scheduledExecutor.shutdownNow();
+                    if (!scheduledExecutor.awaitTermination(2, TimeUnit.SECONDS)) {
+                        LOG.error("Executor did not terminate after forced shutdown");
+                    }
+                }
+                LOG.info("PriceGenerator scheduled executor shut down successfully");
+            } catch (InterruptedException e) {
+                LOG.warn("Interrupted during executor shutdown, forcing shutdown...");
+                scheduledExecutor.shutdownNow();
+                Thread.currentThread().interrupt();
+            }
+        }
     }
 
     @Outgoing("topic-price")

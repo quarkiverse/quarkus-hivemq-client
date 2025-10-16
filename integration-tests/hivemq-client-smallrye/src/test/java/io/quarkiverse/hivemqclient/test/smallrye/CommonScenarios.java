@@ -35,10 +35,16 @@ public class CommonScenarios {
     @AfterAll
     public static void shutdown() {
         LOG.info("Stopping Quarkus application...");
+        LOG.info("Waiting for CDI beans to complete shutdown lifecycle...");
         Quarkus.asyncExit();
         try {
-            Thread.sleep(2000);
+            // Increased timeout to allow @PreDestroy methods to complete gracefully
+            // This prevents segfaults in native mode by ensuring message generators
+            // stop before the application terminates
+            Thread.sleep(5000);
+            LOG.info("Shutdown coordination complete");
         } catch (InterruptedException ignored) {
+            Thread.currentThread().interrupt();
         }
     }
 
