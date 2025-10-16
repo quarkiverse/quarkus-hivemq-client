@@ -34,18 +34,8 @@ public class CommonScenarios {
 
     @AfterAll
     public static void shutdown() {
-        LOG.info("Stopping Quarkus application...");
-        LOG.info("Waiting for CDI beans to complete shutdown lifecycle...");
+        LOG.info("Initiating Quarkus application shutdown...");
         Quarkus.asyncExit();
-        try {
-            // Increased timeout to allow @PreDestroy methods to complete gracefully
-            // This prevents segfaults in native mode by ensuring message generators
-            // stop before the application terminates
-            Thread.sleep(5000);
-            LOG.info("Shutdown coordination complete");
-        } catch (InterruptedException ignored) {
-            Thread.currentThread().interrupt();
-        }
     }
 
     @Test
@@ -58,7 +48,7 @@ public class CommonScenarios {
     }
 
     @Test
-    public void shouldGetStreamOfPrices() {
+    public void shouldGetStreamOfPrices() throws InterruptedException {
         AtomicInteger totalAmountReceived = new AtomicInteger(0);
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(pricesUrl);
@@ -70,10 +60,21 @@ public class CommonScenarios {
                 String value = event.readData(String.class, MediaType.APPLICATION_JSON_TYPE);
                 LOG.infof("Received price: %s", value);
                 totalAmountReceived.incrementAndGet();
+                expectedAmount.countDown();
             });
             source.open();
+
+            // Wait for SSE connection to establish
+            Thread.sleep(500);
+
+            // Generate prices on-demand via REST endpoint AFTER SSE stream is ready
+            LOG.info("Generating prices on-demand via POST /prices/generate");
+            given()
+                    .when().post("/prices/generate")
+                    .then()
+                    .statusCode(200);
+
             expectedAmount.await(TIMEOUT_SEC, TimeUnit.SECONDS);
-        } catch (InterruptedException ignored) {
         } finally {
             source.close();
             int received = totalAmountReceived.get();
@@ -82,7 +83,7 @@ public class CommonScenarios {
     }
 
     @Test
-    public void testReceivedCustomTopic() {
+    public void testReceivedCustomTopic() throws InterruptedException {
         AtomicInteger totalAmountReceived = new AtomicInteger(0);
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(customTopicUrl);
@@ -93,10 +94,21 @@ public class CommonScenarios {
                 String value = event.readData(String.class, MediaType.APPLICATION_JSON_TYPE);
                 LOG.infof("Received from custom topic value: %s", value);
                 totalAmountReceived.incrementAndGet();
+                expectedAmount.countDown();
             });
             source.open();
+
+            // Wait for SSE connection to establish
+            Thread.sleep(500);
+
+            // Generate prices on-demand for custom topic via REST endpoint AFTER SSE stream is ready
+            LOG.info("Generating prices on-demand via POST /prices/generate/custom");
+            given()
+                    .when().post("/prices/generate/custom")
+                    .then()
+                    .statusCode(200);
+
             expectedAmount.await(TIMEOUT_SEC, TimeUnit.SECONDS);
-        } catch (InterruptedException ignored) {
         } finally {
             source.close();
             int received = totalAmountReceived.get();

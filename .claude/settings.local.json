@@ -22,7 +22,10 @@
       "WebFetch(domain:raw.githubusercontent.com)",
       "WebFetch(domain:github.com)",
       "Bash(./mvnw:*)",
-      "Bash(rm:*)"
+      "Bash(rm:*)",
+      "Bash(mvn clean verify:*)",
+      "Bash(tee:*)",
+      "Read(//tmp/**)"
     ]
   },
   "hooks": {
