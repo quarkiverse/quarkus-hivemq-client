@@ -17,6 +17,7 @@ import jakarta.ws.rs.sse.SseEventSource;
 
 import org.jboss.logging.Logger;
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import io.quarkus.runtime.Quarkus;
@@ -32,13 +33,48 @@ public class CommonScenarios {
     @TestHTTPResource("prices/topic")
     URI customTopicUrl;
 
+    @BeforeAll
+    public static void beforeAll() {
+        LOG.info("Starting event generators via REST API...");
+        try {
+            given()
+                    .when().post("/test-control/start-events")
+                    .then()
+                    .statusCode(200);
+            LOG.info("Event generators started successfully");
+        } catch (Exception e) {
+            LOG.warn("Failed to start event generators: " + e.getMessage());
+        }
+    }
+
     @AfterAll
     public static void shutdown() {
-        LOG.info("Stopping Quarkus application...");
+        LOG.info("Stopping event generators via REST API...");
+        try {
+            // CRITICAL: Stop event generation BEFORE initiating shutdown
+            // This prevents race conditions where MQTT messages are processed during shutdown
+            given()
+                    .when().post("/test-control/stop-events")
+                    .then()
+                    .statusCode(200);
+            LOG.info("Event generators stopped successfully via REST API");
+
+            // Wait for in-flight messages to complete
+            LOG.info("Waiting for in-flight MQTT messages to drain...");
+            Thread.sleep(2000);
+        } catch (Exception e) {
+            LOG.warn("Failed to stop event generators via REST API: " + e.getMessage());
+            LOG.warn("Falling back to shutdown without explicit stop");
+        }
+
+        LOG.info("Initiating Quarkus application shutdown...");
         Quarkus.asyncExit();
         try {
-            Thread.sleep(2000);
+            // Wait for shutdown to complete
+            Thread.sleep(3000);
+            LOG.info("Shutdown coordination complete");
         } catch (InterruptedException ignored) {
+            Thread.currentThread().interrupt();
         }
     }
 
