@@ -36,10 +36,13 @@ This document serves as the **comprehensive master guide** for Java backend deve
 │   │   ├── git-workflow-patterns.md            # Git protocols and workflows
 │   │   └── context7-mcp-patterns.md            # Research and documentation workflows
 │   └── examples/                               # Practical code examples (Java)
-└── tasks/                                      # Session-based task management
-    ├── session-001.md                          # Completed sessions
-    ├── session-002.md                          # Historical development
-    └── session-XXX.md                          # Active session tracking
+└── tasks/                                      # User-specific session management
+    ├── README.md                               # Session management documentation
+    ├── session-template.md                     # Global session template
+    ├── .gitignore                              # Git ignore rules for sessions
+    ├── {username}_session-current.md           # Active session per user
+    ├── {username}_session-001.md               # Archived sessions per user
+    └── {username}_session-NNN.md               # Historical development per user
 ```
 
 ### Root Configuration
@@ -367,10 +370,24 @@ Master Orchestrator maintains:
 ### **Development Patterns**
 - @.claude/context/rules/*.md - Java backend development patterns
 
-### **Session Management**
-- @.claude/tasks/session-current.md - Active session coordination document
-- @.claude/tasks/session-[number].md - Archived development sessions
-- @.claude/tasks/session-template.md - Comprehensive session template
+### **Session Management** (User-Specific)
+- @.claude/tasks/README.md - Session management documentation and user guide
+- @.claude/tasks/session-template.md - Global session template for all users
+- @.claude/tasks/.gitignore - Git ignore rules for session privacy
+- @.claude/tasks/{username}_session-current.md - Active session per developer
+- @.claude/tasks/{username}_session-{number}.md - Archived sessions per developer
+
+**User-Specific Sessions**: Each developer has dedicated session files prefixed with their GitHub username (e.g., `pagonzal_session-current.md`). This enables:
+- **Multi-User Collaboration**: No merge conflicts, clear ownership
+- **Git Integration**: Selective commit control via .gitignore
+- **Historical Tracking**: Per-developer session history and context
+- **Parallel Development**: Multiple developers working simultaneously
+
+**Session Lifecycle**:
+1. Auto-detect GitHub username from git config
+2. Create/update `{username}_session-current.md` during active work
+3. Archive as `{username}_session-{number}.md` when complete
+4. Next session starts fresh with new `{username}_session-current.md`
 
 ## 🔧 TodoWrite Integration Architecture
 

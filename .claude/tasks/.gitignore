@@ -1,0 +1,14 @@
+# Session Management - Git Ignore Rules
+
+# Keep active sessions private by default (uncommitted work)
+*_session-current.md
+
+# Optional: Uncomment to keep all personal sessions private
+# Replace {your_username} with your actual GitHub username
+# pagonzal_*.md
+
+# Optional: Keep backup folder private
+../backup-tasks-*/
+
+# Allow specific archived sessions to be shared by explicitly adding them:
+# git add -f pagonzal_session-001.md
