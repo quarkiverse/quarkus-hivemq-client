@@ -97,7 +97,10 @@ This is a Quarkus HiveMQ Client extension - a pure Java backend project providin
 ## Session-Based Workflow
 
 ### Master-Orchestrator Communication Protocol
-**ANY technical request triggers:**
+**🚨 MANDATORY FOR EVERY TECHNICAL REQUEST 🚨**
+
+**CRITICAL**: This protocol is MANDATORY for ALL users, not optional. ANY technical work MUST follow these steps:
+
 1. **Spawn master-orchestrator** with: "Plan [user request] in a new task session file"
 2. **Master returns**: "Planning completed. Session file created: .claude/tasks/{git_username_normalized}/session-current.md"
 3. **Central AI reads session file** to understand the plan
@@ -105,11 +108,19 @@ This is a Quarkus HiveMQ Client extension - a pure Java backend project providin
 5. **Specialists update their sections** in real-time
 6. **Session becomes single source of truth** for coordination
 
-**Session File Location**:
+**Session File Location** (Auto-created for ANY user):
 - User folder auto-created based on `git config user.name`
 - Spaces in username replaced with underscores
 - Example: "pablo gonzalez granados" → `.claude/tasks/pablo_gonzalez_granados/session-current.md`
 - Each developer has dedicated folder for all their sessions
+- **Automatic**: No user action required, system detects user automatically
+
+**Why This Matters**:
+- ✅ **Traceability**: All work documented per developer
+- ✅ **Continuity**: Resume work anytime by reading session
+- ✅ **Collaboration**: Team can review each other's sessions
+- ✅ **History**: Complete audit trail of decisions
+- ✅ **Universal**: Works for ANY user without configuration
 
 ### Context Conservation Strategy
 **Before**: Central AI analyzes → Maybe delegates → Work
