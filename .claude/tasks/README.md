@@ -1,80 +1,101 @@
 # Session Management - User-Specific Sessions
 
 ## Overview
-This directory contains session files for tracking development work by different GitHub users. Each developer has their own session files prefixed with their GitHub username to avoid conflicts and maintain clear ownership.
+This directory contains session files for tracking development work by different developers. Each developer has their own folder named after their Git username (with spaces replaced by underscores) to organize sessions and avoid conflicts.
 
-## File Naming Convention
+## Directory Structure
 
-### Active Session
+### User Folders
 ```
-{github_username}_session-current.md
+{git_username_normalized}/
+```
+Each developer gets a dedicated folder based on their Git user.name (spaces converted to underscores).
+
+**Examples**:
+- Git name: `pablo gonzalez granados` → Folder: `pablo_gonzalez_granados/`
+- Git name: `alice` → Folder: `alice/`
+- Git name: `Bob Smith` → Folder: `Bob_Smith/`
+
+### Files Within User Folder
+
+#### Active Session
+```
+{username}/session-current.md
 ```
 The active development session for the user. This file is continuously updated during development work.
 
-**Example**: `pagonzal_session-current.md`
+**Example**: `pablo_gonzalez_granados/session-current.md`
 
-### Archived Sessions
+#### Archived Sessions
 ```
-{github_username}_session-{number}.md
+{username}/session-{number}.md
 ```
 Completed sessions are archived with incrementing numbers. These provide historical context and project continuity.
 
 **Examples**:
-- `pagonzal_session-001.md`
-- `pagonzal_session-002.md`
-- `alice_session-001.md`
-- `bob_session-003.md`
+- `pablo_gonzalez_granados/session-001.md`
+- `pablo_gonzalez_granados/session-002.md`
+- `alice/session-001.md`
+- `Bob_Smith/session-003.md`
 
-### Session Template (Optional)
+#### Personal Template (Optional)
 ```
-{github_username}_session-template.md
+{username}/session-template.md
 ```
-Personal session template for a specific user.
+Personal session template for a specific user (optional).
 
-**Example**: `pagonzal_session-template.md`
+**Example**: `pablo_gonzalez_granados/session-template.md`
 
 ## Workflow
 
 ### Starting a New Session
-1. Create or use your `{username}_session-current.md` file
-2. Initialize session with project context, objectives, and tasks
-3. Work through tasks, updating the session file as you progress
+1. Framework auto-creates your user folder (based on git config user.name)
+2. Creates or uses `{your_folder}/session-current.md`
+3. Initialize session with project context, objectives, and tasks
+4. Work through tasks, updating the session file as you progress
 
 ### Completing a Session
 1. Mark all tasks as completed in the session file
-2. Archive the session by renaming to `{username}_session-{next-number}.md`
-3. Create a new `{username}_session-current.md` for the next work session
+2. Archive the session by renaming to `session-{next-number}.md` in your folder
+3. Create a new `session-current.md` for the next work session
 
 ### Finding Your Sessions
-All your sessions will be prefixed with your GitHub username:
+All your sessions are in your dedicated folder:
 ```bash
-# List all your sessions
-ls -1 {your_username}_*.md
+# List your folder
+ls -la pablo_gonzalez_granados/
 
 # View your current session
-cat {your_username}_session-current.md
+cat pablo_gonzalez_granados/session-current.md
 
-# View your archived sessions
-ls -1 {your_username}_session-*.md | grep -v current
+# View all your archived sessions
+ls -1 pablo_gonzalez_granados/session-*.md | grep -v current
+
+# View all developers' folders
+ls -d */
 ```
 
 ## Benefits
 
 ### Multi-User Collaboration
-- **No Conflicts**: Each developer has separate session files
-- **Clear Ownership**: Username prefix shows who owns each session
-- **Git Friendly**: Files can be committed without merge conflicts
+- **No Conflicts**: Each developer has a separate folder
+- **Clear Ownership**: Folder name shows who owns the sessions
+- **Git Friendly**: Folders can be committed without merge conflicts
 - **Parallel Work**: Multiple developers can work simultaneously
+- **Clean Organization**: Sessions grouped by developer, not scattered with prefixes
 
 ### Session Continuity
-- **Historical Context**: Archived sessions provide project history
-- **Knowledge Sharing**: Team members can review each other's sessions
+- **Historical Context**: Archived sessions provide project history per developer
+- **Knowledge Sharing**: Team members can review each other's session folders
 - **Audit Trail**: Complete record of who did what and when
+- **Easy Navigation**: Simple folder structure, no prefix confusion
 
 ### Framework Integration
 The Claude Code framework automatically:
-- Detects your GitHub username from git config
-- Creates appropriately named session files
+- Detects your Git user.name from git config
+- Normalizes the name (replaces spaces with underscores)
+- Creates your user folder if it doesn't exist
+- Creates session files without prefixes inside your folder
 - Archives completed sessions with proper numbering
 - Maintains session continuity across work periods
 
@@ -82,14 +103,20 @@ The Claude Code framework automatically:
 
 ```
 .claude/tasks/
-├── README.md                          # This file
-├── session-template.md                # Global template (optional)
-├── pagonzal_session-current.md        # Pablo's active session
-├── pagonzal_session-001.md            # Pablo's completed session 1
-├── pagonzal_session-002.md            # Pablo's completed session 2
-├── alice_session-current.md           # Alice's active session
-├── alice_session-001.md               # Alice's completed session 1
-└── bob_session-current.md             # Bob's active session
+├── README.md                               # This file
+├── session-template.md                     # Global template (optional)
+├── .gitignore                              # Git ignore rules
+├── pablo_gonzalez_granados/                # Pablo's folder
+│   ├── session-current.md                  # Active session
+│   ├── session-001.md                      # Archived session 1
+│   └── session-002.md                      # Archived session 2
+├── alice/                                  # Alice's folder
+│   ├── session-current.md                  # Active session
+│   └── session-001.md                      # Archived session 1
+└── Bob_Smith/                              # Bob's folder
+    ├── session-current.md                  # Active session
+    ├── session-001.md                      # Archived session 1
+    └── session-002.md                      # Archived session 2
 ```
 
 ## Git Integration
@@ -97,28 +124,38 @@ The Claude Code framework automatically:
 ### Recommended .gitignore Pattern
 If you want to keep session files private:
 ```gitignore
-# Keep personal sessions private
-.claude/tasks/*_session-current.md
+# Keep all active sessions private
+*/session-current.md
 
-# Or keep all personal sessions private
-.claude/tasks/{your_username}_*.md
+# Or keep entire user folders private
+pablo_gonzalez_granados/
+alice/
+
+# Or use wildcards to ignore all user folders except shared ones
+*/
+!shared/
 ```
 
 ### Sharing Sessions
 If you want to share your sessions with the team:
 ```bash
 # Commit your completed sessions
-git add .claude/tasks/{your_username}_session-*.md
+git add .claude/tasks/pablo_gonzalez_granados/session-*.md
 git commit -m "docs: Add session history for {feature_name}"
+
+# Or commit your entire folder
+git add .claude/tasks/pablo_gonzalez_granados/
+git commit -m "docs: Share Pablo's development sessions"
 ```
 
 ## Automated Session Management
 
 The master-orchestrator agent handles:
-- Automatic session initialization with username prefix
+- Automatic user folder creation (normalized Git username)
+- Session initialization without filename prefixes
 - Real-time session updates during development
 - Session archival when work is complete
-- Session numbering and naming consistency
+- Session numbering and naming consistency within user folders
 - Cross-session context preservation
 
 ## Best Practices
@@ -128,19 +165,39 @@ The master-orchestrator agent handles:
 3. **Archive Completed Work**: Don't let old sessions pile up as "current"
 4. **Review History**: Periodically review your archived sessions for insights
 5. **Share Knowledge**: Consider committing completed sessions for team visibility
+6. **Folder Hygiene**: Keep only relevant sessions, clean up old experiments
 
-## Getting Your GitHub Username
+## Getting Your Git Username
 
-The framework attempts to detect your GitHub username from:
-1. Git config user.name
-2. Git config user.email (username part)
-3. Home directory name
-4. Manual input if auto-detection fails
+The framework detects your Git user.name and normalizes it:
+1. Reads from: `git config user.name`
+2. Normalizes: Replaces spaces with underscores
+3. Creates folder: `{normalized_name}/`
 
-To set your GitHub username explicitly:
+Current Git user.name: `pablo gonzalez granados`
+Normalized folder: `pablo_gonzalez_granados/`
+
+To verify or change your Git username:
 ```bash
-git config user.name "your-github-username"
+# Check current name
+git config user.name
+
+# Set new name (use your actual name, not GitHub username)
+git config user.name "Your Full Name"
 ```
+
+## Username Normalization Rules
+
+The framework applies these rules to create folder names:
+- Spaces → Underscores (`" "` → `"_"`)
+- All other characters preserved as-is
+- Case sensitivity maintained (Linux/Mac) or ignored (Windows)
+
+**Examples**:
+- `pablo gonzalez granados` → `pablo_gonzalez_granados`
+- `Alice Johnson` → `Alice_Johnson`
+- `bob-smith` → `bob-smith` (no change)
+- `john.doe` → `john.doe` (no change)
 
 ## Support
 

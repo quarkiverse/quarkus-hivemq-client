@@ -36,13 +36,17 @@ This document serves as the **comprehensive master guide** for Java backend deve
 │   │   ├── git-workflow-patterns.md            # Git protocols and workflows
 │   │   └── context7-mcp-patterns.md            # Research and documentation workflows
 │   └── examples/                               # Practical code examples (Java)
-└── tasks/                                      # User-specific session management
+└── tasks/                                      # User-specific session management (folder-based)
     ├── README.md                               # Session management documentation
     ├── session-template.md                     # Global session template
     ├── .gitignore                              # Git ignore rules for sessions
-    ├── {username}_session-current.md           # Active session per user
-    ├── {username}_session-001.md               # Archived sessions per user
-    └── {username}_session-NNN.md               # Historical development per user
+    ├── {git_username_normalized}/              # User folder (spaces → underscores)
+    │   ├── session-current.md                  # Active session for this user
+    │   ├── session-001.md                      # Archived session 1
+    │   └── session-NNN.md                      # Historical sessions
+    └── {another_user}/                         # Another user's folder
+        ├── session-current.md
+        └── session-001.md
 ```
 
 ### Root Configuration
@@ -370,24 +374,47 @@ Master Orchestrator maintains:
 ### **Development Patterns**
 - @.claude/context/rules/*.md - Java backend development patterns
 
-### **Session Management** (User-Specific)
+### **Session Management** (Folder-Based, User-Specific)
 - @.claude/tasks/README.md - Session management documentation and user guide
 - @.claude/tasks/session-template.md - Global session template for all users
 - @.claude/tasks/.gitignore - Git ignore rules for session privacy
-- @.claude/tasks/{username}_session-current.md - Active session per developer
-- @.claude/tasks/{username}_session-{number}.md - Archived sessions per developer
+- @.claude/tasks/{git_username_normalized}/ - User-specific folder (spaces → underscores)
+  - session-current.md - Active session for this developer
+  - session-{number}.md - Archived sessions for this developer
 
-**User-Specific Sessions**: Each developer has dedicated session files prefixed with their GitHub username (e.g., `pagonzal_session-current.md`). This enables:
-- **Multi-User Collaboration**: No merge conflicts, clear ownership
-- **Git Integration**: Selective commit control via .gitignore
-- **Historical Tracking**: Per-developer session history and context
-- **Parallel Development**: Multiple developers working simultaneously
+**Folder-Based Sessions**: Each developer has a dedicated folder named after their Git user.name (normalized). This enables:
+- **Multi-User Collaboration**: Separate folders prevent merge conflicts
+- **Clear Ownership**: Folder name identifies the developer
+- **Clean Organization**: Sessions grouped by developer, not scattered with prefixes
+- **Git Integration**: Selective commit control via .gitignore (per folder or per file)
+- **Historical Tracking**: Complete session history per developer in one location
+- **Parallel Development**: Multiple developers working simultaneously without interference
+
+**Username Normalization**:
+- Source: `git config user.name` (e.g., "pablo gonzalez granados")
+- Transformation: Spaces replaced with underscores
+- Result: Folder name (e.g., `pablo_gonzalez_granados/`)
 
 **Session Lifecycle**:
-1. Auto-detect GitHub username from git config
-2. Create/update `{username}_session-current.md` during active work
-3. Archive as `{username}_session-{number}.md` when complete
-4. Next session starts fresh with new `{username}_session-current.md`
+1. Auto-detect Git user.name and normalize (spaces → underscores)
+2. Create user folder if it doesn't exist: `{normalized_username}/`
+3. Create/update `{normalized_username}/session-current.md` during active work
+4. Archive as `{normalized_username}/session-{number}.md` when complete
+5. Next session starts fresh with new `session-current.md` in same folder
+
+**Example Structure**:
+```
+.claude/tasks/
+├── pablo_gonzalez_granados/
+│   ├── session-current.md
+│   ├── session-001.md
+│   └── session-002.md
+├── alice/
+│   └── session-current.md
+└── Bob_Smith/
+    ├── session-current.md
+    └── session-001.md
+```
 
 ## 🔧 TodoWrite Integration Architecture
 

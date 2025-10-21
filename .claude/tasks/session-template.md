@@ -1,8 +1,9 @@
-# Session Template - User: {github_username}
+# Session Template
 
 ## Session Metadata
-- **Session ID**: {github_username}_session-{number}
-- **Developer**: {github_username}
+- **Session ID**: session-{number}
+- **Developer**: {git_user_name}
+- **User Folder**: {git_username_normalized}
 - **Started**: {YYYY-MM-DD HH:MM}
 - **Status**: Active | Completed | Archived
 - **Project**: Quarkus HiveMQ Client Extension
@@ -22,7 +23,7 @@
 
 ### Previous Session Summary
 <!-- Brief summary of previous session or "First session" -->
-- Previous Session: {github_username}_session-{previous-number}
+- Previous Session: session-{previous-number}
 - Key Outcomes:
 - Pending Items:
 
@@ -182,5 +183,5 @@
 ---
 
 **Session Archive Date**: {YYYY-MM-DD HH:MM}
-**Archived As**: {github_username}_session-{number}.md
-**Next Session**: {github_username}_session-current.md
+**Archived As**: session-{number}.md (in {git_username_normalized}/ folder)
+**Next Session**: session-current.md (in {git_username_normalized}/ folder)

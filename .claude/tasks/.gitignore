@@ -1,14 +1,21 @@
-# Session Management - Git Ignore Rules
+# Session Management - Git Ignore Rules (Folder-Based)
 
-# Keep active sessions private by default (uncommitted work)
-*_session-current.md
+# Keep all active sessions private by default (uncommitted work)
+# This ignores session-current.md in any user folder
+*/session-current.md
 
-# Optional: Uncomment to keep all personal sessions private
-# Replace {your_username} with your actual GitHub username
-# pagonzal_*.md
+# Optional: Keep entire user folders private
+# Uncomment the folders you want to keep private:
+# pablo_gonzalez_granados/
+# alice/
+# Bob_Smith/
 
-# Optional: Keep backup folder private
+# Optional: Keep backup folders private
 ../backup-tasks-*/
 
 # Allow specific archived sessions to be shared by explicitly adding them:
-# git add -f pagonzal_session-001.md
+# git add -f pablo_gonzalez_granados/session-001.md
+# git add -f alice/session-005.md
+
+# Or allow entire user folders to be shared:
+# git add -f pablo_gonzalez_granados/
