@@ -36,7 +36,7 @@ Use your judgement to decide on using Parallel vs Sequential Agent Execution bas
 User: "Add message routing capabilities to the HiveMQ client"
 → Central AI: "I'll use master-orchestrator to plan this feature."
 → Spawns: master-orchestrator - "Plan message routing feature in a new task session file"
-→ Master returns: "Planning completed. Session file created: .claude/tasks/session-current.md"
+→ Master returns: "Planning completed. Session file created: .claude/tasks/{username}/session-current.md"
 → Central AI reads session, identifies independent tasks, launches agents in parallel:
    Task 1: backend-engineer - "Think hard and design routing API with message filters"
    Task 2: quality-engineer - "Think hard and create comprehensive unit tests for routing logic"
@@ -49,7 +49,7 @@ User: "Add message routing capabilities to the HiveMQ client"
 User: "Add connection pooling with health monitoring"
 → Central AI: "I'll use master-orchestrator to plan this system."
 → Spawns: master-orchestrator - "Plan connection pooling system in a new task session file"
-→ Master returns: "Planning completed. Session file created: .claude/tasks/session-current.md"
+→ Master returns: "Planning completed. Session file created: .claude/tasks/{username}/session-current.md"
 → Central AI reads session, identifies dependencies, executes sequentially:
    Step 1: backend-engineer - "Think hard and implement connection pool manager"
    Step 2: backend-engineer - "Think hard and add health check monitoring" (waits for pool)
@@ -97,13 +97,30 @@ This is a Quarkus HiveMQ Client extension - a pure Java backend project providin
 ## Session-Based Workflow
 
 ### Master-Orchestrator Communication Protocol
-**ANY technical request triggers:**
+**🚨 MANDATORY FOR EVERY TECHNICAL REQUEST 🚨**
+
+**CRITICAL**: This protocol is MANDATORY for ALL users, not optional. ANY technical work MUST follow these steps:
+
 1. **Spawn master-orchestrator** with: "Plan [user request] in a new task session file"
-2. **Master returns**: "Planning completed. Session file created: .claude/tasks/session-current.md"
+2. **Master returns**: "Planning completed. Session file created: .claude/tasks/{git_username_normalized}/session-current.md"
 3. **Central AI reads session file** to understand the plan
 4. **Central AI triggers specialists** based on session content
 5. **Specialists update their sections** in real-time
 6. **Session becomes single source of truth** for coordination
+
+**Session File Location** (Auto-created for ANY user):
+- User folder auto-created based on `git config user.name`
+- Spaces in username replaced with underscores
+- Example: "pablo gonzalez granados" → `.claude/tasks/pablo_gonzalez_granados/session-current.md`
+- Each developer has dedicated folder for all their sessions
+- **Automatic**: No user action required, system detects user automatically
+
+**Why This Matters**:
+- ✅ **Traceability**: All work documented per developer
+- ✅ **Continuity**: Resume work anytime by reading session
+- ✅ **Collaboration**: Team can review each other's sessions
+- ✅ **History**: Complete audit trail of decisions
+- ✅ **Universal**: Works for ANY user without configuration
 
 ### Context Conservation Strategy
 **Before**: Central AI analyzes → Maybe delegates → Work
