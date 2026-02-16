@@ -12,7 +12,7 @@
 
     <properties>
         <surefire-plugin.version>3.5.3</surefire-plugin.version>
-        <hive.testcontainers.version>1.21.3</hive.testcontainers.version>
+        <hive.testcontainers.version>1.21.4</hive.testcontainers.version>
         <include.tests>**/*IT.java</include.tests>
         <quarkus.native.native-image-xmx>7g</quarkus.native.native-image-xmx>
     </properties>
