@@ -66,3 +66,6 @@ release.properties
 /*/.cache/
 /*/*/.cache/
 .quarkus
+
+# Claude Code
+.claude/settings.local.json
