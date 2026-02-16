@@ -1,4 +1,4 @@
-:quarkus-version: 3.7.3
+:quarkus-version: 3.26.4
 :hivemq-mqtt-client: 1.3.3
 :maven-version: 3.8.1+
 
