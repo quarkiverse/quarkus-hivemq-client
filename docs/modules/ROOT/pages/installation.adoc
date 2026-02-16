@@ -1,0 +1,40 @@
+= Installation
+
+include::./includes/attributes.adoc[]
+
+Requirements:
+
+* Maven 3.8.1+
+* JDK 17+ installed with JAVA_HOME configured appropriately
+
+If you want to use this extension, you need to add the `io.quarkiverse.hivemqclient:quarkus-hivemq-client` extension first to your build file.
+
+```xml
+<dependency>
+    <groupId>io.quarkiverse.hivemqclient</groupId>
+    <artifactId>quarkus-hivemq-client</artifactId>
+</dependency>
+```
+
+You can do that by running the following command:
+
+```shell
+./mvnw quarkus:add-extension -Dextensions="hivemq"
+```
+
+NOTE: Keep in mind that you will also need `io.quarkus:quarkus-smallrye-reactive-messaging-mqtt` as a dependency on your build file as others smallrye reactive messaging APIs
+
+== Create an application from scratch
+
+You can create a Quarkus application with the HiveMQ-SmallRye extension from scratch by running the following command:
+
+[source,shell,subs="attributes"]
+----
+mvn io.quarkus:quarkus-maven-plugin:{quarkus-version}:create \
+    -DprojectGroupId=org.acme \
+    -DprojectArtifactId=hivemq-quickstart \
+    -DclassName="org.acme.quickstart.GreetingResource" \
+    -Dextensions="resteasy-reactive,hivemq,smallrye-reactive-messaging-mqtt"
+
+cd hivemq-quickstart
+----
