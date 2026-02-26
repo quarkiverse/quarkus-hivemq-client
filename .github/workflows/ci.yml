@@ -65,7 +65,7 @@ jobs:
         check-latest: true
         cache: 'maven'
     - name: Download Maven Repo
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: maven-repo
         path: .
@@ -94,7 +94,7 @@ jobs:
         check-latest: true
         cache: 'maven'
     - name: Download Maven Repo
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: maven-repo
         path: .
