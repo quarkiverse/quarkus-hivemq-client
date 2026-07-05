@@ -18,16 +18,11 @@ import javax.net.ssl.TrustManagerFactory;
 
 public class KeyStoreUtil {
 
-    private static final String DEFAULT_CERT_TYPE = "JKS";
-
     public static TrustManagerFactory trustManagerFromKeystore(final File trustStoreFile, final String trustStorePassword,
             final String truststoreType)
             throws RuntimeException {
 
         Checks.notNull(trustStoreFile, "Trust store file");
-        if (!DEFAULT_CERT_TYPE.equalsIgnoreCase(truststoreType)) {
-            throw new SSLConfigException("Currently we only support JKS certificates, provided " + truststoreType);
-        }
 
         try (final FileInputStream fileInputStream = new FileInputStream(trustStoreFile)) {
             final KeyStore keyStore = KeyStore.getInstance(truststoreType);

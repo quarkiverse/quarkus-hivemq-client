@@ -47,7 +47,7 @@ See xref:security.adoc[Security & TLS] for complete, worked examples.
 |`password` | Password for MQTT simple authentication. | string |
 |`ssl` | Enable SSL/TLS. | boolean | `false`
 |`trust-all` | Trust every server certificate. *Insecure — development only.* | boolean | `false`
-|`ssl.truststore.type` | Truststore type. Only `jks` is currently supported. | string | `jks`
+|`ssl.truststore.type` | Truststore type (`jks`, `pkcs12`). | string | `jks`
 |`ssl.truststore.location` | Truststore location (required when `ssl=true`). | string |
 |`ssl.truststore.password` | Truststore password (required when `ssl=true`). | string |
 |`ssl.keystore.type` | Keystore type (`jks` or `pkcs12`). Enables mutual TLS. | string | `jks`
