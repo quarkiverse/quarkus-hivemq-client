@@ -22,28 +22,28 @@ public class TlsAuthResources extends HiveMQCommunityEdition {
         Map<String, String> config = super.start();
 
         config.put("mp.messaging.outgoing.topic-price.ssl", "true");
-        config.put("mp.messaging.outgoing.topic-price.ssl.truststore.type", "jks");
+        config.put("mp.messaging.outgoing.topic-price.ssl.truststore.type", "pkcs12");
         config.put("mp.messaging.outgoing.topic-price.ssl.truststore.location", "src/test/resources/certs/server.jks");
         config.put("mp.messaging.outgoing.topic-price.ssl.truststore.password", "changeme");
-        config.put("mp.messaging.outgoing.topic-price.ssl.truststore.hostVerifier", "false");
+        config.put("mp.messaging.outgoing.topic-price.ssl.hostVerifier", "false");
 
         config.put("mp.messaging.incoming.prices.ssl", "true");
-        config.put("mp.messaging.incoming.prices.ssl.truststore.type", "jks");
+        config.put("mp.messaging.incoming.prices.ssl.truststore.type", "pkcs12");
         config.put("mp.messaging.incoming.prices.ssl.truststore.location", "src/test/resources/certs/server.jks");
         config.put("mp.messaging.incoming.prices.ssl.truststore.password", "changeme");
-        config.put("mp.messaging.incoming.prices.ssl.truststore.hostVerifier", "false");
+        config.put("mp.messaging.incoming.prices.ssl.hostVerifier", "false");
 
         config.put("mp.messaging.outgoing.custom-topic.ssl", "true");
-        config.put("mp.messaging.outgoing.custom-topic.ssl.truststore.type", "jks");
+        config.put("mp.messaging.outgoing.custom-topic.ssl.truststore.type", "pkcs12");
         config.put("mp.messaging.outgoing.custom-topic.ssl.truststore.location", "src/test/resources/certs/server.jks");
         config.put("mp.messaging.outgoing.custom-topic.ssl.truststore.password", "changeme");
-        config.put("mp.messaging.outgoing.custom-topic.ssl.truststore.hostVerifier", "false");
+        config.put("mp.messaging.outgoing.custom-topic.ssl.hostVerifier", "false");
 
         config.put("mp.messaging.incoming.custom-topic-sink.ssl", "true");
-        config.put("mp.messaging.incoming.custom-topic-sink.ssl.truststore.type", "jks");
+        config.put("mp.messaging.incoming.custom-topic-sink.ssl.truststore.type", "pkcs12");
         config.put("mp.messaging.incoming.custom-topic-sink.ssl.truststore.location", "src/test/resources/certs/server.jks");
         config.put("mp.messaging.incoming.custom-topic-sink.ssl.truststore.password", "changeme");
-        config.put("mp.messaging.incoming.custom-topic-sink.ssl.truststore.hostVerifier", "false");
+        config.put("mp.messaging.incoming.custom-topic-sink.ssl.hostVerifier", "false");
         return config;
     }
 }
