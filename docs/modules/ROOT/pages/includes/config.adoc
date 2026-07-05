@@ -20,7 +20,7 @@
 |`password` | Password used to connect to the broker. | string |
 |`ssl` | Enable SSL/TLS. | boolean | `false`
 |`trust-all` | Trust every server certificate (insecure). | boolean | `false`
-|`ssl.truststore.type` | Truststore type. Currently only `jks` is supported. | string | `jks`
+|`ssl.truststore.type` | Truststore type (`jks`, `pkcs12`). | string | `jks`
 |`ssl.truststore.location` | Truststore location. | string |
 |`ssl.truststore.password` | Truststore password. | string |
 |`ssl.keystore.type` | Keystore type (`jks`, `pkcs12`) — used for mTLS. | string | `jks`
@@ -62,7 +62,7 @@
 |`password` | Password used to connect to the broker. | string |
 |`ssl` | Enable SSL/TLS. | boolean | `false`
 |`trust-all` | Trust every server certificate (insecure). | boolean | `false`
-|`ssl.truststore.type` | Truststore type. Currently only `jks` is supported. | string | `jks`
+|`ssl.truststore.type` | Truststore type (`jks`, `pkcs12`). | string | `jks`
 |`ssl.truststore.location` | Truststore location. | string |
 |`ssl.truststore.password` | Truststore password. | string |
 |`ssl.keystore.type` | Keystore type (`jks`, `pkcs12`) — used for mTLS. | string | `jks`

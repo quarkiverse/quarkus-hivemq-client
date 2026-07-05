@@ -33,7 +33,7 @@ mp.messaging.incoming.<channel>.ssl.truststore.password=changeme
 [IMPORTANT]
 ====
 * When `ssl=true`, both `ssl.truststore.location` and `ssl.truststore.password` are required.
-* The truststore type must be `jks` — it is currently the only format accepted for the *truststore*. (The keystore, used for mutual TLS below, also accepts `pkcs12`.)
+* The truststore accepts `jks` and `pkcs12` types (as does the keystore used for mutual TLS below).
 * When SSL is enabled and no `port` is set, the default port becomes `8883`.
 ====
 
@@ -131,7 +131,7 @@ Disabling hostname verification (`ssl.hostVerifier=false`) or trusting all certi
 
 |`username` / `password` | Simple (or token) authentication | —
 |`ssl` | Enable TLS | `false`
-|`ssl.truststore.type` | Truststore type (only `jks`) | `jks`
+|`ssl.truststore.type` | Truststore type (`jks`, `pkcs12`) | `jks`
 |`ssl.truststore.location` / `.password` | Trust the broker certificate | —
 |`ssl.keystore.type` | Keystore type (`jks`, `pkcs12`) | `jks`
 |`ssl.keystore.location` / `.password` | Present a client certificate (mTLS) | —
