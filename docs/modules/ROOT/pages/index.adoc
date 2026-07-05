@@ -1,19 +1,37 @@
-= Getting Started
+= Quarkus HiveMQ Client
 
 :extension-status: preview
 include::./includes/attributes.adoc[]
 
-This extension allows usage of the _HiveMQ MQTT Client_ inside a Quarkus App, in JVM and Native mode.
+This extension lets you use the https://github.com/hivemq/hivemq-mqtt-client[HiveMQ MQTT Client] inside a Quarkus application, in both JVM and native mode.
 
-Together with the https://smallrye.io/smallrye-reactive-messaging/smallrye-reactive-messaging/3.4/mqtt/mqtt.html["SmallRye Reactive Messaging MQTT"] extension allows usage of a new connector type *smallrye-mqtt-hivemq* that will use _HiveMQ Client_ instead of Vertx MQTT client.
+Together with the https://smallrye.io/smallrye-reactive-messaging/latest/mqtt/mqtt/[SmallRye Reactive Messaging MQTT] extension it contributes a new connector, *`smallrye-mqtt-hivemq`*, that uses the _HiveMQ Client_ under the hood instead of the default Vert.x MQTT client. You interact with it through the standard MicroProfile Reactive Messaging API (`@Incoming` / `@Outgoing`), so switching connector requires no code changes.
 
-This adds some benefits to the original SmallRye MQTT:
+== Why use it
 
-* [*] Battle tested MQTT Client outside Vertx landscape
-* [*] Management of external CA file for secure connections with self-signed certificates
-* [*] Backpressure support integrated with MQTT QOS
-* [*] Native mode support
-* [*] DevServices support
-* [*] Automatic and configurable reconnection handling and message redelivery
-* [*] Real Health Check against a configurable topic (defaults to the standard MQTT $SYS/broker/uptime) integrated in Quarkus HealthReport
-* [*] Many others you can read in official documentation https://hivemq.github.io/hivemq-mqtt-client/[here].
+Compared to the stock SmallRye MQTT connector, this extension adds:
+
+* [*] A battle-tested MQTT client that does not depend on the Vert.x MQTT client
+* [*] xref:security.adoc[TLS, mutual TLS and custom CA / self-signed certificate support]
+* [*] Backpressure integrated with MQTT QoS
+* [*] xref:native-mode.adoc[Native mode] support
+* [*] xref:dev-services.adoc[Dev Services] — a broker is started automatically for dev and test
+* [*] Automatic, configurable reconnection and message redelivery
+* [*] A real xref:health-checks.adoc[health check] against a configurable topic (defaults to `$SYS/broker/uptime`), wired into the Quarkus SmallRye Health report
+* [*] Everything else offered by the underlying client — see the https://hivemq.github.io/hivemq-mqtt-client/[HiveMQ MQTT Client documentation]
+
+== How it works
+
+[source,text]
+----
+@Outgoing / @Incoming  ─▶  SmallRye Reactive Messaging  ─▶  smallrye-mqtt-hivemq connector  ─▶  HiveMQ MQTT Client  ─▶  MQTT broker
+----
+
+You declare channels in `application.properties`, bind them to the `smallrye-mqtt-hivemq` connector, and produce or consume messages with plain Reactive Messaging beans. The connector supports MQTT 3.1.1.
+
+== What's next
+
+* xref:installation.adoc[Installation] — add the extension to your project
+* xref:usage.adoc[Usage] — produce and consume messages
+* xref:security.adoc[Security & TLS] — authentication, TLS and mutual TLS
+* xref:config-reference.adoc[Configuration Reference] — every connector option

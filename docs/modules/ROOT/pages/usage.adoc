@@ -2,73 +2,209 @@
 
 include::./includes/attributes.adoc[]
 
-Add your channels configuration in `src/main/resources/application.properties`
+This page shows how to produce and consume MQTT messages with the `smallrye-mqtt-hivemq` connector. It uses the standard https://smallrye.io/smallrye-reactive-messaging/latest/[SmallRye Reactive Messaging] API, so the programming model is identical to any other connector.
 
-Then configure your application by adding the HiveMQ connector type:
+== Configure the channels
 
-```
-# Configure the MQTT sink (we write to it)
+Bind your channels to the connector in `src/main/resources/application.properties`. Each channel maps to one MQTT topic.
+
+[source,properties]
+----
+# Outgoing channel -> we publish to the "prices" topic
 mp.messaging.outgoing.topic-price.connector=smallrye-mqtt-hivemq
+mp.messaging.outgoing.topic-price.host=localhost
 mp.messaging.outgoing.topic-price.topic=prices
 mp.messaging.outgoing.topic-price.auto-generated-client-id=true
 
-# Configure the MQTT source (we read from it)
+# Incoming channel -> we subscribe to the "prices" topic
 mp.messaging.incoming.prices.connector=smallrye-mqtt-hivemq
+mp.messaging.incoming.prices.host=localhost
 mp.messaging.incoming.prices.topic=prices
 mp.messaging.incoming.prices.auto-generated-client-id=true
-```
+----
 
-WARNING: change topic and channels names according to your needs
+[NOTE]
+====
+* `host` is mandatory. In dev/test mode it is injected automatically by xref:dev-services.adoc[Dev Services].
+* If `topic` is omitted, the *channel name* is used as the topic.
+* Change the channel and topic names to match your application.
+====
 
-And then implement your business logic
+== Consume messages
 
-```
-package incoming;
+Annotate a method with `@Incoming`. The payload is always delivered as a `byte[]`:
+
+[source,java]
+----
+package org.acme;
 
 import org.eclipse.microprofile.reactive.messaging.Incoming;
-
 import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
-public class MqttPriceConsumer {
+public class PriceConsumer {
 
     @Incoming("prices")
     public void consume(byte[] raw) {
         double price = Double.parseDouble(new String(raw));
-
-        // process your price.
+        // ... process the price
     }
-
 }
-```
+----
 
+To access MQTT metadata (topic, QoS, retain flag) or to control acknowledgement, consume a `MqttMessage<byte[]>`:
 
-```
-package outgoing;
+[source,java]
+----
+import io.smallrye.reactive.messaging.mqtt.MqttMessage;
+import java.util.concurrent.CompletionStage;
 
+@Incoming("prices")
+public CompletionStage<Void> consume(MqttMessage<byte[]> message) {
+    String topic = message.getTopic();
+    int qos = message.getQosLevel().value();
+    byte[] payload = message.getPayload();
+    // ... process, then acknowledge
+    return message.ack();
+}
+----
+
+== Produce messages
+
+You can generate messages with an `@Outgoing` method:
+
+[source,java]
+----
 import org.eclipse.microprofile.reactive.messaging.Outgoing;
+import io.smallrye.mutiny.Multi;
+import java.time.Duration;
 
-import jakarta.enterprise.context.ApplicationScoped;
-
-@ApplicationScoped
-public class PriceGenerator {
-
-    private static final Logger LOG = Logger.getLogger(PriceGenerator.class);
-
-    private Random random = new Random();
-
-    @Outgoing("topic-price")
-    public Multi<Integer> generate() {
-        return Multi.createFrom().ticks().every(Duration.ofSeconds(1))
-                .onOverflow().drop()
-                .map(tick -> {
-                    int price = random.nextInt(100);
-                    LOG.infof("Sending price: %d", price);
-                    return price;
-                });
-    }
-
+@Outgoing("topic-price")
+public Multi<Integer> generate() {
+    return Multi.createFrom().ticks().every(Duration.ofSeconds(1))
+            .map(tick -> (int) (Math.random() * 100));
 }
-```
+----
 
-NOTE: On the above example, we are pushing events into the channel topic-price (which, based on the application.properties, is pointing to the topic prices). On the other hand, we are consuming these events through the channel prices, which is also pointing to the same topic.
+...or push messages imperatively with an `Emitter`:
+
+[source,java]
+----
+import org.eclipse.microprofile.reactive.messaging.Channel;
+import org.eclipse.microprofile.reactive.messaging.Emitter;
+import jakarta.inject.Inject;
+
+@Inject
+@Channel("topic-price")
+Emitter<Integer> emitter;
+
+public void send(int price) {
+    emitter.send(price);
+}
+----
+
+=== Payload conversion
+
+The connector converts the outgoing payload to bytes automatically:
+
+[cols="40,60",options="header"]
+|===
+|Payload type | Serialization
+|`byte[]` | sent as-is
+|`String` / primitives | UTF-8 bytes of `toString()`
+|`io.vertx.core.json.JsonObject` / `JsonArray` | JSON bytes
+|`io.vertx.mutiny.core.buffer.Buffer` / `io.vertx.core.buffer.Buffer` | raw buffer bytes
+|any other object | encoded to JSON
+|===
+
+== Set the topic, QoS or retain per message
+
+If a channel has no fixed `topic`, or you want to override it for a single message, wrap the payload in an `MqttMessage` and set the destination topic:
+
+[source,java]
+----
+import io.smallrye.reactive.messaging.mqtt.MqttMessage;
+
+@Inject
+@Channel("commands")
+Emitter<byte[]> commands;
+
+public void sendCommand(String deviceId, String body) {
+    String topic = "devices/" + deviceId + "/commands";
+    commands.send(MqttMessage.of(topic, body.getBytes()));
+}
+----
+
+The per-message topic, QoS and retain flag take precedence over the channel configuration.
+
+== Subscribe with wildcards
+
+MQTT topic wildcards are supported on incoming channels:
+
+* `+` matches a single topic level
+* `#` matches the remaining levels
+
+[source,properties]
+----
+mp.messaging.incoming.all-devices.connector=smallrye-mqtt-hivemq
+mp.messaging.incoming.all-devices.topic=devices/+/telemetry
+----
+
+Use `MqttMessage.getTopic()` to find out which concrete topic a message was received on.
+
+== Quality of Service (QoS)
+
+Set the QoS level per channel with the `qos` attribute (`0`, `1` or `2`):
+
+[source,properties]
+----
+mp.messaging.outgoing.commands.qos=2   # exactly once
+mp.messaging.incoming.telemetry.qos=1  # at least once
+----
+
+Backpressure is integrated with QoS: with QoS 1 or 2 the connector limits the number of in-flight (unacknowledged) messages via `max-inflight-queue` (default `10`).
+
+== Broadcast to multiple consumers
+
+By default each message is delivered to a single consumer. To fan a channel out to several consumers, enable `broadcast`:
+
+[source,properties]
+----
+mp.messaging.incoming.prices.broadcast=true
+----
+
+Alternatively, use the `@Broadcast` annotation on a processing method.
+
+== Acknowledgement and failure handling
+
+When a message produced from an incoming MQTT message is *nacked*, the `failure-strategy` decides what happens:
+
+[cols="20,80",options="header"]
+|===
+|Strategy | Behaviour
+|`fail` (default) | The failure is propagated and the channel stops. Use it when you cannot afford to lose messages.
+|`ignore` | The failure is logged and the stream continues.
+|===
+
+[source,properties]
+----
+mp.messaging.incoming.prices.failure-strategy=ignore
+----
+
+== Reconnection
+
+The underlying HiveMQ client reconnects automatically. Tune the retry behaviour with:
+
+[source,properties]
+----
+mp.messaging.incoming.prices.reconnect-attempts=100
+mp.messaging.incoming.prices.reconnect-interval-seconds=10
+----
+
+On startup the connector runs a quick reachability check against the broker and logs a detailed diagnostic message if it cannot connect (wrong host/port, authentication failure, broker down, or network issues).
+
+== What's next
+
+* xref:security.adoc[Security & TLS] — connect to a secured broker
+* xref:health-checks.adoc[Health Checks] — expose readiness/liveness
+* xref:config-reference.adoc[Configuration Reference] — every available option

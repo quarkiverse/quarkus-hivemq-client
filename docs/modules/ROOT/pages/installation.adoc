@@ -2,31 +2,45 @@
 
 include::./includes/attributes.adoc[]
 
-Requirements:
+== Requirements
 
-* Maven 3.8.1+
-* JDK 17+ installed with JAVA_HOME configured appropriately
+* Maven {maven-version}
+* JDK 17+ with `JAVA_HOME` configured appropriately
+* A running MQTT broker — or nothing at all in dev/test mode, where xref:dev-services.adoc[Dev Services] starts one for you
 
-If you want to use this extension, you need to add the `io.quarkiverse.hivemqclient:quarkus-hivemq-client` extension first to your build file.
+== Add the extension
 
-```xml
+Add the `io.quarkiverse.hivemqclient:quarkus-hivemq-client` extension to your build file:
+
+[source,xml,subs=attributes+]
+----
 <dependency>
     <groupId>io.quarkiverse.hivemqclient</groupId>
     <artifactId>quarkus-hivemq-client</artifactId>
+    <version>{project-version}</version>
 </dependency>
-```
+----
 
-You can do that by running the following command:
+You also need the SmallRye Reactive Messaging MQTT connector, which provides the base MQTT API:
 
-```shell
-./mvnw quarkus:add-extension -Dextensions="hivemq"
-```
+[source,xml]
+----
+<dependency>
+    <groupId>io.quarkus</groupId>
+    <artifactId>quarkus-smallrye-reactive-messaging-mqtt</artifactId>
+</dependency>
+----
 
-NOTE: Keep in mind that you will also need `io.quarkus:quarkus-smallrye-reactive-messaging-mqtt` as a dependency on your build file as others smallrye reactive messaging APIs
+Alternatively, add both from the command line:
+
+[source,shell]
+----
+./mvnw quarkus:add-extension -Dextensions="hivemq,smallrye-reactive-messaging-mqtt"
+----
 
 == Create an application from scratch
 
-You can create a Quarkus application with the HiveMQ-SmallRye extension from scratch by running the following command:
+You can bootstrap a project that already wires the HiveMQ connector using the extension's codestart:
 
 [source,shell,subs="attributes"]
 ----
@@ -34,7 +48,23 @@ mvn io.quarkus:quarkus-maven-plugin:{quarkus-version}:create \
     -DprojectGroupId=org.acme \
     -DprojectArtifactId=hivemq-quickstart \
     -DclassName="org.acme.quickstart.GreetingResource" \
-    -Dextensions="resteasy-reactive,hivemq,smallrye-reactive-messaging-mqtt"
+    -Dextensions="rest,hivemq,smallrye-reactive-messaging-mqtt"
 
 cd hivemq-quickstart
 ----
+
+Then run it in dev mode — a broker is provided automatically by Dev Services:
+
+[source,shell]
+----
+./mvnw quarkus:dev
+----
+
+== Compatibility
+
+This extension tracks specific Quarkus and HiveMQ client versions. Check the xref:compatibility.adoc[Compatibility Matrix] to pick the version that matches your Quarkus platform.
+
+== Next steps
+
+* xref:usage.adoc[Usage] — configure channels and write your first producer/consumer
+* xref:security.adoc[Security & TLS] — connect to a secured broker

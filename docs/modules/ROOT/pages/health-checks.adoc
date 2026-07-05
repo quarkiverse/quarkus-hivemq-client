@@ -1,0 +1,64 @@
+= Health Checks
+
+include::./includes/attributes.adoc[]
+
+The connector integrates with https://quarkus.io/guides/smallrye-health[Quarkus SmallRye Health] to report the readiness and liveness of each MQTT client.
+
+== Enable the check
+
+Add the SmallRye Health extension to your project:
+
+[source,xml]
+----
+<dependency>
+    <groupId>io.quarkus</groupId>
+    <artifactId>quarkus-smallrye-health</artifactId>
+</dependency>
+----
+
+Then enable the check on the channel(s) you want to monitor:
+
+[source,properties]
+----
+mp.messaging.incoming.<channel>.check-topic-enabled=true
+----
+
+The health status is then exposed on the standard endpoints:
+
+* `/q/health/ready` — readiness
+* `/q/health/live` — liveness
+* `/q/health` — combined report
+
+== How it works
+
+When `check-topic-enabled=true`, the client subscribes to a *check topic* and remembers the timestamp of the last message received on it. The health status is derived from how long ago that last message arrived:
+
+* *Readiness* is `DOWN` if no message has been received on the check topic within `readiness-timeout` milliseconds.
+* *Liveness* is `DOWN` if no message has been received within `liveness-timeout` milliseconds.
+
+By default the check topic is `$SYS/broker/uptime`, a system topic that most MQTT brokers (including HiveMQ) publish to periodically. If your broker does not publish `$SYS` topics, point the check at a topic that receives regular traffic:
+
+[source,properties]
+----
+mp.messaging.incoming.<channel>.check-topic-enabled=true
+mp.messaging.incoming.<channel>.check-topic-name=$SYS/broker/uptime
+mp.messaging.incoming.<channel>.readiness-timeout=20000
+mp.messaging.incoming.<channel>.liveness-timeout=120000
+----
+
+[NOTE]
+====
+When `check-topic-enabled=false` (the default), the client always reports `UP`. Enable it only for channels connected to a broker that publishes to the chosen check topic; otherwise the check will report `DOWN` because no message ever arrives.
+====
+
+== Configuration
+
+[cols="35,45,10,10",options="header"]
+|===
+|Attribute | Description | Type | Default
+
+|`check-topic-enabled` | Enable the readiness/liveness check. | boolean | `false`
+|`check-topic-name` | Topic used to derive health. | string | `$SYS/broker/uptime`
+|`readiness-timeout` | Time (ms) without a message before readiness is `DOWN`. | int | `20000`
+|`liveness-timeout` | Time (ms) without a message before liveness is `DOWN`. | int | `120000`
+|===

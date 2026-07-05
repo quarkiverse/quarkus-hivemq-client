@@ -1,0 +1,142 @@
+= Security & TLS
+
+include::./includes/attributes.adoc[]
+
+The connector can connect to a broker anonymously, with username/password credentials, over TLS, and with mutual TLS (client-certificate) authentication. All options are set as channel attributes and apply to both incoming and outgoing channels.
+
+TIP: In the examples below, replace `<channel>` with your channel name and apply the same keys to every channel that must be secured.
+
+== Username & password authentication
+
+Set `username` and `password` to use MQTT simple authentication:
+
+[source,properties]
+----
+mp.messaging.incoming.<channel>.username=alice
+mp.messaging.incoming.<channel>.password=s3cret
+----
+
+If `username` is set, `password` is required. This is also the mechanism used for token-based auth (see <<token-auth>>).
+
+== One-way TLS (server authentication)
+
+Encrypt the connection and verify the broker's certificate against a truststore:
+
+[source,properties]
+----
+mp.messaging.incoming.<channel>.ssl=true
+mp.messaging.incoming.<channel>.ssl.truststore.type=jks
+mp.messaging.incoming.<channel>.ssl.truststore.location=certs/truststore.jks
+mp.messaging.incoming.<channel>.ssl.truststore.password=changeme
+----
+
+[IMPORTANT]
+====
+* When `ssl=true`, both `ssl.truststore.location` and `ssl.truststore.password` are required.
+* The truststore type must be `jks` — it is currently the only format accepted for the *truststore*. (The keystore, used for mutual TLS below, also accepts `pkcs12`.)
+* When SSL is enabled and no `port` is set, the default port becomes `8883`.
+====
+
+=== Trusting a self-signed / custom CA certificate
+
+To trust a broker that presents a self-signed certificate (or a certificate signed by a private CA), import the CA certificate into a JKS truststore and point the channel at it:
+
+[source,shell]
+----
+keytool -importcert -trustcacerts \
+    -alias my-broker-ca \
+    -file broker-ca.crt \
+    -keystore truststore.jks \
+    -storetype jks \
+    -storepass changeme -noprompt
+----
+
+Then reference `truststore.jks` with the `ssl.truststore.*` attributes shown above.
+
+== Mutual TLS (mTLS)
+
+For mutual authentication, the client also presents its own certificate. Add a keystore on top of the one-way TLS configuration:
+
+[source,properties]
+----
+mp.messaging.incoming.<channel>.ssl=true
+
+# trust the broker
+mp.messaging.incoming.<channel>.ssl.truststore.type=jks
+mp.messaging.incoming.<channel>.ssl.truststore.location=certs/truststore.jks
+mp.messaging.incoming.<channel>.ssl.truststore.password=changeme
+
+# present the client certificate
+mp.messaging.incoming.<channel>.ssl.keystore.type=jks
+mp.messaging.incoming.<channel>.ssl.keystore.location=certs/client-keystore.jks
+mp.messaging.incoming.<channel>.ssl.keystore.password=changeme
+----
+
+[NOTE]
+====
+* Mutual TLS is activated as soon as a keystore is configured (`ssl.keystore.location` / `ssl.keystore.password`).
+* The keystore password is used both as the store password *and* as the private-key password, so they must be identical.
+* The keystore accepts `jks` and `pkcs12` types.
+====
+
+mTLS is fully supported in xref:native-mode.adoc[native mode].
+
+[#token-auth]
+== Token-based / JWT authentication
+
+MQTT has no dedicated JWT field, so tokens are carried in the `password` of the CONNECT packet, with `username` set to any broker-expected value. Validation happens on the broker side (for example, with the HiveMQ Enterprise Security Extension configured with a JWT realm).
+
+[source,properties]
+----
+mp.messaging.incoming.<channel>.username=JohnDoe
+mp.messaging.incoming.<channel>.password=${MQTT_JWT_TOKEN}
+----
+
+Combine this with TLS in production so the token is not sent in clear text.
+
+== Insecure options (development only)
+
+The following options weaken or disable TLS verification. They are useful locally but *must never be used in production*.
+
+=== Trust every server certificate
+
+[source,properties]
+----
+mp.messaging.incoming.<channel>.trust-all=true
+----
+
+`trust-all=true` accepts any certificate the broker presents (no truststore needed) and defaults the port to `8883`.
+
+=== Disable hostname verification
+
+[source,properties]
+----
+mp.messaging.incoming.<channel>.ssl=true
+mp.messaging.incoming.<channel>.ssl.truststore.type=jks
+mp.messaging.incoming.<channel>.ssl.truststore.location=certs/truststore.jks
+mp.messaging.incoming.<channel>.ssl.truststore.password=changeme
+mp.messaging.incoming.<channel>.ssl.hostVerifier=false
+----
+
+[WARNING]
+====
+Disabling hostname verification (`ssl.hostVerifier=false`) or trusting all certificates (`trust-all=true`) exposes your application to man-in-the-middle (MITM) attacks. Keep hostname verification enabled and use a proper truststore in production. A warning is logged whenever hostname verification is bypassed.
+====
+
+== Summary of security attributes
+
+[cols="35,50,15",options="header"]
+|===
+|Attribute | Purpose | Default
+
+|`username` / `password` | Simple (or token) authentication | —
+|`ssl` | Enable TLS | `false`
+|`ssl.truststore.type` | Truststore type (only `jks`) | `jks`
+|`ssl.truststore.location` / `.password` | Trust the broker certificate | —
+|`ssl.keystore.type` | Keystore type (`jks`, `pkcs12`) | `jks`
+|`ssl.keystore.location` / `.password` | Present a client certificate (mTLS) | —
+|`ssl.hostVerifier` | Verify certificate hostname | `true`
+|`trust-all` | Trust any server certificate (insecure) | `false`
+|===
+
+See the xref:config-reference.adoc[Configuration Reference] for the complete list.
