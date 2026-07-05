@@ -1,3 +1,133 @@
-= Quarkus HiveMQ - Configuration Reference
+= Configuration Reference
 
-include::includes/config.adoc[leveloffset=+1, opts=optional]
+include::./includes/attributes.adoc[]
+
+All connector options are set as Reactive Messaging channel attributes, using the following key format:
+
+[source,properties]
+----
+mp.messaging.[incoming|outgoing].<channel-name>.<attribute>=<value>
+----
+
+For example, to set the QoS of the outgoing channel `topic-price`:
+
+[source,properties]
+----
+mp.messaging.outgoing.topic-price.connector=smallrye-mqtt-hivemq
+mp.messaging.outgoing.topic-price.qos=1
+----
+
+The `connector` attribute must always be set to `smallrye-mqtt-hivemq`. Only `host` is mandatory (and it can be provided automatically by xref:dev-services.adoc[Dev Services] in dev/test mode).
+
+TIP: The tables below group the attributes by purpose. For the raw, complete list see <<full-attribute-list>>. Security options are explained in depth in xref:security.adoc[Security & TLS], and health-check options in xref:health-checks.adoc[Health Checks].
+
+== Connection
+
+[cols="30,45,10,15",options="header"]
+|===
+|Attribute | Description | Type | Default
+
+|`host` | MQTT server host name or IP. *Mandatory*. | string |
+|`port` | MQTT server port. | int | `1883`, or `8883` when `ssl`/`trust-all` is enabled
+|`server-name` | SNI (Server Name Indication) server name. | string |
+|`client-id` | MQTT client identifier. | string |
+|`auto-generated-client-id` | Generate a random `clientId` when none is provided. | boolean | `true`
+|`connect-timeout-seconds` | Connection timeout, in seconds. | int | `60`
+|===
+
+== Authentication & TLS
+
+See xref:security.adoc[Security & TLS] for complete, worked examples.
+
+[cols="30,45,10,15",options="header"]
+|===
+|Attribute | Description | Type | Default
+
+|`username` | Username for MQTT simple authentication. | string |
+|`password` | Password for MQTT simple authentication. | string |
+|`ssl` | Enable SSL/TLS. | boolean | `false`
+|`trust-all` | Trust every server certificate. *Insecure — development only.* | boolean | `false`
+|`ssl.truststore.type` | Truststore type. Only `jks` is currently supported. | string | `jks`
+|`ssl.truststore.location` | Truststore location (required when `ssl=true`). | string |
+|`ssl.truststore.password` | Truststore password (required when `ssl=true`). | string |
+|`ssl.keystore.type` | Keystore type (`jks` or `pkcs12`). Enables mutual TLS. | string | `jks`
+|`ssl.keystore.location` | Keystore location. Enables mutual TLS. | string |
+|`ssl.keystore.password` | Keystore password (also used as the private-key password). | string |
+|`ssl.hostVerifier` | Verify that the server certificate matches the hostname. Set to `false` to disable. *Insecure — development only.* | boolean | `true`
+|===
+
+== Session & keep-alive
+
+[cols="30,45,10,15",options="header"]
+|===
+|Attribute | Description | Type | Default
+
+|`auto-clean-session` | Start with a clean MQTT session. | boolean | `true`
+|`keep-alive-seconds` | Keep-alive timeout, in seconds. | int | `30`
+|`auto-keep-alive` | Let the client answer `PINGREQ` automatically. | boolean | `true`
+|===
+
+== Messaging & QoS
+
+[cols="30,45,10,15",options="header"]
+|===
+|Attribute | Description | Type | Default
+
+|`topic` | Topic to subscribe/publish to. Defaults to the channel name. | string |
+|`qos` | QoS level (`0`, `1` or `2`). | int | `0`
+|`max-message-size` | Maximum MQTT message size, in bytes. | int | `8092`
+|`max-inflight-queue` | Maximum number of unacknowledged messages in flight. | int | `10`
+|`broadcast` | (incoming only) Dispatch each received message to all subscribers. | boolean | `false`
+|`failure-strategy` | (incoming only) Behaviour when a message is nacked: `fail` or `ignore`. | string | `fail`
+|`merge` | (outgoing only) Allow the channel to have multiple upstreams. | boolean | `false`
+|===
+
+== Last will
+
+The _Last Will and Testament_ is published by the broker if the client disconnects unexpectedly.
+
+[cols="30,45,10,15",options="header"]
+|===
+|Attribute | Description | Type | Default
+
+|`will-flag` | Send _will_ information on connection. | boolean | `false`
+|`will-retain` | Retain the _will_ message on the broker. | boolean | `false`
+|`will-qos` | QoS level of the _will_ message. | int | `0`
+|===
+
+== Reconnection
+
+The underlying HiveMQ client always reconnects automatically. These options tune the retry behaviour.
+
+[cols="30,45,10,15",options="header"]
+|===
+|Attribute | Description | Type | Default
+
+|`reconnect-attempts` | Maximum number of reconnect attempts. | int | `5`
+|`reconnect-interval-seconds` | Interval between reconnect attempts, in seconds. | int | `1`
+|===
+
+== Health checks
+
+See xref:health-checks.adoc[Health Checks] for details.
+
+[cols="30,45,10,15",options="header"]
+|===
+|Attribute | Description | Type | Default
+
+|`check-topic-enabled` | Enable the readiness/liveness health check. | boolean | `false`
+|`check-topic-name` | Topic used by the health check. | string | `$SYS/broker/uptime`
+|`readiness-timeout` | Time (ms) without a message before the client is _not ready_. | int | `20000`
+|`liveness-timeout` | Time (ms) without a message before the client is _not alive_. | int | `120000`
+|===
+
+== Dev Services (build time)
+
+Dev Services are configured with `quarkus.hivemq.devservices.*` build-time properties — see xref:dev-services.adoc[Dev Services].
+
+[#full-attribute-list]
+== Full attribute list
+
+The following tables are generated from the connector's `@ConnectorAttribute` definitions and list every option, per direction.
+
+include::includes/config.adoc[opts=optional]

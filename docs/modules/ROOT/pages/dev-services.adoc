@@ -2,27 +2,60 @@
 
 include::./includes/attributes.adoc[]
 
-The **Dev Services** feature in the HiveMQ Quarkus extension simplifies the integration of a local MQTT broker in your application for testing and development. If no custom host/port configuration is defined, Dev Services will automatically launch an instance of the MQTT broker and connect your messaging channels to it.
+*Dev Services* automatically start a local MQTT broker (in a container) while you develop or test, so you don't need to install or configure one yourself. Your messaging channels are wired to it transparently.
 
-The configuration for Dev Services can be controlled via the `application.properties` file. The following properties are available for customization:
+== When are Dev Services used?
+
+Dev Services for MQTT are enabled by default in dev and test mode, and start a broker *unless* the connection is already configured — that is, unless a `host` (or `port`) is set for one of the `smallrye-mqtt-hivemq` channels.
+
+They require a working container runtime (Docker or Podman). To disable them explicitly:
 
 [source,properties]
 ----
-# Enable/Disable DevServices globally
-quarkus.devservices.enabled=true
+# Disable all Dev Services
+quarkus.devservices.enabled=false
 
-# Enable/Disable MQTT DevServices specifically
+# ...or only the MQTT one
+quarkus.hivemq.devservices.enabled=false
+----
+
+== Configuration
+
+All Dev Services options are *build-time* properties under `quarkus.hivemq.devservices.*`:
+
+[source,properties]
+----
+# Explicitly enable/disable the MQTT Dev Service
 quarkus.hivemq.devservices.enabled=true
 
-# Set the image name for the MQTT broker (defaults to 'hivemq/hivemq4')
-quarkus.hivemq.devservices.image-name=hivemq/hivemq4
+# Container image to use (HiveMQ Community Edition by default)
+quarkus.hivemq.devservices.image-name=hivemq/hivemq-ce:2024.3
 
-# Set a fixed port for the MQTT broker (set to 0 to let Docker pick an available port)
-quarkus.hivemq.devservices.port=0
+# Fixed broker port (omit or leave unset to get a random free port)
+quarkus.hivemq.devservices.port=1883
 
-# Configure whether the DevService should be shared across multiple tests
-quarkus.hivemq.devservices.shared=false
+# Share the broker across applications/tests (dev mode only)
+quarkus.hivemq.devservices.shared=true
 
-# Set a custom service name for the DevService container
+# Label value used for container discovery when shared=true
 quarkus.hivemq.devservices.service-name=mqtt
+
+# Extra environment variables passed to the broker container
+quarkus.hivemq.devservices.container-env.HIVEMQ_LOG_LEVEL=INFO
 ----
+
+[cols="30,50,20",options="header"]
+|===
+|Property | Description | Default
+
+|`quarkus.hivemq.devservices.enabled` | Enable/disable the MQTT Dev Service. | _(auto)_
+|`quarkus.hivemq.devservices.image-name` | Broker image. | `hivemq/hivemq-ce:2024.3`
+|`quarkus.hivemq.devservices.port` | Fixed host port; random if unset. | _(random)_
+|`quarkus.hivemq.devservices.shared` | Reuse a running broker across apps/tests (dev mode). | `true`
+|`quarkus.hivemq.devservices.service-name` | `quarkus-dev-service-mqtt` label value used for discovery. | `mqtt`
+|`quarkus.hivemq.devservices.container-env.*` | Environment variables passed to the container. | —
+|===
+
+== Container sharing
+
+When `shared=true` (the default, dev mode only), Quarkus looks for a running container labelled `quarkus-dev-service-mqtt=<service-name>` before starting a new one. If a matching container is found it is reused, so multiple applications can share a single broker. Set a distinct `service-name` when you need several independent shared brokers.
