@@ -40,7 +40,7 @@ echo "======================================"
 echo "Starting Quarkus Native Test Build"
 echo "======================================"
 echo "⏱  Estimated time: 5-30 minutes"
-echo "📦 Builder image: quay.io/quarkus/ubi9-quarkus-mandrel-builder-image:jdk-21"
+echo "📦 Builder image: quay.io/quarkus/ubi9-quarkus-mandrel-builder-image:jdk-25"
 echo "🎯 Profile: native"
 echo "======================================"
 echo ""
@@ -63,7 +63,7 @@ echo ""
 # Using timeout of 40 minutes (2400 seconds) to allow for slower systems
 timeout 2400 ./mvnw -V -B -am clean verify \
     -Dnative \
-    -Dquarkus.native.builder-image=quay.io/quarkus/ubi9-quarkus-mandrel-builder-image:jdk-21 \
+    -Dquarkus.native.builder-image=quay.io/quarkus/ubi9-quarkus-mandrel-builder-image:jdk-25 \
     2>&1 | tee /tmp/native-test-output.log
 
 # Capture exit code

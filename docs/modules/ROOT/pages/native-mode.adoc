@@ -26,8 +26,8 @@ The project's CI builds and tests native images with the following Quarkus build
 
 [source,text]
 ----
-quay.io/quarkus/ubi9-quarkus-mandrel-builder-image:jdk-21
-quay.io/quarkus/ubi9-quarkus-graalvmce-builder-image:jdk-21
+quay.io/quarkus/ubi9-quarkus-mandrel-builder-image:jdk-25
+quay.io/quarkus/ubi9-quarkus-graalvmce-builder-image:jdk-25
 ----
 
 To pin a specific builder image:
@@ -36,7 +36,7 @@ To pin a specific builder image:
 ----
 ./mvnw package -Dnative \
     -Dquarkus.native.container-build=true \
-    -Dquarkus.native.builder-image=quay.io/quarkus/ubi9-quarkus-mandrel-builder-image:jdk-21
+    -Dquarkus.native.builder-image=quay.io/quarkus/ubi9-quarkus-mandrel-builder-image:jdk-25
 ----
 
 == TLS in native mode

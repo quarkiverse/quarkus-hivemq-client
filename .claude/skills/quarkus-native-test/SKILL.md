@@ -37,7 +37,7 @@ Native testing compiles the Quarkus application into a standalone native executa
 Execute the following Maven command to run native tests:
 
 ```bash
-./mvnw -V -B -am clean verify -Dnative -Dquarkus.native.builder-image=quay.io/quarkus/ubi9-quarkus-mandrel-builder-image:jdk-21
+./mvnw -V -B -am clean verify -Dnative -Dquarkus.native.builder-image=quay.io/quarkus/ubi9-quarkus-mandrel-builder-image:jdk-25
 ```
 
 ### Command Breakdown
@@ -48,7 +48,7 @@ Execute the following Maven command to run native tests:
 - `-am`: Also make - builds dependent modules if in multi-module project
 - `clean verify`: Clean previous builds and run all phases through integration testing
 - `-Dnative`: Activates Quarkus native profile for native compilation
-- `-Dquarkus.native.builder-image=quay.io/quarkus/ubi9-quarkus-mandrel-builder-image:jdk-21`: Specifies the container image for native compilation (Mandrel JDK 21 on UBI9)
+- `-Dquarkus.native.builder-image=quay.io/quarkus/ubi9-quarkus-mandrel-builder-image:jdk-25`: Specifies the container image for native compilation (Mandrel JDK 25 on UBI9)
 
 ## Execution Workflow
 
@@ -86,12 +86,12 @@ Inform users of expected duration to set proper expectations.
    ```
    Starting Quarkus native tests...
    This process compiles the application to native code and may take 5-15 minutes.
-   Using Mandrel JDK 21 builder image for GraalVM compilation.
+   Using Mandrel JDK 25 builder image for GraalVM compilation.
    ```
 
 2. **Execute Command**
    ```bash
-   ./mvnw -V -B -am clean verify -Dnative -Dquarkus.native.builder-image=quay.io/quarkus/ubi9-quarkus-mandrel-builder-image:jdk-21
+   ./mvnw -V -B -am clean verify -Dnative -Dquarkus.native.builder-image=quay.io/quarkus/ubi9-quarkus-mandrel-builder-image:jdk-25
    ```
 
 3. **Monitor Progress**
@@ -239,7 +239,7 @@ After native test execution completes successfully:
 This skill is configured for the **Quarkus HiveMQ Client** extension project:
 
 - **Technology Stack**: Java, Quarkus, HiveMQ MQTT client, Maven
-- **Native Requirements**: GraalVM/Mandrel JDK 21 compatibility
+- **Native Requirements**: GraalVM/Mandrel JDK 25 compatibility
 - **Critical Native Tests**: MQTT connection management, message publishing/subscribing, client lifecycle
 - **Known Considerations**: HiveMQ client reflection configuration, netty native transport, SSL/TLS certificate loading
 
@@ -284,5 +284,5 @@ After execution, provide:
 ---
 
 **Maintained By**: Backend Engineer and Master Orchestrator
-**Last Updated**: 2025-10-21
+**Last Updated**: 2026-09-11
 **Project Context**: Quarkus HiveMQ Client Extension - Native Image Validation

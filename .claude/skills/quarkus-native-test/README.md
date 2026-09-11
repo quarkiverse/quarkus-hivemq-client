@@ -24,7 +24,7 @@ Invoke this skill when users request:
 ## Command Executed
 
 ```bash
-./mvnw -V -B -am clean verify -Dnative -Dquarkus.native.builder-image=quay.io/quarkus/ubi9-quarkus-mandrel-builder-image:jdk-21
+./mvnw -V -B -am clean verify -Dnative -Dquarkus.native.builder-image=quay.io/quarkus/ubi9-quarkus-mandrel-builder-image:jdk-25
 ```
 
 ## Key Features
@@ -98,7 +98,7 @@ quarkus-native-test/
 
 **Quarkus HiveMQ Client Extension**
 - Technology: Java, Quarkus, HiveMQ MQTT client, Maven
-- Native Requirements: GraalVM/Mandrel JDK 21 compatibility
+- Native Requirements: GraalVM/Mandrel JDK 25 compatibility
 - Critical Tests: MQTT connectivity, message handling, client lifecycle in native mode
 - Considerations: HiveMQ reflection config, Netty native transport, SSL/TLS certificate loading
 

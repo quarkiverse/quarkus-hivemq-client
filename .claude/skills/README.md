@@ -26,7 +26,7 @@ This directory contains specialized skills that extend Claude's capabilities for
 
 **Command**:
 ```bash
-./mvnw -V -B -am clean verify -Dnative -Dquarkus.native.builder-image=quay.io/quarkus/ubi9-quarkus-mandrel-builder-image:jdk-21
+./mvnw -V -B -am clean verify -Dnative -Dquarkus.native.builder-image=quay.io/quarkus/ubi9-quarkus-mandrel-builder-image:jdk-25
 ```
 
 **Invocation**: User says "run native tests" or "validate native compilation"
